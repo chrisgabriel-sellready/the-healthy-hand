@@ -1121,6 +1121,9 @@ p { margin: 0 0 12px; }
 .thh-ritual__media img { width: 112%; max-width: 680px; height: auto; margin-right: -6%; }
 @media screen and (max-width: 860px) {
   .thh-ritual__inner { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 60px 20px 48px; }
+  .thh-ritual__text { text-align: center; }
+  .thh-ritual__text p { margin-left: auto; margin-right: auto; }
   .thh-ritual__btn { width: 100%; }
-  .thh-ritual__media img { width: 100%; max-width: 480px; margin: 0 auto; }
+  /* the pouches sit at ~41% of the image width (the cast shadow trails right), so shift to centre them */
+  .thh-ritual__media img { width: 100%; max-width: 480px; margin: 0 auto; transform: translateX(9%); }
 }
