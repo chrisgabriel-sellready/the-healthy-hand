@@ -14,30 +14,39 @@ Pages:
 - `affiliate.html`
 - `fibroids.html`
 
-## How it maps to Kemp
+## Design
 
-Structure, spacing and section CSS come from `chrisgabriel-sellready/kb_global_updates` (Dawn 7.0.1), which was read-only and not changed. That includes `kb-refresh.css`, `kb-collection-cards.css`, the kb-* sections, and the slideshow, header and footer settings.
+**v2 (current):** the same sections as v1, restyled in THH's own look so it no longer reads as Kemp Beauty. That look comes from their live theme:
+- Bebas Neue, Oswald and Open Sans.
+- Lime buy buttons with black text.
+- The coral-to-orange "Our Why" gradient.
+- Black and white bands, with THH grey `#f0f0f0`.
 
-Homepage order follows Kemp's `templates/index.json`:
+The working parts (cart drawer, hover add-to-cart cards, video players, reveal) still come from the Kemp Dawn build. Every Kemp class name and signature layout has been removed.
 
-| Kemp section | THH version |
+Homepage, top to bottom:
+
+| Section | What it is |
 |---|---|
-| `slideshow-new` | Tea / Kit / Total System slides |
-| `kb-film-player` | Our Story |
-| Dana's Edit | Shay's Picks (the real `shay-johnsons-top-picks` collection) |
-| `kb-game-day` row | Loox customer photos |
-| `kb-home-reel` | Pour, shake & drink |
-| Lash Essentials | Bundle Deals |
-| Two-panel banner | Detox / Capsules |
-| `kb-performance-video` | All natural health & wellness |
-| `multicolumn` How it works | THH's FAQ steps |
-| `testimonial` | Verified reviews, without before/after tags |
+| Hero | Full-bleed colour slides (tea on the gradient, kit on lime, Total System on grey), with product-name tabs instead of dots |
+| Trust strip | Free shipping $100+, USPS 7–10 days, 25,000+ orders, 4.5★ from 239 reviews |
+| Shop by category | 6 tiles |
+| Shay's Picks | The real `shay-johnsons-top-picks` collection, plus a "Taking both?" strip (Belly + System $130 vs the Kit at $110) |
+| Our story | Black band with press mentions and the square story video |
+| Pour, shake & drink | Routine video next to the 4 FAQ steps (this replaces the separate "How it works" block) |
+| Bundle deals | 2×2 cards showing what's included and the saving |
+| Our customers | Loox photo wall mixed with quote tiles |
+| Our Why | THH's own gradient section |
+| Reviews | Rating summary with each product's rating, next to quote cards |
+| Footer | Lime HealthyText signup above a black footer |
 
-Only the brand tokens change, at the top of `assets/thh-theme.css`:
-- **Fonts:** THH's live Bebas Neue, Oswald and Open Sans.
-- **Lime buttons:** `#8dc63f` with black text. White on lime fails contrast.
-- **Coral accent:** `#f2613d`, deepened to `#e2502c` for text.
-- **Sale badge:** `#c73a22`.
+Inner pages:
+- **Shop:** dark header with category tiles, plus sort.
+- **Product:** thumbnails down the side, a "free from" checklist, a "Taking both?" kit upsell on Belly/System, a how-to strip, tabs, and reviews with a star filter.
+- **About:** rebuilt on the "Our Why" layout.
+- **FAQ:** a topic list beside grouped answers.
+- **Contact:** a black info panel beside the form.
+- **Affiliate:** gradient banner, black steps band, centred form.
 
 ## Data
 
