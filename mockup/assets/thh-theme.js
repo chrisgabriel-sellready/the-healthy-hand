@@ -349,9 +349,6 @@
     $('#CollectionCrumb').textContent = col.t;
     var d = $('#CollectionDescription');
     d.textContent = col.d; d.hidden = !col.d;
-    $('#CollectionFilters').innerHTML = T.order.map(function (k) {
-      return '<li><a href="shop.html' + (k === 'all' ? '' : '?c=' + k) + '"' + (k === c ? ' aria-current="page"' : '') + '>' + esc(T.collections[k].t) + '</a></li>';
-    }).join('');
     $('#CollectionCount').textContent = list.length + (list.length === 1 ? ' product' : ' products');
     $('#CollectionGrid').innerHTML = list.map(card).join('');
   }

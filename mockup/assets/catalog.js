@@ -656,7 +656,7 @@ window.THH = {
  ],
  "collections": {
   "all": {
-   "t": "Shop All",
+   "t": "All Products",
    "d": ""
   },
   "detox": {

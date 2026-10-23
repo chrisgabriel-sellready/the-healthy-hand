@@ -1127,3 +1127,26 @@ p { margin: 0 0 12px; }
   /* the pouches sit at ~41% of the image width (the cast shadow trails right), so shift to centre them */
   .thh-ritual__media img { width: 100%; max-width: 480px; margin: 0 auto; transform: translateX(9%); }
 }
+
+/* ---------- Menu dropdown (Kemp/Impulse site-nav__dropdown): white panel, soft shadow,
+   slides down 12px on hover or keyboard focus ---------- */
+.site-nav__item { position: relative; }
+.site-nav__link--has-dropdown { display: inline-flex; align-items: center; gap: 6px; }
+.site-nav__chevron { width: 14px; height: 14px; transition: transform .25s ease; }
+.site-nav__dropdown {
+  position: absolute; left: 50%; top: 100%; z-index: 45; min-width: 220px; margin: 0; padding: 10px 0; list-style: none;
+  background: #fff; box-shadow: 0 10px 20px rgba(0, 0, 0, .09); text-align: left;
+  visibility: hidden; opacity: 0; transform: translate3d(-50%, -12px, 0);
+  transition: opacity .3s cubic-bezier(.2, .06, .05, .95), transform .3s cubic-bezier(.2, .06, .05, .95), visibility 0s .3s;
+}
+.site-nav--has-dropdown:hover > .site-nav__dropdown, .site-nav--has-dropdown:focus-within > .site-nav__dropdown {
+  visibility: visible; opacity: 1; transform: translate3d(-50%, 0, 0); transition-delay: 0s;
+}
+.site-nav--has-dropdown:hover .site-nav__chevron, .site-nav--has-dropdown:focus-within .site-nav__chevron { transform: rotate(180deg); }
+.site-nav__dropdown-link { display: block; padding: 8px 20px; white-space: nowrap; font-size: 14px; font-weight: 600; letter-spacing: .04em; text-decoration: none; color: var(--ink); }
+.site-nav__dropdown-link:hover, .site-nav__dropdown-link:focus-visible { background: #f2f2f2; }
+.mobile-nav__group summary { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--line); font-family: var(--font-body); font-weight: 600; font-size: 17px; letter-spacing: .02em; cursor: pointer; list-style: none; }
+.mobile-nav__group summary::-webkit-details-marker { display: none; }
+.mobile-nav__group[open] .site-nav__chevron { transform: rotate(180deg); }
+.mobile-nav__sub { margin: 0; padding: 0 0 6px 14px; list-style: none; }
+.mobile-nav .mobile-nav__sub a { padding: 11px 0; font-size: 15px; font-weight: 500; }
