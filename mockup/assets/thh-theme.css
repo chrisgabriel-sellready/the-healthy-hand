@@ -989,7 +989,7 @@ p { margin: 0 0 12px; }
 
 .thh-about-mission { background: #f0f0f0 url("https://cdn.shopify.com/s/files/1/0076/4644/5639/files/img_back.jpg?width=1600") center / cover no-repeat; }
 .thh-about-mission__inner { max-width: 760px; margin: 0 auto; padding: 88px 20px; text-align: center; }
-.thh-about-mission__graphic { width: auto; max-width: min(100%, 460px); max-height: 180px; margin: 0 auto 28px; }
+.thh-about-mission__title { margin: 0 0 14px; font-family: "Bebas Neue", sans-serif; font-weight: 400; font-size: clamp(52px, 6vw, 84px); line-height: .95; color: #151515; }
 .thh-about-mission__lead { margin: 0 0 20px; font-family: "Work Sans", sans-serif; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.4; color: #151515; }
 .thh-about-mission__inner p { font-size: 17px; line-height: 1.7; color: #151515; }
 @media screen and (max-width: 749px) { .thh-about-mission__inner { padding: 56px 20px; } .thh-about-mission .thh-about-btn { width: 100%; } }

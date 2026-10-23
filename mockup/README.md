@@ -55,7 +55,7 @@ The About page drops the Kemp layout and is rebuilt from THH's own live sections
 |---|---|
 | Our Why | Their "Our Why" About section: coral/orange gradient, Oswald headline, `img_model.png`, lime button |
 | Our Story | Their Featured-Video look (`video_back.jpg`, two-tone title), with the 2:01 Shopify story video and the press covers |
-| Mission | Their Image-With-Content look (`img_back.jpg`, `img_text.png`, "Allow The Healthy Hand to be a Helping Hand", lime Shop Now), with the mission text from their YouTube/REVIEWS page |
+| Mission | Their Image-With-Content look (`img_back.jpg`, "Allow The Healthy Hand to be a Helping Hand", lime Shop Now), with the mission text from their YouTube/REVIEWS page |
 | Make your health a priority | Their customer video slider: all 5 YouTube videos, captions verbatim, click to play |
 
 Changes from the live site:
@@ -63,7 +63,7 @@ Changes from the live site:
 - **Lime buttons:** they now have black text.
 - **Our Why copy:** the disease lines (preventing and fighting diseases; anxiety, depression, Alzheimer's) are removed.
 
-**Flag:** 3 of the 5 customer video captions make weight or immune claims ("lost 5 pounds", "boosts your immune system", "seeing results"). They're kept as on the live site, at the client's request, but this is an FTC/FDA risk to raise before launch. The videos, `img_model.png`, `img_text.png` and the three background images haven't been viewed from the build environment.
+**Flag:** 3 of the 5 customer video captions make weight or immune claims ("lost 5 pounds", "boosts your immune system", "seeing results"). They're kept as on the live site, at the client's request, but this is an FTC/FDA risk to raise before launch. The videos and the three background images haven't been viewed from the build environment.
 
 ## Needs a look before this goes further
 
