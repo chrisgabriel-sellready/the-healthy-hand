@@ -303,6 +303,18 @@
     sync();
   });
 
+  /* ---------- YouTube click-to-play (About: customer videos) ---------- */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-yt]');
+    if (!b) return;
+    var f = document.createElement('iframe');
+    f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(b.getAttribute('data-yt')) + '?autoplay=1&rel=0';
+    f.title = b.getAttribute('aria-label') || 'Customer video';
+    f.allow = 'autoplay; encrypted-media; picture-in-picture';
+    f.allowFullscreen = true;
+    b.replaceWith(f);
+  });
+
   /* ---------- Mock forms ---------- */
   $$('form[data-mock]').forEach(function (f) {
     f.addEventListener('submit', function (e) {

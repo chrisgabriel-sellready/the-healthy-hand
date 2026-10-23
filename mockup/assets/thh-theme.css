@@ -943,3 +943,84 @@ p { margin: 0 0 12px; }
 /* Info page (What are fibroids?) */
 .info-page h2 { margin: 30px 0 10px; font-family: var(--font-caps); font-size: 20px; letter-spacing: .1em; text-transform: uppercase; }
 .info-page ul { padding-left: 20px; color: var(--ink-2); }
+
+/* ---------- About page: THH's current branding (their "Our Why", Image-With-Content and
+   "Make your health a priority" sections), rebuilt. The Our Why gradient runs coral -> orange so
+   white text sits on the deeper end (THH's live version puts it on #fbad49 at about 1.9:1), and
+   lime buttons carry black text. Fonts as on THH's site: Oswald, Bebas Neue, Work Sans. ---------- */
+.thh-about-why { position: relative; overflow: hidden; background: linear-gradient(90deg, #cc4420 0%, #f2613d 45%, #fbad49 100%); color: #fff; }
+.thh-about-why__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: 40px; max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); }
+.thh-about-why__text { padding: 80px 0; align-self: center; max-width: 560px; }
+.thh-about-why__title { margin: 0 0 24px; font-family: "Oswald", sans-serif; font-weight: 500; font-size: clamp(48px, 6vw, 88px); line-height: 1.05; text-transform: none; color: #fff; }
+.thh-about-why__text p { margin: 0 0 14px; font-size: 17px; line-height: 1.7; color: #fff; }
+.thh-about-why__img img { width: 100%; max-height: 640px; object-fit: contain; object-position: bottom center; }
+.thh-about-btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 54px; margin-top: 18px; padding: 16px 34px;
+  border-radius: 10px; background: #8dc63f; color: #151515; text-decoration: none;
+  font-family: "Work Sans", sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .04em; text-transform: uppercase;
+  transition: background-color .2s ease, transform .2s ease;
+}
+.thh-about-btn:hover { background: #83bc36; transform: scale(1.03); }
+@media screen and (max-width: 860px) {
+  .thh-about-why { background: linear-gradient(180deg, #cc4420 0%, #f2613d 55%, #fbad49 100%); }
+  .thh-about-why__inner { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .thh-about-why__text { padding: 52px 0 24px; }
+  .thh-about-why__img img { max-height: 420px; }
+  .thh-about-btn { width: 100%; }
+}
+
+.thh-about-film { position: relative; background: #151515 url("https://cdn.shopify.com/s/files/1/0076/4644/5639/files/video_back.jpg?width=1600") center / cover no-repeat; color: #fff; }
+.thh-about-film::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .62); }
+.thh-about-film__inner { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: clamp(32px, 5vw, 72px); max-width: 1240px; margin: 0 auto; padding: 88px clamp(20px, 4vw, 56px); }
+.thh-about-film__title { margin: 0; font-family: "Bebas Neue", sans-serif; font-weight: 400; font-size: clamp(48px, 5.4vw, 80px); line-height: .95; letter-spacing: .01em; }
+.thh-about-film__title .first { display: block; color: #fff; }
+.thh-about-film__title .last { display: block; color: #8dc63f; }
+.thh-about-film__by { margin: 18px 0 0; font-family: "Work Sans", sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; }
+.thh-about-press { display: flex; gap: 18px; margin: 28px 0 0; padding: 22px 0 0; border-top: 1px solid rgba(255, 255, 255, .2); list-style: none; }
+.thh-about-press li { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 15px; }
+.thh-about-press img { width: 56px; height: 74px; object-fit: cover; border-radius: 3px; background: #333; }
+.thh-about-press small { display: block; font-weight: 400; font-size: 13px; color: #cfcfcf; }
+.thh-about-film__screen { padding: 0; aspect-ratio: 16 / 9; border-radius: 6px; background: #000; box-shadow: 0 24px 50px rgba(0, 0, 0, .4); }
+.thh-about-film__screen > video { object-fit: contain; }
+@media screen and (max-width: 860px) {
+  .thh-about-film__inner { grid-template-columns: minmax(0, 1fr); padding-top: 56px; padding-bottom: 56px; }
+  .thh-about-press { flex-direction: column; gap: 12px; }
+}
+
+.thh-about-mission { background: #f0f0f0 url("https://cdn.shopify.com/s/files/1/0076/4644/5639/files/img_back.jpg?width=1600") center / cover no-repeat; }
+.thh-about-mission__inner { max-width: 760px; margin: 0 auto; padding: 88px 20px; text-align: center; }
+.thh-about-mission__graphic { width: auto; max-width: min(100%, 460px); max-height: 180px; margin: 0 auto 28px; }
+.thh-about-mission__lead { margin: 0 0 20px; font-family: "Work Sans", sans-serif; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.4; color: #151515; }
+.thh-about-mission__inner p { font-size: 17px; line-height: 1.7; color: #151515; }
+@media screen and (max-width: 749px) { .thh-about-mission__inner { padding: 56px 20px; } .thh-about-mission .thh-about-btn { width: 100%; } }
+
+.thh-about-videos { background: #151515 url("https://cdn.shopify.com/s/files/1/0076/4644/5639/files/video_slider_bkg.jpg?width=1600") center / cover no-repeat; color: #fff; }
+.thh-about-videos { position: relative; }
+.thh-about-videos::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .6); }
+.thh-about-videos__inner { position: relative; max-width: 1320px; margin: 0 auto; padding: 88px clamp(20px, 4vw, 56px); }
+.thh-about-videos__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+.thh-about-videos__head h2 { margin: 0; font-family: "Bebas Neue", sans-serif; font-weight: 400; font-size: clamp(56px, 6vw, 92px); line-height: .9; color: #fff; }
+.thh-about-videos__head h2 span { display: block; font-size: 32px; letter-spacing: .04em; color: #8dc63f; }
+.thh-about-videos__arrows { display: flex; gap: 10px; }
+.thh-about-videos__track {
+  display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 2 * 20px) / 3); gap: 20px;
+  margin: 0; padding: 0 0 14px; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  scrollbar-width: thin; scrollbar-color: #8dc63f rgba(255, 255, 255, .15);
+}
+.thh-about-vid { min-width: 0; scroll-snap-align: start; }
+.thh-about-vid__frame { position: relative; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #000; }
+.thh-about-vid__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.thh-about-vid__play { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: #222; cursor: pointer; }
+.thh-about-vid__play img { width: 100%; height: 100%; object-fit: cover; }
+.thh-about-vid__play span { position: absolute; left: 50%; top: 50%; display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: #8dc63f; color: #151515; box-shadow: 0 8px 24px rgba(0, 0, 0, .35); transition: transform .2s ease; }
+.thh-about-vid__play span svg { width: 24px; height: 24px; margin-left: 3px; }
+.thh-about-vid__play:hover span { transform: scale(1.08); }
+.thh-about-vid__play:focus-visible { outline: 3px solid #8dc63f; outline-offset: -3px; }
+.thh-about-vid__text { margin: 16px 0 6px; font-size: 18px; line-height: 1.55; color: #fff; }
+.thh-about-vid__handle { margin: 0; font-family: "Bebas Neue", sans-serif; font-size: 24px; letter-spacing: .04em; color: #8dc63f; }
+@media screen and (max-width: 989px) { .thh-about-videos__track { grid-auto-columns: 46%; } }
+@media screen and (max-width: 749px) {
+  .thh-about-videos__inner { padding-top: 56px; padding-bottom: 56px; }
+  .thh-about-videos__arrows { display: none; }
+  .thh-about-videos__track { grid-auto-columns: 84%; gap: 14px; }
+}
