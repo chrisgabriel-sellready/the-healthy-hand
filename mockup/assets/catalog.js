@@ -65,8 +65,7 @@ window.THH = {
     "No sugar",
     "No sodium"
    ],
-   "senna": true,
-   "pair": "combo-total-system-belly-detox"
+   "senna": true
   },
   {
    "h": "total-system-detox",
@@ -101,7 +100,6 @@ window.THH = {
     "No sugar",
     "No sodium"
    ],
-   "pair": "combo-total-system-belly-detox",
    "senna": false
   },
   {
@@ -659,43 +657,35 @@ window.THH = {
  "collections": {
   "all": {
    "t": "Shop All",
-   "d": "",
-   "img": "soursop-ginger-detox-tea-bags"
+   "d": ""
   },
   "detox": {
    "t": "Detox",
-   "d": "Our detox powders, tea and capsules.",
-   "img": "total-belly-detox"
+   "d": "Our detox powders, tea and capsules."
   },
   "tea": {
    "t": "Detox Tea",
-   "d": "Organic soursop & ginger tea bags with cinnamon.",
-   "img": "soursop-ginger-detox-tea-bags"
+   "d": "Organic soursop & ginger tea bags with cinnamon."
   },
   "bundles": {
    "t": "Bundle Deals",
-   "d": "Our detox, paired up for less.",
-   "img": "combo-total-system-belly-detox"
+   "d": "Our detox, paired up for less."
   },
   "capsules": {
    "t": "Capsules",
-   "d": "Daily herbal capsules.",
-   "img": "sea-moss-bladderwrck-mix-capsules"
+   "d": "Daily herbal capsules."
   },
   "gummies": {
    "t": "Gummies",
-   "d": "Sea moss gummies and kids multivitamin gummies.",
-   "img": "kids-multivitamin-elderberry-gummys"
+   "d": "Sea moss gummies and kids multivitamin gummies."
   },
   "oils": {
    "t": "Black Seed Oil",
-   "d": "100% pure, cold-pressed Nigella sativa.",
-   "img": "thh-100-pure-black-seed-oil-nigella-sativa"
+   "d": "100% pure, cold-pressed Nigella sativa."
   },
   "accessories": {
    "t": "Accessories",
-   "d": "",
-   "img": "copy-of-new-thh-funnel"
+   "d": ""
   }
  },
  "order": [
