@@ -71,7 +71,19 @@
       '</div></div></div></div>' +
       '<a class="kb-card__link" href="' + productUrl(p.h) + '" tabindex="-1" aria-hidden="true"></a></div></li>';
   }
+  /* Best Sellers slider (THH's live Collection-Slider section) */
+  function bestItem(p) {
+    var sale = p.cmp && p.cmp > p.price;
+    return '<li class="thh-best__item"><a class="thh-best__img" href="' + productUrl(p.h) + '" tabindex="-1" aria-hidden="true">' + mediaHtml(p, 700) + '</a>' +
+      '<h3 class="thh-best__name"><a href="' + productUrl(p.h) + '">' + esc(p.t) + '</a></h3>' +
+      (p.rating ? '<div class="thh-best__rating">' + stars(p.rating) + '<span>(' + p.count + ')</span></div>' : '') +
+      '<p class="thh-best__price">' + (sale ? '<s><span class="visually-hidden">Regular price</span>' + money(p.cmp) + '</s>' : '') + money(p.price) + '</p>' +
+      '<button type="button" class="thh-best__add" data-add="' + esc(p.h) + '">Add to Bag</button></li>';
+  }
   function renderGrids(root) {
+    $$('[data-best]', root).forEach(function (ul) {
+      ul.innerHTML = ul.getAttribute('data-best').split(',').map(function (h) { return byHandle[h.trim()]; }).filter(Boolean).map(bestItem).join('');
+    });
     $$('[data-products]', root).forEach(function (ul) {
       ul.innerHTML = ul.getAttribute('data-products').split(',').map(function (h) { return byHandle[h.trim()]; })
         .filter(Boolean).map(card).join('');
@@ -301,6 +313,7 @@
     strip.addEventListener('scroll', sync, { passive: true });
     window.addEventListener('resize', sync);
     sync();
+    setTimeout(sync, 0); /* rows filled from catalog.js are rendered after this runs */
   });
 
   /* ---------- YouTube click-to-play (About: customer videos) ---------- */

@@ -9,8 +9,8 @@
 <link rel="icon" href="https://cdn.shopify.com/s/files/1/0076/4644/5639/files/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Open+Sans:wght@400;600;700&amp;family=Oswald:wght@400;500&amp;display=swap">
-<link rel="stylesheet" href="assets/thh-theme.css?v=b035c726">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Open+Sans:wght@400;600;700&amp;family=Oswald:wght@400;500&amp;family=Work+Sans:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/thh-theme.css?v=83b6ed75">
 </head>
 <body data-page="home">
 <a class="skip-link visually-hidden" href="#MainContent">Skip to content</a>
@@ -82,63 +82,37 @@
   </div>
 </section>
 
-<section class="kbp is-paused" data-kbp data-src="https://cdn.shopify.com/videos/c/vp/d2d186b3db6d425f9ae9a162280ea82f/d2d186b3db6d425f9ae9a162280ea82f.HD-720p-1.6Mbps.mp4" aria-labelledby="FilmTitle">
-  <div class="kbp__inner">
-    <div class="kbp__head" data-kb-reveal>
-      <div>
-        <h2 class="kb-caps" id="FilmTitle">Our story</h2>
-        <div class="kb-copy kbp__text"><p>The story behind The Healthy Hand, from founder Shay Johnson.</p></div>
-      </div>
-      <p class="kb-caps kb-caps--sm kbp__runtime">2:01</p>
-    </div>
-    <div class="kbp__screen" data-kb-reveal>
+<section class="thh-story-home kbp is-paused" data-kbp data-src="https://cdn.shopify.com/videos/c/vp/d2d186b3db6d425f9ae9a162280ea82f/d2d186b3db6d425f9ae9a162280ea82f.HD-720p-1.6Mbps.mp4" aria-labelledby="FilmTitle">
+  <div class="thh-story-home__inner">
+    <h2 class="thh-story-home__title" id="FilmTitle" data-kb-reveal><span class="first">The Healthy Hand</span> <span class="last">Our Story</span></h2>
+    <p class="thh-story-home__by" data-kb-reveal>Founder Shay Johnson</p>
+    <div class="kbp__screen thh-story-home__screen" data-kb-reveal>
       <video data-kbp-video playsinline muted loop preload="none" poster="https://cdn.shopify.com/s/files/1/0076/4644/5639/files/preview_images/d2d186b3db6d425f9ae9a162280ea82f.thumbnail.0000000.jpg?v=1654116791" aria-label="The Healthy Hand: our story" tabindex="-1"></video>
+      <span class="thh-story-home__time">2:01</span>
       <button type="button" class="kbp__prompt" data-kbp-prompt>
-        <span data-when="play"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 4.5v15l12.5-7.5z"/></svg>Play</span>
+        <span data-when="play"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 4.5v15l12.5-7.5z"/></svg>Play our story</span>
         <span data-when="sound"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Tap for sound</span>
       </button>
     </div>
-    <div class="kbp__action" data-kb-reveal><a class="kbp__link" href="about.html">Learn more</a></div>
+    <a class="thh-about-btn thh-story-home__btn" href="about.html">Learn more</a>
   </div>
 </section>
 
-<section class="featured" aria-labelledby="PicksTitle">
+<section class="thh-best" data-row aria-labelledby="BestTitle">
   <div class="page-width">
-    <div class="title-wrapper-with-link" data-kb-reveal>
-      <h2 class="kb-caps" id="PicksTitle">Shay&rsquo;s Picks</h2>
-      <a class="link-underline" href="shop.html?c=detox">View all</a>
+    <div class="thh-best__head">
+      <h2 class="thh-best__title" id="BestTitle">Best Sellers</h2>
+      <hr class="thh-best__hr">
     </div>
-    <ul class="product-grid kb-cgrid" style="--cols:4" data-products="total-belly-detox,soursop-ginger-detox-tea-bags,total-system-detox,total-belly-cleanse"></ul>
+    <div class="thh-best__wrap">
+      <button type="button" class="thh-best__arrow thh-best__arrow--prev" data-row-prev aria-label="Previous products"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <ul class="thh-best__track" data-row-strip data-best="soursop-ginger-detox-tea-bags,combo-total-system-belly-detox,total-system-detox,total-belly-detox,total-belly-cleanse,total-belly-cleanse-capsules" aria-label="Best sellers"></ul>
+      <button type="button" class="thh-best__arrow thh-best__arrow--next" data-row-next aria-label="Next products"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <div class="thh-best__more"><a href="shop.html">Show more</a></div>
   </div>
 </section>
 
-<section class="kbg" data-row aria-labelledby="UgcTitle">
-  <div class="kbg__inner">
-    <div class="kbg__bar">
-      <header class="kbg__head" data-kb-reveal>
-        <h2 class="kb-caps kbg__title" id="UgcTitle">From our customers</h2>
-        <div class="kb-copy kbg__text"><p>Photos and videos from verified buyers, shared with their Loox reviews.</p></div>
-      </header>
-      <div class="kbg__arrows">
-        <button type="button" class="kbg__arrow" data-row-prev aria-label="Previous photos"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <button type="button" class="kbg__arrow" data-row-next aria-label="Next photos"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      </div>
-    </div>
-    <ul class="kbg__grid" data-row-strip tabindex="0" aria-label="Customer photos" data-kb-reveal="stagger">
-        <li class="kbg__tile"><div class="kbg__photo"><img src="https://images.loox.io/uploads/2026/4/8/2yV4SZbeo_mid.jpg" alt="Photo from Michelle W., verified buyer of Detox Tea" loading="lazy"></div><p class="kbg__cap">Michelle W.<span>Verified buyer &middot; Detox Tea</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><span class="kbg__video-tag"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 4.5v15l12.5-7.5z"/></svg>Video</span><img src="https://images.loox.io/uploads/2026/4/12/iVyTcdhnt_FehOhAdt1_orig_mid.jpg" alt="Video from Ireshia W., verified buyer of Detox Tea" loading="lazy"></div><p class="kbg__cap">Ireshia W.<span>Verified buyer &middot; Detox Tea</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><img src="https://images.loox.io/uploads/2025/2/26/rdimfTVu4_mid.jpg" alt="Photo from Marie F., verified buyer of Detox Tea" loading="lazy"></div><p class="kbg__cap">Marie F.<span>Verified buyer &middot; Detox Tea</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><img src="https://images.loox.io/uploads/2024/7/29/I0oljoy3t_mid.jpg" alt="Photo from Lestine M., verified buyer of Total Belly Detox" loading="lazy"></div><p class="kbg__cap">Lestine M.<span>Verified buyer &middot; Total Belly Detox</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><img src="https://images.loox.io/uploads/2025/2/21/pmDX7eYXR_mid.jpg" alt="Photo from Nichelle V., verified buyer of Total System Detox" loading="lazy"></div><p class="kbg__cap">Nichelle V.<span>Verified buyer &middot; Total System Detox</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><img src="https://images.loox.io/uploads/2024/11/27/5fytR4lprI_mid.jpg" alt="Photo from Tasha H., verified buyer of Detox Tea" loading="lazy"></div><p class="kbg__cap">Tasha H.<span>Verified buyer &middot; Detox Tea</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><img src="https://images.loox.io/uploads/2024/12/17/y5ukm_80w_mid.jpg" alt="Photo from Lexxus M., verified buyer of Total Belly Detox" loading="lazy"></div><p class="kbg__cap">Lexxus M.<span>Verified buyer &middot; Total Belly Detox</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><span class="kbg__video-tag"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 4.5v15l12.5-7.5z"/></svg>Video</span><img src="https://images.loox.io/uploads/2024/5/5/Q-WQvnfHt_orig_mid.jpg" alt="Video from Missy M., verified buyer of Total System Detox" loading="lazy"></div><p class="kbg__cap">Missy M.<span>Verified buyer &middot; Total System Detox</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><img src="https://images.loox.io/uploads/2024/4/10/73mprfMRK_mid.jpg" alt="Photo from Carrie J., verified buyer of Total Detox Kit" loading="lazy"></div><p class="kbg__cap">Carrie J.<span>Verified buyer &middot; Total Detox Kit</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><img src="https://images.loox.io/uploads/2023/12/27/6eoNj0AnZT_mid.jpg" alt="Photo from Markita G., verified buyer of Total Belly Detox" loading="lazy"></div><p class="kbg__cap">Markita G.<span>Verified buyer &middot; Total Belly Detox</span></p></li>
-        <li class="kbg__tile"><div class="kbg__photo"><span class="kbg__video-tag"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7 4.5v15l12.5-7.5z"/></svg>Video</span><img src="https://images.loox.io/uploads/2024/12/18/0gN1rsbDd_orig_mid.jpg" alt="Video from Crystal N., verified buyer of Total Detox Kit" loading="lazy"></div><p class="kbg__cap">Crystal N.<span>Verified buyer &middot; Total Detox Kit</span></p></li>
-    </ul>
-  </div>
-</section>
 
 <section class="kbr is-paused" data-kbp data-kbp-ambient data-src="https://cdn.shopify.com/videos/c/vp/5b372a30ab8f4ac5b13ca248ac723a27/5b372a30ab8f4ac5b13ca248ac723a27.HD-720p-4.5Mbps-88716593.mp4" aria-labelledby="ReelTitle">
   <div class="kbr__backdrop" aria-hidden="true"><img src="https://cdn.shopify.com/s/files/1/0076/4644/5639/files/detoxteabagmockupfront.jpg?v=1726569176&width=800" alt="" loading="lazy"></div>
@@ -353,6 +327,6 @@
   </div>
 </div>
 <script src="assets/catalog.js?v=779466e5"></script>
-<script src="assets/thh-theme.js?v=7790edf3"></script>
+<script src="assets/thh-theme.js?v=f8e3afee"></script>
 </body>
 </html>

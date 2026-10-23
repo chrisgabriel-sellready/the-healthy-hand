@@ -1030,3 +1030,67 @@ p { margin: 0 0 12px; }
   .thh-about-videos__arrows { display: none; }
   .thh-about-videos__track { grid-auto-columns: 84%; gap: 14px; }
 }
+
+/* ---------- Best Sellers: THH's live Collection-Slider section (grey band, centred Bebas title with an
+   orange rule, 3 per row / 2.2 on phones, Oswald titles and prices, lime ADD TO BAG, Show more).
+   Button text is black instead of THH's white, which only reaches 2.1:1 on lime. ---------- */
+.thh-best { background: #f0f0f0; padding: 64px 0 56px; }
+.thh-best__head { text-align: center; margin-bottom: 36px; }
+.thh-best__title { margin: 0; font-family: "Bebas Neue", sans-serif; font-weight: 400; font-size: clamp(44px, 5vw, 60px); line-height: 1; color: #000; }
+.thh-best__hr { width: 120px; height: 5px; margin: 22px auto 0; background: #f8a21a; border: 1px solid #f8a21a; border-radius: 20px; }
+.thh-best__wrap { position: relative; }
+.thh-best__track {
+  display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 2 * 28px) / 3); gap: 28px;
+  margin: 0; padding: 0 0 6px; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none;
+}
+.thh-best__track::-webkit-scrollbar { display: none; }
+.thh-best__item { position: relative; display: flex; flex-direction: column; min-width: 0; scroll-snap-align: start; text-align: center; }
+.thh-best__img { position: relative; display: block; aspect-ratio: 1 / 1; background: #fff; overflow: hidden; }
+.thh-best__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 6%; transition: transform .5s ease; }
+.thh-best__item:hover .thh-best__img img { transform: scale(1.04); }
+.thh-best__name { margin: 18px 0 6px; font-family: "Oswald", sans-serif; font-weight: 400; font-size: 20px; line-height: 1.3; text-transform: uppercase; color: #000; }
+.thh-best__name a { text-decoration: none; }
+.thh-best__rating { display: flex; justify-content: center; align-items: center; gap: 6px; font-size: 13px; color: #555; }
+.thh-best__price { margin: 6px 0 16px; font-family: "Oswald", sans-serif; font-weight: 600; font-size: 20px; color: #000; }
+.thh-best__price s { margin-right: 8px; font-weight: 400; font-size: 16px; color: #777; }
+.thh-best__add {
+  margin-top: auto; width: 100%; min-height: 50px; padding: 12px; border: 0; border-radius: 0; background: #8dc63f; color: #000; cursor: pointer;
+  font-family: "Oswald", sans-serif; font-weight: 400; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; transition: background-color .2s ease;
+}
+.thh-best__add:hover { background: #83bc36; }
+.thh-best__arrow {
+  position: absolute; top: calc((100% - 120px) / 2); z-index: 2; display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; padding: 0; border: 0; border-radius: 50%; background: #000; color: #fff; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+}
+.thh-best__arrow svg { width: 20px; height: 20px; }
+.thh-best__arrow--prev { left: -23px; }
+.thh-best__arrow--next { right: -23px; }
+.thh-best__arrow:disabled { opacity: 0; pointer-events: none; }
+.thh-best__more { margin-top: 36px; text-align: center; }
+.thh-best__more a { display: inline-block; padding: 20px 44px; background: #83bc36; color: #000; text-decoration: none; font-family: "Bebas Neue", sans-serif; font-size: 18px; letter-spacing: 4px; line-height: 1; }
+.thh-best__more a:hover { background: #8dc63f; }
+@media screen and (max-width: 989px) { .thh-best__arrow--prev { left: 4px; } .thh-best__arrow--next { right: 4px; } }
+@media screen and (max-width: 749px) {
+  .thh-best { padding: 48px 0 44px; }
+  .thh-best__track { grid-auto-columns: calc((100% - 2 * 12px) / 2.2); gap: 12px; }
+  .thh-best__name { font-size: 16px; margin-top: 12px; }
+  .thh-best__price { font-size: 17px; margin-bottom: 12px; }
+  .thh-best__add { font-size: 15px; min-height: 44px; }
+  .thh-best__arrow { display: none; }
+}
+
+/* ---------- Homepage Our Story: THH's live Featured-Video look (video_back.jpg background,
+   two-tone Bebas title), with Shay's story video in a square frame to match the footage. ---------- */
+.thh-story-home.kbp { position: relative; padding: 0; background: #151515 url("https://cdn.shopify.com/s/files/1/0076/4644/5639/files/video_back.jpg?width=1600") center / cover no-repeat; color: #fff; }
+.thh-story-home::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .62); }
+.thh-story-home__inner { position: relative; max-width: 760px; margin: 0 auto; padding: 80px 20px; text-align: center; }
+.thh-story-home__title { margin: 0; font-family: "Bebas Neue", sans-serif; font-weight: 400; font-size: clamp(52px, 6vw, 84px); line-height: .95; letter-spacing: .01em; }
+.thh-story-home__title .first { display: block; color: #fff; }
+.thh-story-home__title .last { display: block; color: #8dc63f; }
+.thh-story-home__by { margin: 16px 0 32px; font-family: "Work Sans", "Open Sans", sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; }
+.thh-story-home .kbp__screen.thh-story-home__screen { aspect-ratio: 1 / 1; max-width: 540px; margin: 0 auto; border-radius: 6px; background: #000; box-shadow: 0 24px 50px rgba(0, 0, 0, .45); }
+.thh-story-home__screen video { object-fit: cover; }
+.thh-story-home__screen .kbp__prompt { white-space: nowrap; background: #8dc63f; color: #151515; }
+.thh-story-home__time { position: absolute; right: 14px; top: 14px; z-index: 2; padding: 3px 9px; border-radius: 4px; background: rgba(0, 0, 0, .65); font-size: 13px; font-weight: 600; }
+.thh-story-home__btn { margin-top: 32px; }
+@media screen and (max-width: 749px) { .thh-story-home__inner { padding: 56px 20px; } }
