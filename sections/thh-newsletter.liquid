@@ -1,9 +1,26 @@
 {%- comment -%}
-  Mock-up "HealthyText" band. By default phone numbers go to THH's VIA text list, the same way the
-  live HealthyText subscribe page does (VIA keyword 6123f00bd49731000806fd85). Klaviyo is an option:
-  pick it and set the SMS list ID. Or paste another provider's embed code to replace the form.
+  Sign-up band above the footer.
+  Default "email": THH's live mailing list look ("Join our Mailing List and stay updated", email field,
+  lime Sign Up button). It uses Shopify's newsletter form, so subscribers are saved as customers with
+  email marketing consent, and Klaviyo's Shopify integration syncs them.
+  "via" / "klaviyo": the mock-up's HealthyText phone sign-up, sent to THH's VIA keyword or a Klaviyo SMS list.
 {%- endcomment -%}
 {%- if section.settings.enabled -%}
+{%- if section.settings.provider == 'email' -%}
+<section class="newsletter newsletter--mailing" aria-labelledby="MailingTitle">
+  <div class="page-width">
+    <h2 class="newsletter__mailing-title" id="MailingTitle">{{ section.settings.email_heading | escape }} <span>{{ section.settings.email_heading_end | escape }}</span></h2>
+    {%- form 'customer', id: 'NewsletterForm', class: 'newsletter-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label class="visually-hidden" for="NewsletterEmail">Email</label>
+      <input id="NewsletterEmail" type="email" name="contact[email]" autocomplete="email" placeholder="{{ section.settings.email_placeholder | escape }}" required>
+      <button class="kb-btn newsletter__signup" type="submit">{{ section.settings.email_button | escape }}</button>
+      {%- if form.posted_successfully? -%}<p class="form-status" role="status">{{ section.settings.success_email | escape }}</p>{%- endif -%}
+      {%- if form.errors -%}<p class="form-status" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+{%- else -%}
 <section class="newsletter" aria-labelledby="HealthyText">
   <div class="page-width">
     <h2 class="newsletter__heading" id="HealthyText">{{ section.settings.heading | escape }}</h2>
@@ -21,15 +38,23 @@
   </div>
 </section>
 {%- endif -%}
+{%- endif -%}
 
 {% schema %}
 {
-  "name": "THH HealthyText band",
+  "name": "THH sign-up band",
   "settings": [
     { "type": "checkbox", "id": "enabled", "label": "Show", "default": true },
+    { "type": "select", "id": "provider", "label": "Sign-up type", "default": "email", "options": [{ "value": "email", "label": "Mailing list (email, THH's current style)" }, { "value": "via", "label": "HealthyText by text (VIA)" }, { "value": "klaviyo", "label": "HealthyText by text (Klaviyo SMS list)" }] },
+    { "type": "header", "content": "Mailing list" },
+    { "type": "text", "id": "email_heading", "label": "Heading", "default": "Join our Mailing List and" },
+    { "type": "text", "id": "email_heading_end", "label": "Heading, last part", "default": "stay updated" },
+    { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Your@email.com" },
+    { "type": "text", "id": "email_button", "label": "Button", "default": "Sign Up" },
+    { "type": "text", "id": "success_email", "label": "Success message", "default": "Thanks for signing up!" },
+    { "type": "header", "content": "HealthyText (text messages)" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "HealthyText" },
     { "type": "text", "id": "text", "label": "Text", "default": "Put in your phone number below to subscribe!" },
-    { "type": "select", "id": "provider", "label": "Send sign-ups to", "default": "via", "options": [{ "value": "via", "label": "VIA (THH's current HealthyText)" }, { "value": "klaviyo", "label": "Klaviyo SMS list" }] },
     { "type": "text", "id": "via_keyword", "label": "VIA keyword ID", "default": "6123f00bd49731000806fd85", "info": "From the HealthyText subscribe page template." },
     { "type": "text", "id": "klaviyo_company", "label": "Klaviyo public API key (company ID)", "default": "SUJAkf" },
     { "type": "text", "id": "klaviyo_list", "label": "Klaviyo SMS list ID", "info": "Only for Klaviyo. Klaviyo → Lists & segments → your SMS list → Settings → List ID." },

@@ -701,6 +701,20 @@ p { margin: 0 0 12px; }
   .newsletter-form input { flex: none; }
 }
 
+/* ---------- Mailing list band (THH's live footer sign-up: Work Sans 600, lime Sign Up) ---------- */
+.newsletter--mailing { padding: 56px 0 60px; background: #fff; border-top: 1px solid var(--line); }
+.newsletter__mailing-title { margin: 0 0 22px; font-family: "Work Sans", var(--font-body); font-size: clamp(24px, 3vw, 30px); font-weight: 600; line-height: 1.25; letter-spacing: 0; text-transform: none; color: #000; }
+.newsletter--mailing .newsletter-form { max-width: 560px; flex-wrap: wrap; }
+.newsletter--mailing .newsletter-form input[type="email"] { border-color: #cfcfcf; border-radius: 4px; }
+.newsletter--mailing .newsletter-form input[type="email"]:focus { border-color: var(--ink); outline: none; }
+.newsletter__signup.kb-btn { min-height: 54px; padding: 0 32px; border-color: var(--lime); border-radius: 4px; background: var(--lime); color: var(--ink); }
+.newsletter__signup.kb-btn:hover { border-color: var(--lime-hover); background: var(--lime-hover); }
+.newsletter--mailing .form-status { flex-basis: 100%; margin: 10px 0 0; font-size: 14px; }
+@media (max-width: 749px) {
+  .newsletter--mailing { padding: 44px 0 48px; }
+}
+
+
 /* ---------- Footer (Kemp footer: menu / middle / logo + social) ---------- */
 .site-footer { background: var(--cream); padding: 64px 0 28px; font-size: 15px; }
 .footer__grid { display: grid; grid-template-columns: 30% 40% 30%; gap: 0; }

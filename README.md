@@ -4,7 +4,7 @@ This is THH's live theme export ("master – new with installments message", 30 
 
 ## How it's built
 
-- **New layout:** `layout/thh.liquid` holds the mock-up's header, footer, drawers and HealthyText band. It carries over all of THH's tracking and app code from `layout/theme.liquid`:
+- **New layout:** `layout/thh.liquid` holds the mock-up's header, footer, drawers and sign-up band. It carries over all of THH's tracking and app code from `layout/theme.liquid`:
   - Triple Whale, gtag, both GTM containers, simpli.fi and Klaviyo onsite.
   - Google remarketing.
   - Bold, Sezzle, Loox, Yotpo, Stamped, QuadPay and Affirm hooks, behind the same theme settings as before.
@@ -48,7 +48,7 @@ This is THH's live theme export ("master – new with installments message", 30 
 2. **Main menu: done.** The header uses a new menu, `thh-main-menu` ("THH main menu (redesign)"). It has Home, All Products (with Detox, Detox Tea, Bundle Deals, Capsules, Gummies and Black Seed Oil under it), Bundle Deals, About Us, FAQ, Become an Affiliate and Contact Us. The live site's menus (`main-menu-new`, `main-menu`) were not changed. Any link with child links becomes a dropdown.
 3. **Footer menu: done.** The footer uses the existing `footer-menu-new` (Reviews, Privacy Policy, Shipping & Returns, FAQ, Help, What are fibroids?).
 4. **Contact and Fibroids pages: done, without changing page templates.** Both pages use the default template. The new `page.json` shows the mock-up's contact layout and form on `contact-us`, and the "not medical advice" notice on `what-are-fibroids`. The handles are set in the page sections in the theme editor. Changing the pages' templates in admin would also change the live site, so they were left alone. (`page.contact.json` and `page.fibroids.json` still exist if you'd rather assign templates after publishing.)
-5. **HealthyText: done.** Sign-ups go to THH's existing VIA text list (keyword `6123f00bd49731000806fd85`), the same one the live HealthyText subscribe page uses. To switch to Klaviyo, choose it in the HealthyText band and add the SMS list ID.
+5. **Sign-up band: done.** Above the footer is THH's "Join our Mailing List and stay updated" email sign-up, in the live site's style (Work Sans heading, lime Sign Up button). It uses Shopify's newsletter form, so sign-ups are saved as customers with email marketing consent, and Klaviyo's Shopify integration picks them up. The live site's own Klaviyo footer form has an empty list ID (`g=""`), so its sign-ups probably aren't reaching a list. The band can be switched back to the HealthyText text sign-up in the theme editor: VIA keyword `6123f00bd49731000806fd85`, or a Klaviyo SMS list.
 6. **Optional product metafields** (Settings → Custom data → Products):
 
 | Metafield | Type | Shows as |
