@@ -9,6 +9,7 @@
 {%- if section.settings.provider == 'email' -%}
 <section class="newsletter newsletter--mailing" aria-labelledby="MailingTitle">
   <div class="page-width">
+    {%- if section.settings.show_social -%}<div class="newsletter__social">{% render 'thh-social' %}</div>{%- endif -%}
     <h2 class="newsletter__mailing-title" id="MailingTitle">{{ section.settings.email_heading | escape }} <span>{{ section.settings.email_heading_end | escape }}</span></h2>
     {%- form 'customer', id: 'NewsletterForm', class: 'newsletter-form' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
@@ -47,6 +48,7 @@
     { "type": "checkbox", "id": "enabled", "label": "Show", "default": true },
     { "type": "select", "id": "provider", "label": "Sign-up type", "default": "email", "options": [{ "value": "email", "label": "Mailing list (email, THH's current style)" }, { "value": "via", "label": "HealthyText by text (VIA)" }, { "value": "klaviyo", "label": "HealthyText by text (Klaviyo SMS list)" }] },
     { "type": "header", "content": "Mailing list" },
+    { "type": "checkbox", "id": "show_social", "label": "Show social icons above the heading", "default": true, "info": "Links come from Theme settings → THH redesign." },
     { "type": "text", "id": "email_heading", "label": "Heading", "default": "Join our Mailing List and" },
     { "type": "text", "id": "email_heading_end", "label": "Heading, last part", "default": "stay updated" },
     { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Your@email.com" },

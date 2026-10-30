@@ -711,6 +711,10 @@ p { margin: 0 0 12px; }
 .newsletter--mailing .newsletter-form input[type="email"]:focus { outline: 2px solid var(--ink); outline-offset: -2px; }
 .newsletter__signup.kb-btn { flex: 0 0 auto; min-width: 186px; min-height: 62px; padding: 0 32px; border: 0; border-radius: 0 6px 6px 0; background: var(--lime); color: #fff; font-family: var(--font-heading); font-size: 25px; font-weight: 400; letter-spacing: 3px; }
 .newsletter__signup.kb-btn:hover { background: var(--lime-hover); color: #fff; }
+.newsletter__social .social-icons { justify-content: center; gap: 30px; margin: 0 0 30px; }
+.newsletter__social .social-icons a { width: 42px; height: 42px; border: 0; background: #000; color: #fff; }
+.newsletter__social .social-icons a:hover { background: var(--lime-text); color: #fff; }
+.newsletter__social .social-icons svg { width: 22px; height: 22px; }
 .newsletter--mailing .form-status { flex-basis: 100%; margin: 12px 0 0; font-size: 14px; }
 @media (max-width: 749px) {
   .newsletter--mailing { padding: 42px 0 46px; }
