@@ -1,0 +1,39 @@
+<section class="kbah" aria-labelledby="AffTitle-{{ section.id }}">
+  <div class="kbah__grid">
+    <div class="kbah__copy" data-kb-reveal>
+      {%- if section.settings.eyebrow != blank -%}<p class="kb-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h1 class="kb-heading kbah__title" id="AffTitle-{{ section.id }}">{{ section.settings.title | escape }} <strong>{{ section.settings.title_bold | escape }}</strong></h1>
+      <div class="kb-copy kbah__text">{{ section.settings.text }}</div>
+      {%- if section.settings.button != blank -%}<div class="kbah__actions"><a class="kb-btn" href="#apply">{{ section.settings.button | escape }}</a></div>{%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+      <ul class="kbah__stats" role="list">
+        {%- for block in section.blocks -%}<li class="kbah__stat" {{ block.shopify_attributes }}><span class="kbah__value">{{ block.settings.value | escape }}</span><span class="kbah__label">{{ block.settings.label | escape }}</span></li>{%- endfor -%}
+      </ul>
+      {%- endif -%}
+    </div>
+    <div class="kbah__photo" data-kb-reveal="2" style="background:radial-gradient(40% 40% at 50% 46%,#fff 0%,rgba(255,255,255,0) 70%),linear-gradient(160deg,#fff6ea,#fdd29a)">
+      {%- if section.settings.image != blank -%}<img src="{{ section.settings.image | image_url: width: 900 }}" alt="{{ section.settings.image.alt | escape }}" style="object-fit:contain;mix-blend-mode:multiply;padding:10%">{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH affiliate hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small text", "default": "Affiliate program" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Become an affiliate and" },
+    { "type": "text", "id": "title_bold", "label": "Heading, bold part", "default": "earn 25% on all sales" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Apply through Shopify Collabs. Once you’re approved, you’ll get your own link to share.</p>" },
+    { "type": "text", "id": "button", "label": "Button label", "default": "Apply now" },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ],
+  "blocks": [
+    { "type": "stat", "name": "Stat", "settings": [
+      { "type": "text", "id": "value", "label": "Number" },
+      { "type": "text", "id": "label", "label": "Label" }
+    ] }
+  ],
+  "max_blocks": 3
+}
+{% endschema %}

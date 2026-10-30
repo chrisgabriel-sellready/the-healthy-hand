@@ -1,0 +1,54 @@
+{
+  "layout": "thh",
+  "sections": {
+    "main": {
+      "type": "thh-contact",
+      "settings": {
+        "title": "Contact us"
+      },
+      "blocks": {
+        "contact-1": {
+          "type": "item",
+          "settings": {
+            "icon": "mail",
+            "label": "Email",
+            "text": "<p><a href=\"mailto:[email]\">[email]</a></p>"
+          }
+        },
+        "contact-2": {
+          "type": "item",
+          "settings": {
+            "icon": "pin",
+            "label": "Mail",
+            "text": "<p>The Healthy Hand<br>P.O. Box 630002<br>North Miami Beach, FL 33164</p>"
+          }
+        },
+        "contact-3": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "label": "Shipping",
+            "text": "<p>Orders ship by USPS in 7–10 business days. <a href=\"/pages/faq#shipping\">Shipping details</a></p>"
+          }
+        },
+        "contact-4": {
+          "type": "item",
+          "settings": {
+            "icon": "chat",
+            "label": "Social",
+            "text": "<p>Message us on Instagram <a href=\"https://www.instagram.com/thehealthyhand_/\" target=\"_blank\">@thehealthyhand_</a></p>"
+          }
+        }
+      },
+      "block_order": [
+        "contact-1",
+        "contact-2",
+        "contact-3",
+        "contact-4"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

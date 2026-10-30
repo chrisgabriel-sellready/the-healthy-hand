@@ -1,0 +1,39 @@
+{%- paginate collection.products by section.settings.per_page -%}
+<section class="collection-hero">
+  <div class="page-width">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <a href="{{ routes.all_products_collection_url }}">Shop</a> / <span aria-current="page">{{ collection.title | escape }}</span></nav>
+    <h1 class="kb-heading collection-hero__title">{{ collection.title | escape }}</h1>
+    {%- if collection.description != blank -%}<div class="kb-copy collection-hero__description">{{ collection.description }}</div>{%- endif -%}
+  </div>
+</section>
+<section class="collection-grid">
+  <div class="page-width">
+    <div class="collection-toolbar">
+      <span aria-live="polite">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</span>
+      {%- if section.settings.show_sort -%}
+        <label class="visually-hidden" for="SortBy">Sort by</label>
+        <select id="SortBy" class="collection-sort" data-sort>
+          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+          {%- for option in collection.sort_options -%}<option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>{%- endfor -%}
+        </select>
+      {%- endif -%}
+      <span>{{ section.settings.note | escape }}</span>
+    </div>
+    <ul class="product-grid kb-cgrid" style="--cols:4">
+      {%- for product in collection.products -%}{% render 'thh-card', product: product %}{%- else -%}<li class="collection-empty">No products here yet.</li>{%- endfor -%}
+    </ul>
+    {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="Pages">{{ paginate | default_pagination: next: 'Next', previous: 'Previous' }}</nav>{%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "THH collection",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "checkbox", "id": "show_sort", "label": "Show sort menu", "default": false },
+    { "type": "text", "id": "note", "label": "Toolbar note", "default": "Free shipping on orders $100+" }
+  ]
+}
+{% endschema %}

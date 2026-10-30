@@ -1,0 +1,25 @@
+<div class="page-width main-page">
+  <div class="page-narrow">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <span aria-current="page">{{ page.title | escape }}</span></nav>
+    <h1 class="kb-heading main-page__title">{{ page.title | escape }}</h1>
+    {%- if page.content != blank and section.settings.show_content -%}<div class="rte">{{ page.content }}</div>{%- endif -%}
+    <div class="faq-list">{%- for block in section.blocks -%}{% render 'thh-accordion', block: block %}{%- endfor -%}</div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "THH FAQ list",
+  "settings": [
+    { "type": "checkbox", "id": "show_content", "label": "Show the page's own content above the questions", "default": false }
+  ],
+  "blocks": [
+    { "type": "question", "name": "Question", "settings": [
+      { "type": "text", "id": "question", "label": "Question" },
+      { "type": "richtext", "id": "answer", "label": "Answer", "info": "[email] becomes the customer care email." },
+      { "type": "text", "id": "anchor", "label": "Anchor ID (optional)", "info": "e.g. shipping, so links to #shipping open here." },
+      { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+    ] }
+  ]
+}
+{% endschema %}

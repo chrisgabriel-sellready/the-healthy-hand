@@ -1,0 +1,129 @@
+{
+  "layout": "thh",
+  "sections": {
+    "why": {
+      "type": "thh-about-why",
+      "settings": {
+        "title": "The Healthy Hand",
+        "text": "<p>The Healthy Hand is an All Natural Health & Wellness Company.</p><p>Our mission is to provide Health and Wellness herbs to help you live a better daily lifestyle. Allow The Healthy Hand to be a helping hand to you!</p>",
+        "button": "Shop Now",
+        "link": "shopify://collections/all",
+        "image": "shopify://shop_images/img_model.png"
+      }
+    },
+    "film": {
+      "type": "thh-about-film",
+      "settings": {
+        "title_first": "The Healthy Hand",
+        "title_last": "Our Story",
+        "byline": "Founder Shay Johnson",
+        "video_url": "https://cdn.shopify.com/videos/c/vp/d2d186b3db6d425f9ae9a162280ea82f/d2d186b3db6d425f9ae9a162280ea82f.HD-720p-1.6Mbps.mp4",
+        "poster_url": "https://cdn.shopify.com/s/files/1/0076/4644/5639/files/preview_images/d2d186b3db6d425f9ae9a162280ea82f.thumbnail.0000000.jpg?v=1654116791",
+        "video_label": "The Healthy Hand: our story",
+        "play_label": "Play our story"
+      },
+      "blocks": {
+        "about-film-1": {
+          "type": "press",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0076/4644/5639/articles/hype-hair-april-2020-cover-640x884.jpg?v=1629652060&width=300",
+            "alt": "Hype Hair magazine cover, April 2020",
+            "name": "Hype Hair",
+            "date": "April 2020"
+          }
+        },
+        "about-film-2": {
+          "type": "press",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0076/4644/5639/articles/0-1080x732.jpg?v=1629651136&width=400",
+            "alt": "AllHipHop feature, September 2020",
+            "name": "AllHipHop",
+            "date": "September 2020"
+          }
+        }
+      },
+      "block_order": [
+        "about-film-1",
+        "about-film-2"
+      ]
+    },
+    "mission": {
+      "type": "thh-about-mission",
+      "settings": {
+        "title": "Our Mission",
+        "lead": "Allow The Healthy Hand to be a Helping Hand",
+        "text": "<p>Our mission is to promote health and wellness by encouraging habits of a healthier life style, increase awareness of factors and resources contributing to well-being, inspiring and empowering individuals to take more responsibility for their own health.</p><p>We stand behind our products as well as our customers.</p>",
+        "herbs": "<p>For countless years, people from various cultures have relied on medicinal plants for the mind, body, and spirit, dating back to 3000 BC.</p><p>Many herbs can be taken in tea form, which can often be just as effective as taking capsules. Some herbs are better taken in liquid or powder form.</p><p>Although herbs are relatively safe, they should be used with caution, as directed on products, and/or as directed by your doctor or physician.</p>",
+        "button": "Shop Now",
+        "link": "shopify://collections/all"
+      }
+    },
+    "videos": {
+      "type": "thh-about-videos",
+      "settings": {
+        "title_top": "Make your health",
+        "title_bottom": "A priority"
+      },
+      "blocks": {
+        "about-videos-1": {
+          "type": "video",
+          "settings": {
+            "youtube_id": "vOqVfpSvONA",
+            "thumbnail": "shopify://shop_images/Screen_Shot_2021-08-15_at_10.17.29_PM.png",
+            "quote": "This stuff is AMAZING! I lost 5 pounds within the 1st week. It doesn't cause me ANY pain, it's amazing!",
+            "handle": "@jameswrightchanel"
+          }
+        },
+        "about-videos-2": {
+          "type": "video",
+          "settings": {
+            "youtube_id": "30CqLd-UijE",
+            "thumbnail": "shopify://shop_images/Screen_Shot_2021-08-15_at_10.19.16_PM.png",
+            "quote": "TAKE THIS WITH CAUTION!! This products works, tooo well!",
+            "handle": "@makeithapoenmoe"
+          }
+        },
+        "about-videos-3": {
+          "type": "video",
+          "settings": {
+            "youtube_id": "5AsC5xOlTtI",
+            "thumbnail": "shopify://shop_images/Screen_Shot_2021-08-15_at_10.21.00_PM.png",
+            "quote": "I've been letting go of some baggage that I have been holding on to for FARR too long!! I have only been using this product for a week and I have already started seeing results!",
+            "handle": "@missterray"
+          }
+        },
+        "about-videos-4": {
+          "type": "video",
+          "settings": {
+            "youtube_id": "7QfQjoL1IRM",
+            "thumbnail": "shopify://shop_images/Screen_Shot_2021-08-15_at_10.22.58_PM.png",
+            "quote": "This really boosts your immune system, what more do you need at a time like this?",
+            "handle": "@nikkinatural"
+          }
+        },
+        "about-videos-5": {
+          "type": "video",
+          "settings": {
+            "youtube_id": "Rutx4ftWC-Q",
+            "thumbnail": "shopify://shop_images/Screen_Shot_2021-08-15_at_10.26.59_PM.png",
+            "quote": "You really feel this stuff right away!!",
+            "handle": "@tharealmommadee"
+          }
+        }
+      },
+      "block_order": [
+        "about-videos-1",
+        "about-videos-2",
+        "about-videos-3",
+        "about-videos-4",
+        "about-videos-5"
+      ]
+    }
+  },
+  "order": [
+    "why",
+    "film",
+    "mission",
+    "videos"
+  ]
+}

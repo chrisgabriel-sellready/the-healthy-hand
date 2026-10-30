@@ -1,0 +1,22 @@
+{%- comment -%} Best Sellers slide (THH's live Collection-Slider look). {%- endcomment -%}
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  capture rating
+    render 'thh-product-rating', product: product, field: 'rating'
+  endcapture
+  capture count
+    render 'thh-product-rating', product: product, field: 'count'
+  endcapture
+  assign rating = rating | strip | plus: 0
+  assign collage = product.metafields.custom.collage_products.value
+-%}
+<li class="thh-best__item"><a class="thh-best__img" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+  {%- if collage != blank -%}
+    <div class="card__collage" role="img" aria-label="{{ product.title | escape }}">{%- for p in collage limit: 4 -%}{% if p.featured_image %}<img src="{{ p.featured_image | image_url: width: 350 }}" alt="" loading="lazy">{% endif %}{%- endfor -%}</div>
+  {%- elsif product.featured_image -%}
+    <img src="{{ product.featured_image | image_url: width: 700 }}" alt="{{ product.title | escape }}" loading="lazy" width="700" height="700">
+  {%- endif -%}</a>
+  <h3 class="thh-best__name"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+  {%- if rating > 0 -%}<div class="thh-best__rating">{% render 'thh-stars', rating: rating %}<span>({{ count | strip }})</span></div>{%- endif -%}
+  <p class="thh-best__price">{% if product.compare_at_price > product.price %}<s><span class="visually-hidden">Regular price</span>{{ product.compare_at_price | money }}</s>{% endif %}{{ product.price | money }}</p>
+  <button type="button" class="thh-best__add" data-add="{{ variant.id }}"{% unless product.available %} disabled{% endunless %}>{% if product.available %}Add to Bag{% else %}Sold out{% endif %}</button></li>

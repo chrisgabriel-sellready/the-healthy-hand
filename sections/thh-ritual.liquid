@@ -1,0 +1,32 @@
+<section class="thh-ritual" aria-labelledby="RitualTitle-{{ section.id }}">
+  <div class="thh-ritual__inner">
+    <div class="thh-ritual__text" data-kb-reveal>
+      <h2 class="thh-ritual__title" id="RitualTitle-{{ section.id }}">{{ section.settings.title | escape }} <span>{{ section.settings.title_accent | escape }}</span></h2>
+      {{ section.settings.text }}
+      {%- if section.settings.button != blank -%}<a class="thh-ritual__btn" href="{{ section.settings.link }}">{{ section.settings.button | escape }}</a>{%- endif -%}
+    </div>
+    <div class="thh-ritual__media" data-kb-reveal="2">
+      {%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 1400 }}" alt="{{ section.settings.image.alt | default: section.settings.alt | escape }}" width="1400" height="{{ 1400 | divided_by: section.settings.image.aspect_ratio | round }}" loading="lazy">
+      {%- else -%}
+        <img src="{{ 'thh-detox-kit.webp' | asset_url }}" alt="{{ section.settings.alt | escape }}" width="1400" height="895" loading="lazy">
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH pour, shake & drink",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Pour, shake" },
+    { "type": "text", "id": "title_accent", "label": "Heading, coral part", "default": "& drink" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Add 1 tablespoon to a water bottle, shake, and drink. You can also add it to your smoothie or make a hot cup of tea.</p><p>Drink at least 3 to 4 bottles of water a day while you detox. Just water.</p>" },
+    { "type": "text", "id": "button", "label": "Button label", "default": "Shop the detox" },
+    { "type": "url", "id": "link", "label": "Button link" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Leave empty to use the retouched Total Detox Kit photo (theme asset thh-detox-kit.webp)." },
+    { "type": "text", "id": "alt", "label": "Image description", "default": "Total Detox Kit: Total System Detox and Total Belly Detox pouches" }
+  ],
+  "presets": [{ "name": "THH pour, shake & drink" }]
+}
+{% endschema %}

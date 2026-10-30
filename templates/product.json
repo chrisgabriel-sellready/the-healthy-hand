@@ -1,0 +1,186 @@
+{
+  "layout": "thh",
+  "sections": {
+    "main": {
+      "type": "thh-product",
+      "settings": {},
+      "blocks": {
+        "product-1": {
+          "type": "accordion",
+          "settings": {
+            "title": "What’s inside",
+            "metafield": "custom.ingredients",
+            "content": "<p>See the label for the full ingredient list.</p>",
+            "open": true
+          }
+        },
+        "product-2": {
+          "type": "accordion",
+          "settings": {
+            "title": "How to use",
+            "metafield": "custom.how_to_use",
+            "content": "<ul><li>Take 1 tablespoon per day.</li><li>Add to a water bottle, shake, and drink. You can also add it to your smoothie or make a hot cup of tea.</li><li>Drink 3 to 4 bottles of water a day (just water) while you detox.</li></ul>"
+          }
+        },
+        "product-3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Shipping & returns",
+            "content": "<p>All orders ship by USPS in 7 to 10 business days, with tracking. A signature is needed on delivery. Free shipping on orders $100+.</p>\n          <p>Returns are accepted within 7 business days of delivery for unused products in their original packaging. Email <a href=\"mailto:[email]\">[email]</a> to start a return.</p>"
+          }
+        },
+        "product-4": {
+          "type": "accordion",
+          "settings": {
+            "title": "Good to know",
+            "content": "<p>Although herbs are relatively safe, they should be used with caution, as directed on products and/or as directed by your doctor or physician.</p>",
+            "senna_note": true
+          }
+        }
+      },
+      "block_order": [
+        "product-1",
+        "product-2",
+        "product-3",
+        "product-4"
+      ]
+    },
+    "how_it_works": {
+      "type": "thh-how-it-works",
+      "settings": {
+        "title": "How it works",
+        "subtitle": "Detox, simplified:",
+        "only_products": [
+          "total-belly-detox",
+          "total-system-detox",
+          "combo-total-system-belly-detox",
+          "total-belly-cleanse",
+          "belly-detox-capsules-3pk",
+          "all-in-detox-bundle-deal",
+          "jump-start-detox-bundle-a",
+          "jump-start-detox-bundle-b"
+        ]
+      },
+      "blocks": {
+        "how-it-works-1": {
+          "type": "step",
+          "settings": {
+            "icon": "pot",
+            "title": "1 tablespoon a day",
+            "text": "<p>Add to a water bottle, shake and drink. Or mix it into a smoothie or a hot cup of tea.</p>"
+          }
+        },
+        "how-it-works-2": {
+          "type": "step",
+          "settings": {
+            "icon": "drop",
+            "title": "Drink your water",
+            "text": "<p>Drink at least 3 to 4 bottles of water a day while you detox. Just water.</p>"
+          }
+        },
+        "how-it-works-3": {
+          "type": "step",
+          "settings": {
+            "icon": "moon",
+            "title": "Pick your time",
+            "text": "<p>Take it before bed, or when you’re home near a restroom. To slow it down, take less.</p>"
+          }
+        },
+        "how-it-works-4": {
+          "type": "step",
+          "settings": {
+            "icon": "both",
+            "title": "Taking both?",
+            "text": "<p>Total Belly + Total System together: half a tablespoon of each, mixed in one bottle.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "how-it-works-1",
+        "how-it-works-2",
+        "how-it-works-3",
+        "how-it-works-4"
+      ]
+    },
+    "reviews": {
+      "type": "thh-product-reviews",
+      "settings": {
+        "title": "Reviews"
+      }
+    },
+    "faq": {
+      "type": "thh-faq-section",
+      "settings": {
+        "title": "Frequently asked questions"
+      },
+      "blocks": {
+        "faq-section-1": {
+          "type": "question",
+          "settings": {
+            "question": "Can I take Total Belly Detox and Total System Detox together?",
+            "answer": "<p>Yes, you can take both of our detoxes together. Our detox is amazing taken by itself, but together it is a powerhouse. If you take both, we suggest half a tablespoon of each, mixed together in a water bottle, as a tea, or added to a smoothie.</p>",
+            "anchor": "",
+            "open": false
+          }
+        },
+        "faq-section-2": {
+          "type": "question",
+          "settings": {
+            "question": "How much water should I drink with the detox?",
+            "answer": "<p>It is best to drink at least 3 to 4 bottles of water per day after you have taken the detox. Water helps flush your system and lets the detox work properly. (Just water.)</p>",
+            "anchor": "",
+            "open": false
+          }
+        },
+        "faq-section-3": {
+          "type": "question",
+          "settings": {
+            "question": "When is the best time to take the detox?",
+            "answer": "<p>The best time is before bed, or while you&rsquo;re home or somewhere comfortable near a restroom. If you&rsquo;re in the restroom more than normal, the product is working through your system. To slow it down, take a smaller dose.</p>",
+            "anchor": "",
+            "open": false
+          }
+        },
+        "faq-section-4": {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>All orders take 7 to 10 business days to ship and go out through USPS. Once your order ships, you&rsquo;ll get a USPS tracking number.</p><p>All orders need a signature on delivery. If no one is home, USPS will take the package to your nearest post office for pickup or redelivery. If a package isn&rsquo;t picked up and comes back to us, we can ship it again for a $12 fee. Overseas orders can take up to 30 days.</p>",
+            "anchor": "shipping",
+            "open": false
+          }
+        },
+        "faq-section-5": {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>Returns are accepted within 7 business days of delivery for unused products in their original packaging. Email <a href=\"mailto:[email]\">[email]</a> to start a return.</p>",
+            "anchor": "returns",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "faq-section-1",
+        "faq-section-2",
+        "faq-section-3",
+        "faq-section-4",
+        "faq-section-5"
+      ]
+    },
+    "related": {
+      "type": "thh-related",
+      "settings": {
+        "title": "You may also like",
+        "link_label": "All products"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "how_it_works",
+    "reviews",
+    "faq",
+    "related"
+  ]
+}

@@ -1,0 +1,37 @@
+{%- comment -%} Mobile menu, search and cart drawers from the mock-up. Rendered by sections/thh-header. {%- endcomment -%}
+<div class="drawer-overlay"></div>
+<div class="drawer drawer--left" id="MenuDrawer" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <div class="drawer__header"><span class="drawer__title">Menu</span><button type="button" class="drawer__close" data-close-drawer><span class="visually-hidden">Close</span>{% render 'thh-icon', icon: 'close' %}</button></div>
+  <div class="drawer__body">
+    <ul class="mobile-nav">
+      {%- for link in menu.links -%}
+        {%- if link.links.size > 0 -%}
+          <li><details class="mobile-nav__group"><summary>{{ link.title | escape }}{% render 'thh-icon', icon: 'chevron' %}</summary><ul class="mobile-nav__sub"><li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title | escape }}</a></li>{%- endfor -%}</ul></details></li>
+        {%- else -%}
+          <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+    <div class="mobile-nav__social">{% render 'thh-social' %}</div>
+  </div>
+</div>
+<div class="drawer drawer--right" id="SearchDrawer" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true">
+  <div class="drawer__header"><span class="drawer__title">Search</span><button type="button" class="drawer__close" data-close-drawer><span class="visually-hidden">Close</span>{% render 'thh-icon', icon: 'close' %}</button></div>
+  <div class="drawer__body">
+    <form class="search-form" id="SearchForm" role="search" action="{{ routes.search_url }}" method="get">
+      <input type="hidden" name="type" value="product">
+      <label class="visually-hidden" for="SearchInput">Search products</label>
+      <input id="SearchInput" type="search" name="q" placeholder="Search our products" autocomplete="off" data-autofocus>
+    </form>
+    <ul class="search-results" id="SearchResults" aria-live="polite"></ul>
+  </div>
+</div>
+<div class="drawer drawer--right" id="CartDrawer" role="dialog" aria-modal="true" aria-label="Your cart" aria-hidden="true">
+  <div class="drawer__header"><span class="drawer__title">Your cart</span><button type="button" class="drawer__close" data-close-drawer><span class="visually-hidden">Close</span>{% render 'thh-icon', icon: 'close' %}</button></div>
+  <div class="drawer__body">{% render 'thh-cart-items' %}</div>
+  <div class="drawer__footer"{% if cart.item_count == 0 %} hidden{% endif %}>
+    <p class="cart-subtotal"><span>Subtotal</span><span data-cart-subtotal>{{ cart.total_price | money }}</span></p>
+    <p class="cart-note">Taxes and shipping calculated at checkout. Ships by USPS in 7&ndash;10 business days.</p>
+    <form action="{{ routes.cart_url }}" method="post"><button class="kb-btn cart-checkout" type="submit" name="checkout">Check out</button></form>
+  </div>
+</div>

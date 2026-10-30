@@ -1,0 +1,70 @@
+{%- comment -%}
+  Product reviews in the mock-up's layout, drawn from Loox's review feed metafield (loox.review_feed).
+  Falls back to the Loox widget when the feed isn't available.
+{%- endcomment -%}
+{%- liquid
+  capture rating
+    render 'thh-product-rating', product: product, field: 'rating'
+  endcapture
+  capture count
+    render 'thh-product-rating', product: product, field: 'count'
+  endcapture
+  assign rating = rating | strip | plus: 0
+  assign feed = product.metafields.loox.review_feed.value.reviews
+  assign hide_words = section.settings.hide_words | downcase | split: ','
+  assign shown = 0
+-%}
+<section class="reviews" id="reviews" aria-labelledby="ProductReviewsTitle-{{ section.id }}">
+  <div class="page-width">
+    <div class="reviews__summary">
+      <h2 class="section-heading" id="ProductReviewsTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+      <div style="display:contents">
+        {%- if rating > 0 -%}
+          <div><div class="reviews__score">{{ rating | round: 1 }}</div>{% render 'thh-stars', rating: rating %}<p class="reviews__count">Based on {{ count | strip }} verified reviews</p></div>
+        {%- else -%}
+          <div><p class="reviews__count" style="margin:0">No reviews yet for this product.</p></div>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- if feed != blank -%}
+      <ul class="review-list" data-review-list>
+        {%- for r in feed -%}
+          {%- liquid
+            assign text_lower = r.review | downcase
+            assign skip = false
+            for w in hide_words
+              assign w = w | strip
+              if w != blank and text_lower contains w
+                assign skip = true
+                break
+              endif
+            endfor
+            if skip or r.review == blank
+              continue
+            endif
+            assign shown = shown | plus: 1
+          -%}
+          <li class="review"{% if shown > 6 %} hidden{% endif %}>
+            {%- assign photos = r.media | where: 't', 'photo' -%}
+            {%- if photos.size > 0 -%}<div class="review__media">{%- for m in photos limit: 3 -%}<img src="{{ m.src }}" alt="Photo from {{ r.author | escape }}" loading="lazy">{%- endfor -%}</div>{%- endif -%}
+            <div class="review__head"><span class="review__author">{{ r.author | escape }}</span><span class="review__date">{{ r.date | date: '%Y-%m-%d' }}</span></div>
+            {%- assign star_label = r.rating | append: ' out of 5 stars' -%}{% render 'thh-stars', rating: r.rating, label: star_label %}{% if r.verified %}<p class="verified-buyer" style="justify-content:flex-start">{% render 'thh-icon', icon: 'check' %}Verified buyer</p>{% endif %}
+            <p class="review__text">{{ r.review | escape }}</p></li>
+        {%- endfor -%}
+      </ul>
+      <div class="reviews__more"><button type="button" class="kb-btn kb-btn--ghost" data-review-more{% if shown <= 6 %} hidden{% endif %}>Show more reviews</button></div>
+    {%- else -%}
+      <div id="looxReviews" data-product-id="{{ product.id }}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH product reviews",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Reviews" },
+    { "type": "text", "id": "hide_words", "label": "Hide reviews containing", "default": "weight,pounds,lbs,belly fat,flat,cancer,cure", "info": "Comma-separated. Keeps weight-loss and disease claims off the page." }
+  ]
+}
+{% endschema %}

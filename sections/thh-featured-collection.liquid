@@ -1,0 +1,32 @@
+<section class="featured featured--spaced{% if section.settings.cream %} featured--cream{% endif %}" aria-labelledby="FeaturedTitle-{{ section.id }}">
+  <div class="page-width">
+    <div class="title-wrapper-with-link" data-kb-reveal>
+      <h2 class="kb-caps" id="FeaturedTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+      {%- if section.settings.link_label != blank -%}<a class="link-underline" href="{{ section.settings.link | default: section.settings.collection.url }}">{{ section.settings.link_label | escape }}</a>{%- endif -%}
+    </div>
+    <ul class="product-grid kb-cgrid" style="--cols:{{ section.settings.columns }}">
+      {%- if section.settings.products != blank -%}
+        {%- for product in section.settings.products -%}{% render 'thh-card', product: product %}{%- endfor -%}
+      {%- else -%}
+        {%- for product in section.settings.collection.products limit: section.settings.limit -%}{% render 'thh-card', product: product %}{%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH product grid",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Bundle deals" },
+    { "type": "product_list", "id": "products", "label": "Products", "limit": 12 },
+    { "type": "collection", "id": "collection", "label": "Or a collection", "info": "Used when no products are picked." },
+    { "type": "range", "id": "limit", "label": "Products from the collection", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns", "label": "Columns on desktop", "min": 2, "max": 4, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "cream", "label": "Cream background", "default": true },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "View all" },
+    { "type": "url", "id": "link", "label": "Link", "info": "Defaults to the collection." }
+  ],
+  "presets": [{ "name": "THH product grid" }]
+}
+{% endschema %}

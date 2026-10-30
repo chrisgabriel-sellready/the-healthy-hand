@@ -1,0 +1,31 @@
+{%- paginate search.results by 24 -%}
+<section class="collection-hero">
+  <div class="page-width">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <span aria-current="page">Search</span></nav>
+    <h1 class="kb-heading collection-hero__title">{% if search.performed %}Results for &ldquo;{{ search.terms | escape }}&rdquo;{% else %}Search{% endif %}</h1>
+    <form class="search-form" action="{{ routes.search_url }}" method="get" role="search" style="max-width:520px">
+      <input type="hidden" name="type" value="product">
+      <label class="visually-hidden" for="SearchPageInput">Search products</label>
+      <input id="SearchPageInput" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search our products">
+      <button class="kb-btn" type="submit">Search</button>
+    </form>
+  </div>
+</section>
+<section class="collection-grid">
+  <div class="page-width">
+    {%- if search.performed -%}
+      <div class="collection-toolbar"><span aria-live="polite">{{ search.results_count }} {{ search.results_count | pluralize: 'result', 'results' }}</span></div>
+      <ul class="product-grid kb-cgrid" style="--cols:4">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}{% render 'thh-card', product: item %}{%- else -%}<li class="grid__item"><a href="{{ item.url }}">{{ item.title | escape }}</a></li>{%- endif -%}
+        {%- else -%}<li>No products found. Try another word.</li>{%- endfor -%}
+      </ul>
+      {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="Pages">{{ paginate | default_pagination: next: 'Next', previous: 'Previous' }}</nav>{%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{ "name": "THH search", "settings": [] }
+{% endschema %}

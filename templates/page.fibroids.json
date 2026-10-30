@@ -1,0 +1,14 @@
+{
+  "layout": "thh",
+  "sections": {
+    "main": {
+      "type": "thh-page",
+      "settings": {
+        "notice": "This page is for general information only and is not medical advice. If you have any of these symptoms, talk to your doctor."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

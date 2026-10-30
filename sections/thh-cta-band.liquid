@@ -1,0 +1,17 @@
+<section class="cta-band feature-band">
+  <h2 class="kb-heading">{{ section.settings.title | escape }} <strong>{{ section.settings.title_bold | escape }}</strong></h2>
+  {%- if section.settings.button != blank -%}<a class="kb-btn" href="{{ section.settings.link }}">{{ section.settings.button | escape }}</a>{%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "THH call to action band",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Still have" },
+    { "type": "text", "id": "title_bold", "label": "Heading, bold part", "default": "questions?" },
+    { "type": "text", "id": "button", "label": "Button label", "default": "Contact us" },
+    { "type": "url", "id": "link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "THH call to action band" }]
+}
+{% endschema %}

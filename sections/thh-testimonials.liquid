@@ -1,0 +1,63 @@
+{%- assign average = section.settings.average | divided_by: 10.0 -%}
+<section class="testimonial-section" id="reviews" data-row aria-labelledby="ReviewsTitle-{{ section.id }}">
+  <div class="page-width">
+    <div class="testimonial-head" data-kb-reveal>
+      <div>
+        <h2 class="section-heading" id="ReviewsTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.summary != blank -%}<p class="section-sub-heading">{% render 'thh-stars', rating: average %} <span>{{ section.settings.summary | escape }}</span></p>{%- endif -%}
+      </div>
+      <div class="testimonial-nav">
+        <button type="button" class="kbg__arrow" data-row-prev aria-label="Previous reviews">{% render 'thh-icon', icon: 'prev' %}</button>
+        <button type="button" class="kbg__arrow" data-row-next aria-label="Next reviews">{% render 'thh-icon', icon: 'next' %}</button>
+      </div>
+    </div>
+    <ul class="testimonial-track" data-row-strip tabindex="0" aria-label="Customer reviews">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign p = block.settings.product
+          assign product_label = block.settings.product_label | default: p.title
+        -%}
+        <li class="testimonial-card" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <div class="testimonial-image-container"><img src="{{ block.settings.image | image_url: width: 600 }}" alt="Photo from {{ block.settings.author | escape }}" loading="lazy"></div>
+          {%- elsif block.settings.image_url != blank -%}
+            <div class="testimonial-image-container"><img src="{{ block.settings.image_url }}" alt="Photo from {{ block.settings.author | escape }}" loading="lazy"></div>
+          {%- elsif p.featured_image -%}
+            <div class="testimonial-image-container testimonial-image-container--product"><img src="{{ p.featured_image | image_url: width: 600 }}" alt="" loading="lazy"></div>
+          {%- endif -%}
+          <div class="fpr_padding">
+            <div class="star-rating">{% render 'thh-stars', rating: block.settings.rating %}</div>
+            <p class="testimonial-content">&ldquo;{{ block.settings.text | escape }}&rdquo;</p>
+            <div class="author-info"><p class="author-name">{{ block.settings.author | escape }}</p><p class="verified-buyer">{% render 'thh-icon', icon: 'check' %}Verified Buyer</p>{% if product_label != blank %}<p class="author-product">{{ product_label | escape }}</p>{% endif %}</div>
+          </div></li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH verified reviews",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Verified reviews" },
+    { "type": "range", "id": "average", "label": "Average rating (x10)", "min": 10, "max": 50, "step": 1, "default": 45, "info": "45 = 4.5 stars." },
+    { "type": "text", "id": "summary", "label": "Summary", "default": "4.5 average from 239 reviews of our four detox products" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "text", "id": "author", "label": "Name" },
+        { "type": "range", "id": "rating", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "text", "label": "Review" },
+        { "type": "product", "id": "product", "label": "Product", "info": "Its image is shown when there is no customer photo." },
+        { "type": "text", "id": "product_label", "label": "Product name shown", "info": "Defaults to the product title." },
+        { "type": "image_picker", "id": "image", "label": "Customer photo" },
+        { "type": "url", "id": "image_url", "label": "Customer photo URL (Loox)", "info": "Used when no photo is uploaded." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "THH verified reviews" }]
+}
+{% endschema %}

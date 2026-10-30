@@ -1,0 +1,42 @@
+<section class="kbaa" id="apply" aria-labelledby="StepsTitle-{{ section.id }}">
+  <div class="kbaa__grid">
+    <div data-kb-reveal>
+      <h2 class="kb-heading kbaa__heading" id="StepsTitle-{{ section.id }}">{{ section.settings.steps_title | escape }} <strong>{{ section.settings.steps_title_bold | escape }}</strong></h2>
+      <ol class="kbaa__steps">
+        {%- for block in section.blocks -%}{%- if block.type == 'step' -%}<li class="kbaa__step" {{ block.shopify_attributes }}><b>{{ block.settings.title | escape }}</b><p>{{ block.settings.text | escape }}</p></li>{%- endif -%}{%- endfor -%}
+      </ol>
+    </div>
+    <div class="form-card" data-kb-reveal="2">
+      {%- for block in section.blocks -%}{%- if block.type == '@app' -%}{% render block %}{%- endif -%}{%- endfor -%}
+    </div>
+  </div>
+  <div class="kbaa__faq">
+    <h2 class="kb-heading kbaa__heading">{{ section.settings.faq_title | escape }} <strong>{{ section.settings.faq_title_bold | escape }}</strong></h2>
+    {%- for block in section.blocks -%}{%- if block.type == 'question' -%}{% render 'thh-accordion', block: block %}{%- endif -%}{%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH affiliate apply",
+  "settings": [
+    { "type": "text", "id": "steps_title", "label": "Steps heading", "default": "How it" },
+    { "type": "text", "id": "steps_title_bold", "label": "Steps heading, bold part", "default": "works" },
+    { "type": "text", "id": "faq_title", "label": "FAQ heading", "default": "Frequently asked" },
+    { "type": "text", "id": "faq_title_bold", "label": "FAQ heading, bold part", "default": "questions" }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "step", "name": "Step", "settings": [
+      { "type": "text", "id": "title", "label": "Title" },
+      { "type": "textarea", "id": "text", "label": "Text" }
+    ] },
+    { "type": "question", "name": "Question", "settings": [
+      { "type": "text", "id": "question", "label": "Question" },
+      { "type": "richtext", "id": "answer", "label": "Answer" },
+      { "type": "text", "id": "anchor", "label": "Anchor ID (optional)" },
+      { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+    ] }
+  ]
+}
+{% endschema %}

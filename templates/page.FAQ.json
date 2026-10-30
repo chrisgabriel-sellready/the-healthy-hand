@@ -1,0 +1,106 @@
+{
+  "layout": "thh",
+  "sections": {
+    "main": {
+      "type": "thh-faq-page",
+      "settings": {},
+      "blocks": {
+        "faq-page-1": {
+          "type": "question",
+          "settings": {
+            "question": "Can I take Total Belly Detox and Total System Detox together?",
+            "answer": "<p>Yes, you can take both of our detoxes together. Our detox is amazing taken by itself, but together it is a powerhouse. If you take both, we suggest half a tablespoon of each, mixed together in a water bottle, as a tea, or added to a smoothie.</p>",
+            "anchor": "",
+            "open": true
+          }
+        },
+        "faq-page-2": {
+          "type": "question",
+          "settings": {
+            "question": "How much water should I drink with the detox?",
+            "answer": "<p>It is best to drink at least 3 to 4 bottles of water per day after you have taken the detox. Water helps flush your system and lets the detox work properly. (Just water.)</p>",
+            "anchor": "",
+            "open": false
+          }
+        },
+        "faq-page-3": {
+          "type": "question",
+          "settings": {
+            "question": "When is the best time to take the detox?",
+            "answer": "<p>The best time is before bed, or while you&rsquo;re home or somewhere comfortable near a restroom. If you&rsquo;re in the restroom more than normal, the product is working through your system. To slow it down, take a smaller dose.</p>",
+            "anchor": "",
+            "open": false
+          }
+        },
+        "faq-page-4": {
+          "type": "question",
+          "settings": {
+            "question": "How do I drink the detox tea?",
+            "answer": "<p>For best results, adults drink 1 to 2 cups per day. If you are pregnant or breastfeeding, talk to your doctor before use.</p>",
+            "anchor": "",
+            "open": false
+          }
+        },
+        "faq-page-5": {
+          "type": "question",
+          "settings": {
+            "question": "How do I take black seed oil?",
+            "answer": "<p>We suggest 1 teaspoon per day, or as needed or recommended by your doctor. Because of its strong flavor, you may want to mix the oil with honey or lemon juice before taking it.</p>",
+            "anchor": "",
+            "open": false
+          }
+        },
+        "faq-page-6": {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>All orders take 7 to 10 business days to ship and go out through USPS. Once your order ships, you&rsquo;ll get a USPS tracking number.</p><p>All orders need a signature on delivery. If no one is home, USPS will take the package to your nearest post office for pickup or redelivery. If a package isn&rsquo;t picked up and comes back to us, we can ship it again for a $12 fee. Overseas orders can take up to 30 days.</p>",
+            "anchor": "shipping",
+            "open": false
+          }
+        },
+        "faq-page-7": {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>Returns are accepted within 7 business days of delivery for unused products in their original packaging. Email <a href=\"mailto:[email]\">[email]</a> to start a return.</p>",
+            "anchor": "returns",
+            "open": false
+          }
+        },
+        "faq-page-8": {
+          "type": "question",
+          "settings": {
+            "question": "Can I become an affiliate?",
+            "answer": "<p>Yes. Our affiliates earn 25% on all sales. <a href=\"/pages/collab\">Apply on our affiliate page</a>.</p>",
+            "anchor": "",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "faq-page-1",
+        "faq-page-2",
+        "faq-page-3",
+        "faq-page-4",
+        "faq-page-5",
+        "faq-page-6",
+        "faq-page-7",
+        "faq-page-8"
+      ]
+    },
+    "cta": {
+      "type": "thh-cta-band",
+      "settings": {
+        "title": "Still have",
+        "title_bold": "questions?",
+        "button": "Contact us",
+        "link": "shopify://pages/contact-us"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "cta"
+  ]
+}

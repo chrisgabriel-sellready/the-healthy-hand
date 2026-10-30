@@ -1,0 +1,2 @@
+{%- assign email = settings.thh_email | default: 'thehealthyhands@gmail.com' -%}
+<details class="accordion"{% if block.settings.anchor != blank %} id="{{ block.settings.anchor | handle }}"{% endif %}{% if block.settings.open %} open{% endif %} {{ block.shopify_attributes }}><summary>{{ block.settings.question | escape }}{% render 'thh-icon', icon: 'plus' %}</summary><div class="accordion__content">{{ block.settings.answer | replace: '[email]', email }}</div></details>

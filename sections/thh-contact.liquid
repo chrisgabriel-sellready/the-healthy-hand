@@ -1,0 +1,48 @@
+{%- assign email = settings.thh_email | default: 'thehealthyhands@gmail.com' -%}
+<div class="page-width">
+  <div class="main-page" style="padding-bottom:0">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <span aria-current="page">{{ page.title | escape }}</span></nav>
+    <h1 class="kb-heading main-page__title">{{ section.settings.title | default: page.title | escape }}</h1>
+  </div>
+  <div class="contact">
+    <div class="contact__details">
+      {%- for block in section.blocks -%}
+        <div class="contact__item" {{ block.shopify_attributes }}>{% render 'thh-icon', icon: block.settings.icon %}<div><b>{{ block.settings.label | escape }}</b>{{ block.settings.text | replace: '[email]', email }}</div></div>
+      {%- endfor -%}
+      {% render 'thh-social' %}
+    </div>
+    <div class="form-card">
+      {%- form 'contact', id: 'ContactForm' -%}
+        {%- if form.posted_successfully? -%}<p class="form-status" role="status">{{ section.settings.success | escape }}</p>{%- endif -%}
+        {%- if form.errors -%}<p class="form-status" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+        <div class="field-row">
+          <div class="field"><label for="CName">Name</label><input id="CName" name="contact[name]" autocomplete="name" value="{{ form.name }}"></div>
+          <div class="field"><label for="CEmail">Email *</label><input id="CEmail" name="contact[email]" type="email" autocomplete="email" required value="{{ form.email }}"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="CPhone">Phone number</label><input id="CPhone" name="contact[phone]" type="tel" autocomplete="tel" value="{{ form.phone }}"></div>
+          <div class="field"><label for="COrder">Order number</label><input id="COrder" name="contact[order number]"></div>
+        </div>
+        <div class="field"><label for="CMsg">Message *</label><textarea id="CMsg" name="contact[body]" required>{{ form.body }}</textarea></div>
+        <button class="kb-btn" type="submit">Send</button>
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "THH contact",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Contact us" },
+    { "type": "text", "id": "success", "label": "Success message", "default": "Thanks! We'll get back to you as soon as possible." }
+  ],
+  "blocks": [
+    { "type": "item", "name": "Detail", "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "mail", "options": [{ "value": "mail", "label": "Email" }, { "value": "pin", "label": "Address" }, { "value": "truck", "label": "Shipping" }, { "value": "chat", "label": "Chat" }] },
+      { "type": "text", "id": "label", "label": "Label" },
+      { "type": "richtext", "id": "text", "label": "Text", "info": "[email] becomes the customer care email." }
+    ] }
+  ]
+}
+{% endschema %}

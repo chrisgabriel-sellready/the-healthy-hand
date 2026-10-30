@@ -1,0 +1,12 @@
+{
+  "layout": "thh",
+  "sections": {
+    "main": {
+      "type": "thh-search",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

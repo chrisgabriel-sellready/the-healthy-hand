@@ -1,0 +1,26 @@
+{%- if section.settings.background != blank -%}{%- assign bg = section.settings.background | image_url: width: 1600 -%}{%- endif -%}
+<section class="thh-about-mission" aria-labelledby="MissionTitle-{{ section.id }}"{% if bg %} style="background-image:url({{ bg }})"{% endif %}>
+  <div class="thh-about-mission__inner" data-kb-reveal>
+    <h2 class="thh-about-mission__title" id="MissionTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+    {%- if section.settings.lead != blank -%}<p class="thh-about-mission__lead">{{ section.settings.lead | escape }}</p>{%- endif -%}
+    {{ section.settings.text }}
+    {%- if section.settings.herbs != blank -%}<div class="thh-about-mission__herbs">{{ section.settings.herbs }}</div>{%- endif -%}
+    {%- if section.settings.button != blank -%}<a class="thh-about-btn" href="{{ section.settings.link | default: routes.all_products_collection_url }}">{{ section.settings.button | escape }}</a>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH our mission",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Our Mission" },
+    { "type": "text", "id": "lead", "label": "Lead line", "default": "Allow The Healthy Hand to be a Helping Hand" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "richtext", "id": "herbs", "label": "Boxed text" },
+    { "type": "text", "id": "button", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "link", "label": "Button link" },
+    { "type": "image_picker", "id": "background", "label": "Background image", "info": "Defaults to img_back.jpg." }
+  ],
+  "presets": [{ "name": "THH our mission" }]
+}
+{% endschema %}

@@ -1,0 +1,20 @@
+<div class="page-width main-page">
+  <div class="page-narrow">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <span aria-current="page">Your cart</span></nav>
+    <h1 class="kb-heading main-page__title">Your cart</h1>
+    <form action="{{ routes.cart_url }}" method="post" class="cart-page" data-cart-page>
+      {% render 'thh-cart-items' %}
+      {%- if cart.item_count > 0 -%}
+        <div class="drawer__footer" style="padding-left:0;padding-right:0">
+          <p class="cart-subtotal"><span>Subtotal</span><span data-cart-subtotal>{{ cart.total_price | money }}</span></p>
+          <p class="cart-note">Taxes and shipping calculated at checkout. Ships by USPS in 7&ndash;10 business days.</p>
+          <button class="kb-btn cart-checkout" type="submit" name="checkout">Check out</button>
+        </div>
+      {%- endif -%}
+    </form>
+  </div>
+</div>
+
+{% schema %}
+{ "name": "THH cart page", "settings": [] }
+{% endschema %}

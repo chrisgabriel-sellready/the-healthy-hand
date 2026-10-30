@@ -1,0 +1,37 @@
+<section class="kbtp" aria-label="{{ section.settings.label | escape }}">
+  <div class="kbtp__grid">
+    {%- for block in section.blocks limit: 2 -%}
+      {%- assign img = block.settings.image | default: block.settings.product.featured_image | default: block.settings.collection.image -%}
+      <a class="kbtp__panel kbtp__panel--{{ block.settings.style }}" href="{{ block.settings.link | default: block.settings.collection.url }}" {{ block.shopify_attributes }}>
+        {%- if img != blank -%}<img class="kbtp__image" src="{{ img | image_url: width: 900 }}" alt="" loading="lazy">{%- endif -%}
+        <div class="kbtp__content"><h2 class="kbtp__heading">{{ block.settings.heading | escape }}</h2><span class="kbtp__link-text">{{ block.settings.link_text | escape }}</span></div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH two panels",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Accessible label", "default": "Shop by category" }
+  ],
+  "blocks": [
+    {
+      "type": "panel",
+      "name": "Panel",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Detox" },
+        { "type": "text", "id": "link_text", "label": "Link text", "default": "Shop now" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Defaults to the collection." },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Defaults to the product's image, then the collection image." },
+        { "type": "product", "id": "product", "label": "Product for the image" },
+        { "type": "select", "id": "style", "label": "Background", "default": "lime", "options": [{ "value": "lime", "label": "Lime" }, { "value": "orange", "label": "Orange" }] }
+      ]
+    }
+  ],
+  "max_blocks": 2,
+  "presets": [{ "name": "THH two panels", "blocks": [{ "type": "panel" }, { "type": "panel", "settings": { "style": "orange", "heading": "Capsules" } }] }]
+}
+{% endschema %}

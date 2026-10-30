@@ -1,0 +1,46 @@
+{%- comment -%}
+  Product card from the mock-up (Kemp kb-card-atc): image, rating, title, price, quantity + add to cart.
+  Optional metafields: custom.badge (text badge), custom.collage_products (list of products shown as a 2x2 collage).
+{%- endcomment -%}
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign sale = false
+  if product.compare_at_price > product.price
+    assign sale = true
+  endif
+  capture rating
+    render 'thh-product-rating', product: product, field: 'rating'
+  endcapture
+  capture count
+    render 'thh-product-rating', product: product, field: 'count'
+  endcapture
+  assign rating = rating | strip | plus: 0
+  assign collage = product.metafields.custom.collage_products.value
+-%}
+<li class="grid__item"><div class="card-wrapper"><div class="card">
+  <div class="card__inner"><div class="card__media">
+    {%- if collage != blank -%}
+      <div class="card__collage" role="img" aria-label="{{ product.title | escape }}: {{ collage | map: 'title' | join: ', ' | escape }}">
+        {%- for p in collage limit: 4 -%}{% if p.featured_image %}<img src="{{ p.featured_image | image_url: width: 300 }}" alt="" loading="lazy">{% endif %}{%- endfor -%}
+      </div>
+    {%- elsif product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="600" height="600">
+    {%- endif -%}
+  </div>
+  {%- if product.available == false -%}<div class="card__badge"><span class="badge badge--soldout">Sold out</span></div>
+  {%- elsif product.metafields.custom.badge != blank -%}<div class="card__badge"><span class="badge badge--promo">{{ product.metafields.custom.badge | escape }}</span></div>
+  {%- elsif sale -%}<div class="card__badge"><span class="badge">Sale</span></div>
+  {%- endif -%}
+  </div>
+  <div class="card__content"><div class="card__information">
+    {%- if rating > 0 -%}<div class="card__rating">{% render 'thh-stars', rating: rating %}<span>{{ rating | round: 1 }} ({{ count | strip }})</span></div>{%- endif -%}
+    <h3 class="card__heading"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+    <div class="price"><div class="price__container">
+      {%- if sale -%}<s><span class="visually-hidden">Regular price</span>{{ product.compare_at_price | money }}</s>{%- endif -%}
+      <span class="{% if sale %}price--sale{% endif %}">{% if sale %}<span class="visually-hidden">Sale price</span>{% endif %}{% if product.price_varies %}From {% endif %}{{ product.price | money }}</span>
+    </div></div>
+  </div><div class="kb-atc"><div class="kb-atc__row">
+    <div class="qty"><button type="button" data-step="-1" aria-label="Decrease quantity for {{ product.title | escape }}" disabled>&minus;</button><input type="number" min="1" max="20" value="1" aria-label="Quantity for {{ product.title | escape }}"><button type="button" data-step="1" aria-label="Increase quantity for {{ product.title | escape }}">+</button></div>
+    <button type="button" class="kb-atc__btn" data-add="{{ variant.id }}"{% unless product.available %} disabled{% endunless %}><span>{% if product.available %}Add to cart<span class="kb-atc__amt"> &middot; {{ variant.price | money }}</span>{% else %}Sold out{% endif %}</span></button>
+  </div></div></div></div>
+  <a class="kb-card__link" href="{{ product.url }}" tabindex="-1" aria-hidden="true"></a></div></li>

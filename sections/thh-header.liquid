@@ -1,0 +1,62 @@
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+-%}
+{%- if section.settings.announcement != blank -%}
+<div class="announcement-bar" role="region" aria-label="Announcement">
+  <p class="announcement-bar__message">{{ section.settings.announcement }}</p>
+</div>
+{%- endif -%}
+<header class="site-header">
+  <div class="page-width">
+    <div class="header-layout">
+      <div class="header-item--left">
+        <button type="button" class="site-nav__link--icon medium-up--hide" data-open-drawer="MenuDrawer" aria-controls="MenuDrawer" aria-expanded="false"><span class="visually-hidden">Menu</span>{% render 'thh-icon', icon: 'menu' %}</button>
+        <button type="button" class="site-nav__link--icon small--hide" data-open-drawer="SearchDrawer" aria-controls="SearchDrawer" aria-expanded="false"><span class="visually-hidden">Search</span>{% render 'thh-icon', icon: 'search' %}</button>
+      </div>
+      {%- if template.name == 'index' -%}<h1 class="site-header__logo">{%- else -%}<div class="site-header__logo">{%- endif -%}
+        <a href="{{ routes.root_url }}">
+          {%- if section.settings.logo != blank -%}
+            <img data-logo src="{{ section.settings.logo | image_url: width: 460 }}" alt="{{ shop.name | escape }}" width="230" height="{{ 230 | divided_by: section.settings.logo.aspect_ratio | round }}">
+          {%- else -%}
+            <img data-logo src="{{ 'logo_ddd1bfa6-51a0-4ab1-aa0d-af2dddcf5d20.png' | file_url }}" alt="{{ shop.name | escape }}" width="230" height="74">
+          {%- endif -%}
+          <span class="logo-text" aria-hidden="true">The Healthy <span>Hand</span></span>
+        </a>
+      {%- if template.name == 'index' -%}</h1>{%- else -%}</div>{%- endif -%}
+      <div class="header-item--icons">
+        <button type="button" class="site-nav__link--icon medium-up--hide" data-open-drawer="SearchDrawer" aria-controls="SearchDrawer" aria-expanded="false"><span class="visually-hidden">Search</span>{% render 'thh-icon', icon: 'search' %}</button>
+        <a class="site-nav__link--icon" href="{{ routes.cart_url }}" data-open-drawer="CartDrawer" aria-controls="CartDrawer" aria-expanded="false"><span class="visually-hidden">Cart</span>{% render 'thh-icon', icon: 'bag' %}<span class="cart-count"{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span></a>
+      </div>
+    </div>
+    {%- if menu.links.size > 0 -%}
+    <nav aria-label="Main">
+      <ul class="site-nav">
+        {%- for link in menu.links -%}
+          {%- if link.links.size > 0 -%}
+            <li class="site-nav__item site-nav--has-dropdown"><a class="site-nav__link site-nav__link--has-dropdown" href="{{ link.url }}" aria-haspopup="true"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}{% render 'thh-icon', icon: 'chevron' %}</a><ul class="site-nav__dropdown" aria-label="{{ link.title | escape }}">
+              {%- if section.settings.repeat_parent -%}<li><a class="site-nav__dropdown-link" href="{{ link.url }}">{{ link.title | escape }}</a></li>{%- endif -%}
+              {%- for child in link.links -%}<li><a class="site-nav__dropdown-link" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a></li>{%- endfor -%}
+            </ul></li>
+          {%- else -%}
+            <li><a class="site-nav__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+    {%- endif -%}
+  </div>
+</header>
+{% render 'thh-drawers', menu: menu %}
+
+{% schema %}
+{
+  "name": "THH header",
+  "class": "thh-header-section",
+  "settings": [
+    { "type": "text", "id": "announcement", "label": "Announcement", "default": "Free shipping on all orders <span>$100+</span>", "info": "Text in a <span> is highlighted." },
+    { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Leave empty to use logo_ddd1bfa6-51a0-4ab1-aa0d-af2dddcf5d20.png from Files." },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu", "info": "Links with child links open as a dropdown." },
+    { "type": "checkbox", "id": "repeat_parent", "label": "Repeat the parent link at the top of each dropdown", "default": true }
+  ]
+}
+{% endschema %}

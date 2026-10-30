@@ -1,0 +1,5 @@
+<ul class="social-icons">
+  {%- if settings.thh_instagram != blank -%}<li><a href="{{ settings.thh_instagram }}" target="_blank" rel="noopener"><span class="visually-hidden">Instagram</span>{% render 'thh-icon', icon: 'instagram' %}</a></li>{%- endif -%}
+  {%- if settings.thh_facebook != blank -%}<li><a href="{{ settings.thh_facebook }}" target="_blank" rel="noopener"><span class="visually-hidden">Facebook</span>{% render 'thh-icon', icon: 'facebook' %}</a></li>{%- endif -%}
+  {%- if settings.thh_youtube != blank -%}<li><a href="{{ settings.thh_youtube }}" target="_blank" rel="noopener"><span class="visually-hidden">YouTube</span>{% render 'thh-icon', icon: 'youtube' %}</a></li>{%- endif -%}
+</ul>

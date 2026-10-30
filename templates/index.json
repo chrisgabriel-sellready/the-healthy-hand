@@ -1,0 +1,324 @@
+{
+  "layout": "thh",
+  "sections": {
+    "slideshow": {
+      "type": "thh-slideshow",
+      "settings": {
+        "label": "Featured products"
+      },
+      "blocks": {
+        "slideshow-1": {
+          "type": "slide",
+          "settings": {
+            "style": "tea",
+            "image": "shopify://shop_images/detoxteabagmockupfront.jpg",
+            "alt": "Soursop & Ginger Detox Tea bags",
+            "product": "soursop-ginger-detox-tea-bags",
+            "kicker": "#1 best seller",
+            "title": "Soursop & Ginger",
+            "title_bold": "Detox Tea",
+            "text": "<p>Organic tea bags with cinnamon.</p>",
+            "button": "Shop the tea",
+            "link": "shopify://products/soursop-ginger-detox-tea-bags"
+          }
+        },
+        "slideshow-2": {
+          "type": "slide",
+          "settings": {
+            "style": "kit",
+            "alt": "Total Detox Kit: Total Belly Detox and Total System Detox",
+            "product": "combo-total-system-belly-detox",
+            "kicker": "Belly & System, together",
+            "title": "Total Detox",
+            "title_bold": "Kit",
+            "text": "<p>You can take our Total System Detox and Total Belly Detox at the same time.</p>",
+            "button": "Shop the kit",
+            "link": "shopify://products/combo-total-system-belly-detox"
+          }
+        },
+        "slideshow-3": {
+          "type": "slide",
+          "settings": {
+            "style": "system",
+            "alt": "Total System Detox",
+            "product": "total-system-detox",
+            "kicker": "21-day detox",
+            "title": "Total System",
+            "title_bold": "Detox",
+            "text": "<p>100% all natural herbs and fibers, one tablespoon a day.</p>",
+            "button": "Shop Total System",
+            "link": "shopify://products/total-system-detox"
+          }
+        }
+      },
+      "block_order": [
+        "slideshow-1",
+        "slideshow-2",
+        "slideshow-3"
+      ]
+    },
+    "story": {
+      "type": "thh-story-home",
+      "settings": {
+        "title_first": "The Healthy Hand",
+        "title_last": "Our Story",
+        "byline": "Founder Shay Johnson",
+        "video_url": "https://cdn.shopify.com/videos/c/vp/d2d186b3db6d425f9ae9a162280ea82f/d2d186b3db6d425f9ae9a162280ea82f.HD-720p-1.6Mbps.mp4",
+        "poster_url": "https://cdn.shopify.com/s/files/1/0076/4644/5639/files/preview_images/d2d186b3db6d425f9ae9a162280ea82f.thumbnail.0000000.jpg?v=1654116791",
+        "video_label": "The Healthy Hand: our story",
+        "time": "2:01",
+        "play_label": "Play our story",
+        "button": "Learn more",
+        "link": "shopify://pages/about-us"
+      }
+    },
+    "best_sellers": {
+      "type": "thh-best-sellers",
+      "settings": {
+        "title": "Best Sellers",
+        "products": [
+          "soursop-ginger-detox-tea-bags",
+          "combo-total-system-belly-detox",
+          "total-system-detox",
+          "total-belly-detox",
+          "total-belly-cleanse",
+          "total-belly-cleanse-capsules"
+        ],
+        "more_label": "Show more",
+        "more_link": "shopify://collections/all"
+      }
+    },
+    "ritual": {
+      "type": "thh-ritual",
+      "settings": {
+        "title": "Pour, shake",
+        "title_accent": "& drink",
+        "text": "<p>Add 1 tablespoon to a water bottle, shake, and drink. You can also add it to your smoothie or make a hot cup of tea.</p><p>Drink at least 3 to 4 bottles of water a day while you detox. Just water.</p>",
+        "button": "Shop the detox",
+        "link": "shopify://collections/detox-collection",
+        "alt": "Total Detox Kit: Total System Detox and Total Belly Detox pouches"
+      }
+    },
+    "bundles": {
+      "type": "thh-featured-collection",
+      "settings": {
+        "title": "Bundle deals",
+        "products": [
+          "combo-total-system-belly-detox",
+          "jump-start-detox-bundle-a",
+          "jump-start-detox-bundle-b",
+          "all-in-detox-bundle-deal"
+        ],
+        "collection": "bundle-deals-collection",
+        "columns": 4,
+        "cream": true,
+        "link_label": "View all",
+        "link": "shopify://collections/bundle-deals-collection"
+      }
+    },
+    "panels": {
+      "type": "thh-two-panel",
+      "settings": {
+        "label": "Shop by category"
+      },
+      "blocks": {
+        "two-panel-1": {
+          "type": "panel",
+          "settings": {
+            "heading": "Detox",
+            "link_text": "Shop now",
+            "collection": "detox-collection",
+            "product": "total-belly-detox",
+            "style": "lime"
+          }
+        },
+        "two-panel-2": {
+          "type": "panel",
+          "settings": {
+            "heading": "Capsules",
+            "link_text": "Shop now",
+            "collection": "capsules-collection",
+            "product": "sea-moss-bladderwrck-mix-capsules",
+            "style": "orange"
+          }
+        }
+      },
+      "block_order": [
+        "two-panel-1",
+        "two-panel-2"
+      ]
+    },
+    "video_feature": {
+      "type": "thh-video-feature",
+      "settings": {
+        "eyebrow": "The Healthy Hand",
+        "title": "All natural",
+        "title_bold": "health & wellness",
+        "text": "<p>Our mission is to provide health and wellness herbs to help you live a better daily lifestyle.</p>",
+        "button": "All products",
+        "link": "shopify://collections/all",
+        "video_url": "https://cdn.shopify.com/videos/c/vp/e04286ae297d4799b2058c2694784278/e04286ae297d4799b2058c2694784278.HD-720p-4.5Mbps-51700616.mp4",
+        "poster_url": "https://cdn.shopify.com/s/files/1/0076/4644/5639/files/preview_images/e04286ae297d4799b2058c2694784278.thumbnail.0000000000.jpg?v=1753193161",
+        "video_label": "The Healthy Hand product video"
+      }
+    },
+    "how_it_works": {
+      "type": "thh-how-it-works",
+      "settings": {
+        "title": "How it works",
+        "subtitle": "Detox, simplified:"
+      },
+      "blocks": {
+        "how-it-works-1": {
+          "type": "step",
+          "settings": {
+            "icon": "pot",
+            "title": "1 tablespoon a day",
+            "text": "<p>Add to a water bottle, shake and drink. Or mix it into a smoothie or a hot cup of tea.</p>"
+          }
+        },
+        "how-it-works-2": {
+          "type": "step",
+          "settings": {
+            "icon": "drop",
+            "title": "Drink your water",
+            "text": "<p>Drink at least 3 to 4 bottles of water a day while you detox. Just water.</p>"
+          }
+        },
+        "how-it-works-3": {
+          "type": "step",
+          "settings": {
+            "icon": "moon",
+            "title": "Pick your time",
+            "text": "<p>Take it before bed, or when you’re home near a restroom. To slow it down, take less.</p>"
+          }
+        },
+        "how-it-works-4": {
+          "type": "step",
+          "settings": {
+            "icon": "both",
+            "title": "Taking both?",
+            "text": "<p>Total Belly + Total System together: half a tablespoon of each, mixed in one bottle.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "how-it-works-1",
+        "how-it-works-2",
+        "how-it-works-3",
+        "how-it-works-4"
+      ]
+    },
+    "reviews": {
+      "type": "thh-testimonials",
+      "settings": {
+        "title": "Verified reviews",
+        "average": 45,
+        "summary": "4.5 average from 239 reviews of our four detox products"
+      },
+      "blocks": {
+        "testimonials-1": {
+          "type": "review",
+          "settings": {
+            "author": "Toqualia S.",
+            "rating": 5,
+            "text": "These herbs are the real deal. Provides the internal cleanse that has you feeling less bloated with more energy!",
+            "product_label": "Total System Detox",
+            "product": "total-system-detox"
+          }
+        },
+        "testimonials-2": {
+          "type": "review",
+          "settings": {
+            "author": "Ireshia W.",
+            "rating": 5,
+            "text": "Taste so good I only added honey 🍯 💜",
+            "product_label": "#1 Detox Tea",
+            "image_url": "https://images.loox.io/uploads/2026/4/12/iVyTcdhnt_FehOhAdt1_orig_mid.jpg"
+          }
+        },
+        "testimonials-3": {
+          "type": "review",
+          "settings": {
+            "author": "Latasha C.",
+            "rating": 5,
+            "text": "I've been drinking 1tbs with a bottle of water for 2 weeks consistently. I can say there's been a change in my mood and energy. I'm going to continue to use and order my second bag. No bad side so far.",
+            "product_label": "Total Belly Detox",
+            "product": "total-belly-detox"
+          }
+        },
+        "testimonials-4": {
+          "type": "review",
+          "settings": {
+            "author": "Crystal N.",
+            "rating": 5,
+            "text": "The total system detox works wonderful. This is my second time purchasing.",
+            "product_label": "Total Detox Kit",
+            "image_url": "https://images.loox.io/uploads/2024/12/18/0gN1rsbDd_orig_mid.jpg"
+          }
+        },
+        "testimonials-5": {
+          "type": "review",
+          "settings": {
+            "author": "Shanae F.",
+            "rating": 5,
+            "text": "Im in love with the belly detox powder. It's everything for me! I have no complaints. Im forever a loyal customer",
+            "product_label": "Total Belly Detox",
+            "product": "total-belly-detox"
+          }
+        },
+        "testimonials-6": {
+          "type": "review",
+          "settings": {
+            "author": "Marie F.",
+            "rating": 5,
+            "text": "Just started your product and I love it. See you in 30 days 😊",
+            "product_label": "#1 Detox Tea",
+            "image_url": "https://images.loox.io/uploads/2025/2/26/rdimfTVu4_mid.jpg"
+          }
+        },
+        "testimonials-7": {
+          "type": "review",
+          "settings": {
+            "author": "Iris B.",
+            "rating": 5,
+            "text": "I received a half bag from my daughter a while back. I love how easy 1 Tsp. mixes in my morning coffee. Now I have my very own bag!",
+            "product_label": "Total System Detox",
+            "product": "total-system-detox"
+          }
+        },
+        "testimonials-8": {
+          "type": "review",
+          "settings": {
+            "author": "Shaniki Z.",
+            "rating": 4,
+            "text": "It works really well, just there's no directions of usage. That's the only thing.",
+            "product_label": "#1 Detox Tea",
+            "product": "soursop-ginger-detox-tea-bags"
+          }
+        }
+      },
+      "block_order": [
+        "testimonials-1",
+        "testimonials-2",
+        "testimonials-3",
+        "testimonials-4",
+        "testimonials-5",
+        "testimonials-6",
+        "testimonials-7",
+        "testimonials-8"
+      ]
+    }
+  },
+  "order": [
+    "slideshow",
+    "story",
+    "best_sellers",
+    "ritual",
+    "bundles",
+    "panels",
+    "video_feature",
+    "how_it_works",
+    "reviews"
+  ]
+}

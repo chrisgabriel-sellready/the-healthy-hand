@@ -1,0 +1,12 @@
+{
+  "layout": "thh",
+  "sections": {
+    "main": {
+      "type": "thh-page",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

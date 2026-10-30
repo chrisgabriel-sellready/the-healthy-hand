@@ -1,0 +1,12 @@
+{%- comment -%}
+  Prints the product's average rating or review count from Loox (loox.avg_rating / loox.num_reviews),
+  falling back to Shopify's standard reviews metafields. field: 'rating' | 'count'
+{%- endcomment -%}
+{%- liquid
+  if field == 'count'
+    assign v = product.metafields.loox.num_reviews | default: product.metafields.reviews.rating_count | default: 0
+  else
+    assign v = product.metafields.loox.avg_rating | default: product.metafields.reviews.rating.value.rating | default: 0
+  endif
+  echo v
+-%}

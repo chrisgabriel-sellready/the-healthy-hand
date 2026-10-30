@@ -1,0 +1,16 @@
+{
+  "layout": "thh",
+  "sections": {
+    "main": {
+      "type": "thh-collection",
+      "settings": {
+        "per_page": 24,
+        "show_sort": false,
+        "note": "Free shipping on orders $100+"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

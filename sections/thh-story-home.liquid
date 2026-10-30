@@ -1,0 +1,44 @@
+{%- liquid
+  if section.settings.poster != blank
+    assign poster = section.settings.poster | image_url: width: 1100
+  endif
+  if section.settings.background != blank
+    assign bg = section.settings.background | image_url: width: 1600
+  endif
+-%}
+<section class="thh-story-home kbp is-paused" data-kbp data-src="{{ section.settings.video_url }}" aria-labelledby="FilmTitle-{{ section.id }}"{% if bg %} style="background-image:url({{ bg }})"{% endif %}>
+  <div class="thh-story-home__inner">
+    <h2 class="thh-story-home__title" id="FilmTitle-{{ section.id }}" data-kb-reveal><span class="first">{{ section.settings.title_first | escape }}</span> <span class="last">{{ section.settings.title_last | escape }}</span></h2>
+    {%- if section.settings.byline != blank -%}<p class="thh-story-home__by" data-kb-reveal>{{ section.settings.byline | escape }}</p>{%- endif -%}
+    <div class="kbp__screen thh-story-home__screen" data-kb-reveal>
+      <video data-kbp-video playsinline muted loop preload="none"{% if section.settings.poster != blank or section.settings.poster_url != blank %} poster="{% if section.settings.poster != blank %}{{ poster }}{% else %}{{ section.settings.poster_url }}{% endif %}"{% endif %} aria-label="{{ section.settings.video_label | escape }}" tabindex="-1"></video>
+      {%- if section.settings.time != blank -%}<span class="thh-story-home__time">{{ section.settings.time | escape }}</span>{%- endif -%}
+      <button type="button" class="kbp__prompt" data-kbp-prompt>
+        <span data-when="play">{% render 'thh-icon', icon: 'play' %}{{ section.settings.play_label | escape }}</span>
+        <span data-when="sound">{% render 'thh-icon', icon: 'sound-on' %}Tap for sound</span>
+      </button>
+    </div>
+    {%- if section.settings.button != blank -%}<a class="thh-about-btn thh-story-home__btn" href="{{ section.settings.link }}">{{ section.settings.button | escape }}</a>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH our story video",
+  "settings": [
+    { "type": "text", "id": "title_first", "label": "Title, white part", "default": "The Healthy Hand" },
+    { "type": "text", "id": "title_last", "label": "Title, lime part", "default": "Our Story" },
+    { "type": "text", "id": "byline", "label": "Byline", "default": "Founder Shay Johnson" },
+    { "type": "url", "id": "video_url", "label": "Video file URL (.mp4)", "info": "Settings → Files → copy the link of the video's 720p MP4." },
+    { "type": "image_picker", "id": "poster", "label": "Video cover image" },
+    { "type": "url", "id": "poster_url", "label": "Video cover image URL", "info": "Used when no cover image is picked, e.g. the video's Shopify preview image." },
+    { "type": "text", "id": "video_label", "label": "Video description", "default": "The Healthy Hand: our story" },
+    { "type": "text", "id": "time", "label": "Video length", "default": "2:01" },
+    { "type": "text", "id": "play_label", "label": "Play button", "default": "Play our story" },
+    { "type": "image_picker", "id": "background", "label": "Background image", "info": "Defaults to video_back.jpg." },
+    { "type": "text", "id": "button", "label": "Button label", "default": "Learn more" },
+    { "type": "url", "id": "link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "THH our story video" }]
+}
+{% endschema %}

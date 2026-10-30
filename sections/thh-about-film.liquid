@@ -1,0 +1,50 @@
+{%- if section.settings.background != blank -%}{%- assign bg = section.settings.background | image_url: width: 1600 -%}{%- endif -%}
+<section class="thh-about-film" aria-labelledby="FilmTitle-{{ section.id }}"{% if bg %} style="background-image:url({{ bg }})"{% endif %}>
+  <div class="thh-about-film__inner">
+    <div class="thh-about-film__text" data-kb-reveal>
+      <h2 class="thh-about-film__title" id="FilmTitle-{{ section.id }}"><span class="first">{{ section.settings.title_first | escape }}</span> <span class="last">{{ section.settings.title_last | escape }}</span></h2>
+      {%- if section.settings.byline != blank -%}<p class="thh-about-film__by">{{ section.settings.byline | escape }}</p>{%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+      <ul class="thh-about-press" aria-label="Press">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}>{%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.alt | escape }}" loading="lazy">{%- elsif block.settings.image_url != blank -%}<img src="{{ block.settings.image_url }}" alt="{{ block.settings.alt | escape }}" loading="lazy">{%- endif -%}<span>{{ block.settings.name | escape }}<small>{{ block.settings.date | escape }}</small></span></li>
+        {%- endfor -%}
+      </ul>
+      {%- endif -%}
+    </div>
+    <div class="thh-about-film__media" data-kb-reveal="2">
+      <div class="kb-frame kbp thh-about-film__screen" data-kbp data-kbp-manual data-src="{{ section.settings.video_url }}">
+        <video data-kbp-video playsinline preload="none"{% if section.settings.poster != blank or section.settings.poster_url != blank %} poster="{% if section.settings.poster != blank %}{{ section.settings.poster | image_url: width: 1100 }}{% else %}{{ section.settings.poster_url }}{% endif %}"{% endif %} aria-label="{{ section.settings.video_label | escape }}" tabindex="-1"></video>
+        <button type="button" class="kbp__prompt" data-kbp-prompt><span data-when="play">{% render 'thh-icon', icon: 'play' %}{{ section.settings.play_label | escape }}</span><span data-when="sound">{% render 'thh-icon', icon: 'sound-on' %}Tap for sound</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH founder film",
+  "settings": [
+    { "type": "text", "id": "title_first", "label": "Title, white part", "default": "The Healthy Hand" },
+    { "type": "text", "id": "title_last", "label": "Title, lime part", "default": "Our Story" },
+    { "type": "text", "id": "byline", "label": "Byline", "default": "Founder Shay Johnson" },
+    { "type": "url", "id": "video_url", "label": "Video file URL (.mp4)" },
+    { "type": "image_picker", "id": "poster", "label": "Video cover image" },
+    { "type": "url", "id": "poster_url", "label": "Video cover image URL", "info": "Used when no cover image is picked, e.g. the video's Shopify preview image." },
+    { "type": "text", "id": "video_label", "label": "Video description", "default": "The Healthy Hand: our story" },
+    { "type": "text", "id": "play_label", "label": "Play button", "default": "Play our story" },
+    { "type": "image_picker", "id": "background", "label": "Background image", "info": "Defaults to video_back.jpg." }
+  ],
+  "blocks": [
+    { "type": "press", "name": "Press item", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "url", "id": "image_url", "label": "Image URL", "info": "Used when no image is uploaded (e.g. a blog article image)." },
+      { "type": "text", "id": "alt", "label": "Image description" },
+      { "type": "text", "id": "name", "label": "Publication" },
+      { "type": "text", "id": "date", "label": "Date" }
+    ] }
+  ],
+  "max_blocks": 4,
+  "presets": [{ "name": "THH founder film" }]
+}
+{% endschema %}

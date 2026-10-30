@@ -1,0 +1,41 @@
+{%- if section.settings.background != blank -%}{%- assign bg = section.settings.background | image_url: width: 1600 -%}{%- endif -%}
+<section class="thh-about-videos" data-row aria-labelledby="PriorityTitle-{{ section.id }}"{% if bg %} style="background-image:url({{ bg }})"{% endif %}>
+  <div class="thh-about-videos__inner">
+    <div class="thh-about-videos__head">
+      <h2 id="PriorityTitle-{{ section.id }}"><span>{{ section.settings.title_top | escape }}</span> {{ section.settings.title_bottom | escape }}</h2>
+      <div class="thh-about-videos__arrows">
+        <button type="button" class="kbg__arrow" data-row-prev aria-label="Previous videos">{% render 'thh-icon', icon: 'prev' %}</button>
+        <button type="button" class="kbg__arrow" data-row-next aria-label="Next videos">{% render 'thh-icon', icon: 'next' %}</button>
+      </div>
+    </div>
+    <ul class="thh-about-videos__track" data-row-strip tabindex="0" aria-label="Customer videos">
+      {%- for block in section.blocks -%}
+        <li class="thh-about-vid" {{ block.shopify_attributes }}>
+          <div class="thh-about-vid__frame"><button type="button" class="thh-about-vid__play" data-yt="{{ block.settings.youtube_id | escape }}" aria-label="Play video from {{ block.settings.handle | escape }}">{%- if block.settings.thumbnail != blank -%}<img src="{{ block.settings.thumbnail | image_url: width: 700 }}" alt="" loading="lazy">{%- endif -%}<span>{% render 'thh-icon', icon: 'play' %}</span></button></div>
+          <p class="thh-about-vid__text">&ldquo;{{ block.settings.quote | escape }}&rdquo;</p>
+          <p class="thh-about-vid__handle">{{ block.settings.handle | escape }}</p>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH customer videos",
+  "settings": [
+    { "type": "text", "id": "title_top", "label": "Heading, first line", "default": "Make your health" },
+    { "type": "text", "id": "title_bottom", "label": "Heading, second line", "default": "A priority" },
+    { "type": "image_picker", "id": "background", "label": "Background image", "info": "Defaults to video_slider_bkg.jpg." }
+  ],
+  "blocks": [
+    { "type": "video", "name": "Video", "settings": [
+      { "type": "text", "id": "youtube_id", "label": "YouTube video ID", "info": "The part after watch?v= in the link." },
+      { "type": "image_picker", "id": "thumbnail", "label": "Thumbnail" },
+      { "type": "textarea", "id": "quote", "label": "Caption" },
+      { "type": "text", "id": "handle", "label": "Handle", "default": "@" }
+    ] }
+  ],
+  "presets": [{ "name": "THH customer videos" }]
+}
+{% endschema %}

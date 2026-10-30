@@ -1,0 +1,26 @@
+{%- comment -%}
+  Cart drawer body. assets/thh-theme.js redraws the same markup from /cart.js after every change.
+{%- endcomment -%}
+{%- liquid
+  assign threshold = settings.thh_free_shipping | default: 100 | times: 100
+  assign left = threshold | minus: cart.total_price
+  assign pct = cart.total_price | times: 100 | divided_by: threshold
+  if pct > 100
+    assign pct = 100
+  endif
+-%}
+{%- if cart.item_count == 0 -%}
+  <div class="cart-empty"><p>Your cart is empty.</p><a class="kb-btn" href="{{ routes.all_products_collection_url }}">Continue shopping</a></div>
+{%- else -%}
+  <div class="cart-ship">{% if left > 0 %}You are <b>{{ left | money }}</b> away from free shipping.{% else %}You&rsquo;ve got <b>free shipping</b>.{% endif %}<div class="cart-ship__bar"><span style="width:{{ pct }}%"></span></div></div>
+  <ul class="cart-items">
+    {%- for item in cart.items -%}
+      <li class="cart-item"><a class="cart-item__img" href="{{ item.url }}">{% if item.image %}<img src="{{ item.image | image_url: width: 160 }}" alt="">{% endif %}</a>
+        <div><p class="cart-item__name"><a href="{{ item.url }}">{{ item.product.title | escape }}</a></p>
+          {%- unless item.product.has_only_default_variant -%}<p class="cart-item__price">{{ item.variant.title | escape }}</p>{%- endunless -%}
+          <p class="cart-item__price">{{ item.final_price | money }}</p>
+          <div class="qty" data-line="{{ item.key }}"><button type="button" data-step="-1" aria-label="Decrease quantity"{% if item.quantity <= 1 %} disabled{% endif %}>&minus;</button><input type="number" min="1" max="99" value="{{ item.quantity }}" aria-label="Quantity for {{ item.product.title | escape }}"><button type="button" data-step="1" aria-label="Increase quantity">+</button></div></div>
+        <div><b>{{ item.final_line_price | money }}</b><br><button type="button" class="cart-item__remove" data-remove="{{ item.key }}">Remove</button></div></li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

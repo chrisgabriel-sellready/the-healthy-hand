@@ -1,1 +1,121 @@
-{"sections":{"collabs":{"type":"apps","blocks":{"a5a37460-c7f5-4e1b-b64d-ed909c9ade2f":{"type":"shopify:\/\/apps\/collabs\/blocks\/application-page\/54758706-9f25-4fa9-a553-64720a4c998b","settings":{"heading":"Become an Affiliate and Earn 25% On All Sales!","show_square_logo":false,"show_partnership_info":false,"button_text":"Apply now","number_of_images":"4","logo_position":"above","corner_style":"square","button_background_color":"#000000","button_label_color":"#ffffff","link_color":"#2c6ecb"}}},"block_order":["a5a37460-c7f5-4e1b-b64d-ed909c9ade2f"],"settings":{}}},"order":["collabs"]}
+{
+  "layout": "thh",
+  "sections": {
+    "hero": {
+      "type": "thh-affiliate-hero",
+      "settings": {
+        "eyebrow": "Affiliate program",
+        "title": "Become an affiliate and",
+        "title_bold": "earn 25% on all sales",
+        "text": "<p>Apply through Shopify Collabs. Once you’re approved, you’ll get your own link to share.</p>",
+        "button": "Apply now",
+        "image": "shopify://shop_images/detoxteabagmockupfront.jpg"
+      },
+      "blocks": {
+        "affiliate-hero-1": {
+          "type": "stat",
+          "settings": {
+            "value": "25%",
+            "label": "Commission on all sales"
+          }
+        },
+        "affiliate-hero-2": {
+          "type": "stat",
+          "settings": {
+            "value": "1,400+",
+            "label": "TikTok orders in the last 12 months"
+          }
+        },
+        "affiliate-hero-3": {
+          "type": "stat",
+          "settings": {
+            "value": "4.5 ★",
+            "label": "Average across 239 detox reviews"
+          }
+        }
+      },
+      "block_order": [
+        "affiliate-hero-1",
+        "affiliate-hero-2",
+        "affiliate-hero-3"
+      ]
+    },
+    "apply": {
+      "type": "thh-affiliate-apply",
+      "settings": {
+        "steps_title": "How it",
+        "steps_title_bold": "works",
+        "faq_title": "Frequently asked",
+        "faq_title_bold": "questions"
+      },
+      "blocks": {
+        "step-1": {
+          "type": "step",
+          "settings": {
+            "title": "Apply",
+            "text": "Fill in the Shopify Collabs application on this page."
+          }
+        },
+        "step-2": {
+          "type": "step",
+          "settings": {
+            "title": "Share",
+            "text": "Once you’re approved, share your affiliate link with your followers."
+          }
+        },
+        "step-3": {
+          "type": "step",
+          "settings": {
+            "title": "Earn",
+            "text": "Earn 25% on every sale made through your link."
+          }
+        },
+        "a5a37460-c7f5-4e1b-b64d-ed909c9ade2f": {
+          "type": "shopify://apps/collabs/blocks/application-page/54758706-9f25-4fa9-a553-64720a4c998b",
+          "settings": {
+            "heading": "Become an Affiliate and Earn 25% On All Sales!",
+            "show_square_logo": false,
+            "show_partnership_info": false,
+            "button_text": "Apply now",
+            "number_of_images": "4",
+            "logo_position": "above",
+            "corner_style": "square",
+            "button_background_color": "#000000",
+            "button_label_color": "#ffffff",
+            "link_color": "#2c6ecb"
+          }
+        },
+        "question-1": {
+          "type": "question",
+          "settings": {
+            "question": "How much do I earn?",
+            "answer": "<p>25% commission on all sales made through your affiliate link.</p>",
+            "anchor": "",
+            "open": false
+          }
+        },
+        "question-2": {
+          "type": "question",
+          "settings": {
+            "question": "How do I apply?",
+            "answer": "<p>Fill in the application on this page. It runs through Shopify Collabs, and you&rsquo;ll hear back once it&rsquo;s reviewed.</p>",
+            "anchor": "",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "a5a37460-c7f5-4e1b-b64d-ed909c9ade2f",
+        "question-1",
+        "question-2"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "apply"
+  ]
+}

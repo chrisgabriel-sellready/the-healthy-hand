@@ -1,0 +1,24 @@
+<section class="thh-about-why" aria-labelledby="AboutTitle-{{ section.id }}">
+  <div class="thh-about-why__inner">
+    <div class="thh-about-why__text" data-kb-reveal>
+      <h1 class="thh-about-why__title" id="AboutTitle-{{ section.id }}">{{ section.settings.title | escape }}</h1>
+      {{ section.settings.text }}
+      {%- if section.settings.button != blank -%}<a class="thh-about-btn" href="{{ section.settings.link | default: routes.all_products_collection_url }}">{{ section.settings.button | escape }}</a>{%- endif -%}
+    </div>
+    <div class="thh-about-why__img" data-kb-reveal="2">{%- if section.settings.image != blank -%}<img src="{{ section.settings.image | image_url: width: 1000 }}" alt="{{ section.settings.image.alt | escape }}" width="1000" height="{{ 1000 | divided_by: section.settings.image.aspect_ratio | round }}">{%- endif -%}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH our why",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "The Healthy Hand" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>The Healthy Hand is an All Natural Health & Wellness Company.</p><p>Our mission is to provide Health and Wellness herbs to help you live a better daily lifestyle. Allow The Healthy Hand to be a helping hand to you!</p>" },
+    { "type": "text", "id": "button", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "link", "label": "Button link" },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ],
+  "presets": [{ "name": "THH our why" }]
+}
+{% endschema %}

@@ -1,0 +1,17 @@
+<div class="page-width main-page">
+  <div class="page-narrow info-page rte">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <span aria-current="page">{{ page.title | escape }}</span></nav>
+    <h1 class="kb-heading main-page__title">{{ page.title | escape }}</h1>
+    {{ page.content }}
+    {%- if section.settings.notice != blank -%}<p class="notice">{{ section.settings.notice | escape }}</p>{%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "THH page content",
+  "settings": [
+    { "type": "textarea", "id": "notice", "label": "Notice under the content" }
+  ]
+}
+{% endschema %}

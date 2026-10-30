@@ -1,0 +1,47 @@
+{%- liquid
+  assign show = true
+  if product and section.settings.only_products != blank
+    assign handles = section.settings.only_products | map: 'handle'
+    unless handles contains product.handle
+      assign show = false
+    endunless
+  endif
+-%}
+{%- if show -%}
+<section class="multicolumn" id="how-it-works" aria-labelledby="HowTitle-{{ section.id }}">
+  <div class="page-width">
+    <div class="multicolumn__title" data-kb-reveal><h2 class="kb-heading" id="HowTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>{% if section.settings.subtitle != blank %}<span>{{ section.settings.subtitle | escape }}</span>{% endif %}</div>
+    <ul class="multicolumn-list" data-kb-reveal="stagger">
+      {%- for block in section.blocks -%}
+        <li class="multicolumn-card" {{ block.shopify_attributes }}><span class="multicolumn-card__icon multicolumn-card__icon--{{ forloop.index }}">{% render 'thh-icon', icon: block.settings.icon %}</span><h3 class="multicolumn-card__title">{{ block.settings.title | escape }}</h3>{{ block.settings.text }}</li>
+      {%- endfor -%}
+    </ul>
+    {%- if section.settings.note != blank -%}<p class="multicolumn__note">{{ section.settings.note | escape }}</p>{%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "THH how it works",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "How it works" },
+    { "type": "text", "id": "subtitle", "label": "Subheading", "default": "Detox, simplified:" },
+    { "type": "product_list", "id": "only_products", "label": "On product pages, only show for these products", "info": "Leave empty to show on every product." },
+    { "type": "textarea", "id": "note", "label": "Note", "default": "From our FAQ. Read the label before use, and talk to your doctor first if you are pregnant, nursing, taking medication or have a medical condition." }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "pot", "options": [{ "value": "pot", "label": "Cup / pot" }, { "value": "drop", "label": "Water drop" }, { "value": "moon", "label": "Moon" }, { "value": "both", "label": "Two circles" }] },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "richtext", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [{ "name": "THH how it works" }]
+}
+{% endschema %}

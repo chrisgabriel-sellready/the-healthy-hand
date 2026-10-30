@@ -1,0 +1,27 @@
+{%- liquid
+  assign source = section.settings.collection | default: product.collections.first
+  assign shown = 0
+-%}
+<section class="featured featured--spaced" aria-labelledby="RelatedTitle-{{ section.id }}">
+  <div class="page-width">
+    <div class="title-wrapper-with-link"><h2 class="kb-caps" id="RelatedTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2><a class="link-underline" href="{{ routes.all_products_collection_url }}">{{ section.settings.link_label | escape }}</a></div>
+    <ul class="product-grid kb-cgrid" style="--cols:4">
+      {%- for p in source.products limit: 12 -%}
+        {%- if p.id == product.id or p.available == false or shown >= 4 -%}{%- continue -%}{%- endif -%}
+        {%- assign shown = shown | plus: 1 -%}
+        {% render 'thh-card', product: p %}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH you may also like",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "You may also like" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "All products" },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Defaults to the product's first collection." }
+  ]
+}
+{% endschema %}

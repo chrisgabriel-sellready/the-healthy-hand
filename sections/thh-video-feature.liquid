@@ -1,0 +1,33 @@
+<section class="kbpv is-paused" data-kbp data-kbp-ambient data-src="{{ section.settings.video_url }}" aria-labelledby="VideoFeature-{{ section.id }}">
+  <div class="kbpv__inner">
+    <div class="kbpv__copy" data-kb-reveal>
+      {%- if section.settings.eyebrow != blank -%}<p class="kbpv__index">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="kbpv__title" id="VideoFeature-{{ section.id }}">{{ section.settings.title | escape }} <strong>{{ section.settings.title_bold | escape }}</strong></h2>
+      <div class="kbpv__text">{{ section.settings.text }}</div>
+      {%- if section.settings.button != blank -%}<div class="kbpv__actions"><a class="kbpv__button" href="{{ section.settings.link | default: routes.all_products_collection_url }}">{{ section.settings.button | escape }}</a></div>{%- endif -%}
+    </div>
+    <div class="kbpv__media" data-kb-reveal>
+      <video data-kbp-video playsinline muted loop preload="none"{% if section.settings.poster != blank or section.settings.poster_url != blank %} poster="{% if section.settings.poster != blank %}{{ section.settings.poster | image_url: width: 1000 }}{% else %}{{ section.settings.poster_url }}{% endif %}"{% endif %} aria-label="{{ section.settings.video_label | escape }}" tabindex="-1"></video>
+      <div class="kbpv__controls"><button type="button" class="kbpv__control" data-kbp-mute aria-label="Turn sound on"><span data-state="off">{% render 'thh-icon', icon: 'sound-off' %}</span><span data-state="on">{% render 'thh-icon', icon: 'sound-on' %}</span></button></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "THH video feature",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small text", "default": "The Healthy Hand" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "All natural" },
+    { "type": "text", "id": "title_bold", "label": "Heading, bold part", "default": "health & wellness" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Our mission is to provide health and wellness herbs to help you live a better daily lifestyle.</p>" },
+    { "type": "text", "id": "button", "label": "Button label", "default": "All products" },
+    { "type": "url", "id": "link", "label": "Button link" },
+    { "type": "url", "id": "video_url", "label": "Video file URL (.mp4)" },
+    { "type": "image_picker", "id": "poster", "label": "Video cover image" },
+    { "type": "url", "id": "poster_url", "label": "Video cover image URL", "info": "Used when no cover image is picked, e.g. the video's Shopify preview image." },
+    { "type": "text", "id": "video_label", "label": "Video description", "default": "The Healthy Hand product video" }
+  ],
+  "presets": [{ "name": "THH video feature" }]
+}
+{% endschema %}

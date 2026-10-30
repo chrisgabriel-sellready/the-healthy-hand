@@ -1,0 +1,66 @@
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+  assign email = settings.thh_email | default: 'thehealthyhands@gmail.com'
+-%}
+<footer class="site-footer">
+  <div class="page-width">
+    <div class="footer__grid">
+      <div>
+        <h2 class="footer__title">{{ section.settings.menu_title | escape }}</h2>
+        <ul class="site-footer__linklist">
+          {%- for link in menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <div class="footer__contact">
+        <h2 class="footer__title">{{ section.settings.care_title | escape }}</h2>
+        <p>Email us at <a href="mailto:{{ email }}">{{ email }}</a></p>
+        {{ section.settings.care_text }}
+      </div>
+      <div>
+        <div class="footer__logo"><a href="{{ routes.root_url }}">
+          {%- if section.settings.logo != blank -%}
+            <img data-logo src="{{ section.settings.logo | image_url: width: 460 }}" alt="{{ shop.name | escape }}" width="230" height="{{ 230 | divided_by: section.settings.logo.aspect_ratio | round }}" loading="lazy">
+          {%- else -%}
+            <img data-logo src="{{ 'logo_ddd1bfa6-51a0-4ab1-aa0d-af2dddcf5d20.png' | file_url }}" alt="{{ shop.name | escape }}" width="230" height="74" loading="lazy">
+          {%- endif -%}
+          <span class="logo-text" aria-hidden="true">The Healthy <span>Hand</span></span></a></div>
+        {% render 'thh-social' %}
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <ul class="payment-icons" aria-label="Payment methods">
+        {%- if shop.enabled_payment_types.size > 0 -%}
+          {%- for type in shop.enabled_payment_types -%}
+            {%- case type -%}
+              {%- when 'master' -%}<li>Mastercard</li>
+              {%- when 'american_express' -%}<li>Amex</li>
+              {%- when 'paypal' -%}<li>PayPal</li>
+              {%- when 'shopify_pay' -%}<li>Shop Pay</li>
+              {%- else -%}<li>{{ type | replace: '_', ' ' | capitalize }}</li>
+            {%- endcase -%}
+          {%- endfor -%}
+        {%- else -%}
+          <li>Visa</li><li>Mastercard</li><li>Amex</li><li>Discover</li><li>PayPal</li><li>Apple Pay</li><li>Shop Pay</li>
+        {%- endif -%}
+      </ul>
+      <p class="footer__disclaimer">{{ section.settings.disclaimer }}</p>
+      <p class="footer__copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "THH footer",
+  "settings": [
+    { "type": "text", "id": "menu_title", "label": "Menu heading", "default": "Menu" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" },
+    { "type": "text", "id": "care_title", "label": "Customer care heading", "default": "Customer care" },
+    { "type": "richtext", "id": "care_text", "label": "Customer care text", "info": "The email comes from Theme settings → THH redesign.", "default": "<p>The Healthy Hand<br>P.O. Box 630002<br>North Miami Beach, FL 33164</p><p>Orders ship by USPS in 7–10 business days.</p>" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "textarea", "id": "disclaimer", "label": "Disclaimer", "default": "*These statements have not been evaluated by the Food and Drug Administration. These products are not intended to diagnose, treat, cure, or prevent any disease. Read the label and use as directed. Talk to your doctor before use if you are pregnant, nursing, taking medication or have a medical condition." }
+  ]
+}
+{% endschema %}

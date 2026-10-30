@@ -1,0 +1,18 @@
+{%- comment -%} Star rating from the mock-up. rating: number 0-5, label: optional aria-label {%- endcomment -%}
+{%- liquid
+  assign r = rating | default: 0 | times: 1.0 | round: 1
+  assign pct = r | times: 20 | round: 1
+  if pct > 100
+    assign pct = 100
+  endif
+  if label == blank
+    assign shown = r | append: '' | split: '.0' | first
+    assign label = 'Rated ' | append: shown | append: ' out of 5'
+  endif
+  capture five
+    for i in (1..5)
+      render 'thh-icon', icon: 'star'
+    endfor
+  endcapture
+-%}
+<span class="stars" role="img" aria-label="{{ label | escape }}"><span class="stars__base">{{ five }}</span><span class="stars__fill" style="width:{{ pct }}%">{{ five }}</span></span>
