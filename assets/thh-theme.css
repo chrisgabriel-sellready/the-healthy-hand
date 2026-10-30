@@ -703,13 +703,13 @@ p { margin: 0 0 12px; }
 
 /* ---------- Mailing list band (THH's live footer sign-up: Bebas caps, coral "stay updated", grey field, lime Sign Up) ---------- */
 .newsletter--mailing { padding: 52px 0 56px; background: #fff; border-top: 1px solid var(--line); }
-.newsletter__mailing-title { margin: 0 0 26px; font-family: var(--font-heading); font-size: clamp(30px, 3.2vw, 36px); font-weight: 400; line-height: 1.05; letter-spacing: .02em; text-transform: uppercase; color: #000; }
-.newsletter__mailing-title span { color: var(--accent); }
+.newsletter__mailing-title { margin: 0 0 26px; font-family: var(--font-heading); font-size: clamp(30px, 3.2vw, 36px); font-weight: 400; line-height: 1.05; letter-spacing: 2px; text-transform: uppercase; color: #000; }
+.newsletter__mailing-title span { color: #f14b35; }
 .newsletter--mailing .newsletter-form { max-width: 824px; gap: 0; flex-wrap: wrap; }
 .newsletter--mailing .newsletter-form input[type="email"] { height: 62px; padding: 0 20px; border: 0; border-radius: 0; background: #eff0f2; color: var(--ink); text-align: center; font-size: 17px; }
 .newsletter--mailing .newsletter-form input[type="email"]::placeholder { color: #6b6b6b; }
 .newsletter--mailing .newsletter-form input[type="email"]:focus { outline: 2px solid var(--ink); outline-offset: -2px; }
-.newsletter__signup.kb-btn { flex: 0 0 auto; min-width: 186px; min-height: 62px; padding: 0 32px; border: 0; border-radius: 0 4px 4px 0; background: var(--lime); color: #fff; font-family: var(--font-heading); font-size: 26px; font-weight: 400; letter-spacing: .1em; }
+.newsletter__signup.kb-btn { flex: 0 0 auto; min-width: 186px; min-height: 62px; padding: 0 32px; border: 0; border-radius: 0 6px 6px 0; background: var(--lime); color: #fff; font-family: var(--font-heading); font-size: 25px; font-weight: 400; letter-spacing: 3px; }
 .newsletter__signup.kb-btn:hover { background: var(--lime-hover); color: #fff; }
 .newsletter--mailing .form-status { flex-basis: 100%; margin: 12px 0 0; font-size: 14px; }
 @media (max-width: 749px) {
@@ -1169,3 +1169,11 @@ p { margin: 0 0 12px; }
 .mobile-nav__group[open] .site-nav__chevron { transform: rotate(180deg); }
 .mobile-nav__sub { margin: 0; padding: 0 0 6px 14px; list-style: none; }
 .mobile-nav .mobile-nav__sub a { padding: 11px 0; font-size: 15px; font-weight: 500; }
+
+/* ---------- Footer: THH's live footer details (caps menu, grey card logos) ---------- */
+.site-footer__linklist a { text-transform: uppercase; letter-spacing: 1px; }
+.payment-icons { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 30px; color: #8a8a8a; }
+.payment-icons li { display: flex; align-items: center; padding: 0; border: 0; background: none; font-size: 0; }
+.payment-icons .payment-icon { display: block; width: auto; height: 22px; max-width: 64px; }
+.payment-icons .payment-icon--mastercard { height: 30px; }
+.payment-icons .payment-icon--applepay { height: 26px; }
