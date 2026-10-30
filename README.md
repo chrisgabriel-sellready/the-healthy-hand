@@ -45,29 +45,10 @@ This is THH's live theme export ("master – new with installments message", 30 
 ## Before publishing (in Shopify admin)
 
 1. **Connect or upload the theme.** In Online Store → Themes, choose Add theme → Connect from GitHub → this branch. It's added as an unpublished theme, so preview it before publishing.
-2. **Main menu.** The header uses `main-menu`. Any link with child links becomes a dropdown. To match the mock-up, set it to:
-   - Home `/`
-   - All Products `/collections/all`, with child links:
-     - Detox `/collections/detox-collection`
-     - Detox Tea `/products/soursop-ginger-detox-tea-bags`
-     - Bundle Deals `/collections/bundle-deals-collection`
-     - Capsules `/collections/capsules-collection`
-     - Gummies `/collections/gummies-collection`
-     - Black Seed Oil `/collections/black-seed-oil`
-   - Bundle Deals `/collections/bundle-deals-collection`
-   - About Us `/pages/about-us`
-   - FAQ `/pages/faq`
-   - Become an Affiliate `/pages/collab`
-   - Contact Us `/pages/contact-us`
-
-   Notes:
-   - The `detox-tea-bags` collection is empty, so the Detox Tea link goes to the product.
-   - There's no accessories collection yet.
-3. **Footer menu.** The footer is set to `footer-menu-new` (Reviews, Privacy Policy, Shipping & Returns, FAQ, Help, What are fibroids?). Edit that menu to change the links.
-4. **Page templates.**
-   - Contact Us: change its template to `contact`.
-   - What are Fibroids?: change its template to `fibroids`.
-5. **HealthyText.** In the theme editor, open the HealthyText band and paste the Klaviyo SMS list ID so sign-ups are saved. The live site's text sign-up page uses VIA; paste VIA's embed code into the same section instead if THH prefers that.
+2. **Main menu: done.** The header uses a new menu, `thh-main-menu` ("THH main menu (redesign)"). It has Home, All Products (with Detox, Detox Tea, Bundle Deals, Capsules, Gummies and Black Seed Oil under it), Bundle Deals, About Us, FAQ, Become an Affiliate and Contact Us. The live site's menus (`main-menu-new`, `main-menu`) were not changed. Any link with child links becomes a dropdown.
+3. **Footer menu: done.** The footer uses the existing `footer-menu-new` (Reviews, Privacy Policy, Shipping & Returns, FAQ, Help, What are fibroids?).
+4. **Contact and Fibroids pages: done, without changing page templates.** Both pages use the default template. The new `page.json` shows the mock-up's contact layout and form on `contact-us`, and the "not medical advice" notice on `what-are-fibroids`. The handles are set in the page sections in the theme editor. Changing the pages' templates in admin would also change the live site, so they were left alone. (`page.contact.json` and `page.fibroids.json` still exist if you'd rather assign templates after publishing.)
+5. **HealthyText: done.** Sign-ups go to THH's existing VIA text list (keyword `6123f00bd49731000806fd85`), the same one the live HealthyText subscribe page uses. To switch to Klaviyo, choose it in the HealthyText band and add the SMS list ID.
 6. **Optional product metafields** (Settings → Custom data → Products):
 
 | Metafield | Type | Shows as |

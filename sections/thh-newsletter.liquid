@@ -1,7 +1,7 @@
 {%- comment -%}
-  Mock-up "HealthyText" band. Phone numbers go to a Klaviyo list with SMS consent through Klaviyo's
-  public client API (the layout already loads Klaviyo onsite for company SUJAkf). Set the list ID in
-  the theme editor, or paste another provider's embed code to replace the form.
+  Mock-up "HealthyText" band. By default phone numbers go to THH's VIA text list, the same way the
+  live HealthyText subscribe page does (VIA keyword 6123f00bd49731000806fd85). Klaviyo is an option:
+  pick it and set the SMS list ID. Or paste another provider's embed code to replace the form.
 {%- endcomment -%}
 {%- if section.settings.enabled -%}
 <section class="newsletter" aria-labelledby="HealthyText">
@@ -11,7 +11,7 @@
     {%- if section.settings.embed != blank -%}
       {{ section.settings.embed }}
     {%- else -%}
-      <form class="newsletter-form" data-klaviyo-sms data-company="{{ section.settings.klaviyo_company | escape }}" data-list="{{ section.settings.klaviyo_list | escape }}" data-done="{{ section.settings.success | escape }}">
+      <form class="newsletter-form" data-sms-signup data-provider="{{ section.settings.provider }}" data-via-keyword="{{ section.settings.via_keyword | escape }}" data-company="{{ section.settings.klaviyo_company | escape }}" data-list="{{ section.settings.klaviyo_list | escape }}" data-done="{{ section.settings.success | escape }}">
         <label class="visually-hidden" for="NewsletterPhone">Phone number</label>
         <input id="NewsletterPhone" type="tel" name="phone" autocomplete="tel" placeholder="Phone number" required>
         <button class="kb-btn kb-btn--ink" type="submit">Subscribe</button>
@@ -29,9 +29,11 @@
     { "type": "checkbox", "id": "enabled", "label": "Show", "default": true },
     { "type": "text", "id": "heading", "label": "Heading", "default": "HealthyText" },
     { "type": "text", "id": "text", "label": "Text", "default": "Put in your phone number below to subscribe!" },
+    { "type": "select", "id": "provider", "label": "Send sign-ups to", "default": "via", "options": [{ "value": "via", "label": "VIA (THH's current HealthyText)" }, { "value": "klaviyo", "label": "Klaviyo SMS list" }] },
+    { "type": "text", "id": "via_keyword", "label": "VIA keyword ID", "default": "6123f00bd49731000806fd85", "info": "From the HealthyText subscribe page template." },
     { "type": "text", "id": "klaviyo_company", "label": "Klaviyo public API key (company ID)", "default": "SUJAkf" },
-    { "type": "text", "id": "klaviyo_list", "label": "Klaviyo SMS list ID", "info": "Required for sign-ups to be saved. Klaviyo → Lists & segments → your SMS list → Settings → List ID." },
-    { "type": "text", "id": "success", "label": "Success message", "default": "Thanks! Check your phone to confirm." },
+    { "type": "text", "id": "klaviyo_list", "label": "Klaviyo SMS list ID", "info": "Only for Klaviyo. Klaviyo → Lists & segments → your SMS list → Settings → List ID." },
+    { "type": "text", "id": "success", "label": "Success message", "default": "Thanks for subscribing! Check your phone for a text from us." },
     { "type": "html", "id": "embed", "label": "Form embed code (optional)", "info": "Paste another provider's SMS form here to use it instead of the built-in form." },
     { "type": "textarea", "id": "fine", "label": "Small print", "default": "By subscribing you agree to receive recurring automated marketing texts. Consent is not a condition of purchase. Msg & data rates may apply. Reply STOP to unsubscribe." }
   ]

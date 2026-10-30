@@ -1,4 +1,14 @@
-{%- assign email = settings.thh_email | default: 'thehealthyhands@gmail.com' -%}
+{%- liquid
+  assign email = settings.thh_email | default: 'thehealthyhands@gmail.com'
+  assign only = section.settings.only_handles | remove: ' ' | split: ','
+  assign show = true
+  if section.settings.only_handles != blank
+    unless only contains page.handle
+      assign show = false
+    endunless
+  endif
+-%}
+{%- if show -%}
 <div class="page-width">
   <div class="main-page" style="padding-bottom:0">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <span aria-current="page">{{ page.title | escape }}</span></nav>
@@ -29,12 +39,14 @@
     </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "THH contact",
   "settings": [
     { "type": "text", "id": "title", "label": "Heading", "default": "Contact us" },
+    { "type": "text", "id": "only_handles", "label": "Only show on these pages", "info": "Page handles, comma-separated. Leave empty to always show." },
     { "type": "text", "id": "success", "label": "Success message", "default": "Thanks! We'll get back to you as soon as possible." }
   ],
   "blocks": [

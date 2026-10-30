@@ -323,20 +323,29 @@
     sel.addEventListener('change', function () { var u = new URL(location.href); u.searchParams.set('sort_by', sel.value); u.searchParams.delete('page'); location.href = u; });
   });
 
-  /* ---------- HealthyText (Klaviyo SMS sign-up) ---------- */
-  $$('form[data-klaviyo-sms]').forEach(function (f) {
+  /* ---------- HealthyText SMS sign-up (VIA by default, or Klaviyo) ---------- */
+  $$('form[data-sms-signup]').forEach(function (f) {
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var s = $('.form-status', f) || f.appendChild(Object.assign(document.createElement('p'), { className: 'form-status' }));
       s.setAttribute('role', 'status');
-      var list = f.getAttribute('data-list'), company = f.getAttribute('data-company');
       var phone = f.querySelector('input[type="tel"]').value.replace(/[^\d+]/g, '');
       if (phone.charAt(0) !== '+') phone = (phone.length === 10 ? '+1' : '+') + phone;
-      if (!list || !company) { s.textContent = 'Sign-up isn’t connected yet.'; return; }
-      fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + encodeURIComponent(company), {
-        method: 'POST', headers: { 'Content-Type': 'application/json', revision: '2024-10-15' },
-        body: JSON.stringify({ data: { type: 'subscription', attributes: { custom_source: 'THH HealthyText band', profile: { data: { type: 'profile', attributes: { phone_number: phone, subscriptions: { sms: { marketing: { consent: 'SUBSCRIBED' } } } } } } }, relationships: { list: { data: { type: 'list', id: list } } } } })
-      }).then(function (r) {
+      var req;
+      if (f.getAttribute('data-provider') === 'klaviyo') {
+        var list = f.getAttribute('data-list'), company = f.getAttribute('data-company');
+        if (!list || !company) { s.textContent = 'Sign-up isn’t connected yet.'; return; }
+        req = fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + encodeURIComponent(company), {
+          method: 'POST', headers: { 'Content-Type': 'application/json', revision: '2024-10-15' },
+          body: JSON.stringify({ data: { type: 'subscription', attributes: { custom_source: 'THH HealthyText band', profile: { data: { type: 'profile', attributes: { phone_number: phone, subscriptions: { sms: { marketing: { consent: 'SUBSCRIBED' } } } } } } }, relationships: { list: { data: { type: 'list', id: list } } } } })
+        });
+      } else {
+        req = fetch('https://api.via-backend.com/api/shopify/page-subscribe', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ keywordId: f.getAttribute('data-via-keyword'), phoneNumber: phone })
+        });
+      }
+      req.then(function (r) {
         s.textContent = r.ok ? f.getAttribute('data-done') : 'Please check the number and try again.';
         if (r.ok) f.reset();
       }).catch(function () { s.textContent = 'Please try again.'; });

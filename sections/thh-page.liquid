@@ -1,17 +1,31 @@
+{%- liquid
+  assign skip = section.settings.skip_handles | remove: ' ' | split: ','
+  assign notice_for = section.settings.notice_handles | remove: ' ' | split: ','
+  assign show_notice = true
+  if section.settings.notice_handles != blank
+    unless notice_for contains page.handle
+      assign show_notice = false
+    endunless
+  endif
+-%}
+{%- unless skip contains page.handle -%}
 <div class="page-width main-page">
   <div class="page-narrow info-page rte">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <span aria-current="page">{{ page.title | escape }}</span></nav>
     <h1 class="kb-heading main-page__title">{{ page.title | escape }}</h1>
     {{ page.content }}
-    {%- if section.settings.notice != blank -%}<p class="notice">{{ section.settings.notice | escape }}</p>{%- endif -%}
+    {%- if section.settings.notice != blank and show_notice -%}<p class="notice">{{ section.settings.notice | escape }}</p>{%- endif -%}
   </div>
 </div>
+{%- endunless -%}
 
 {% schema %}
 {
   "name": "THH page content",
   "settings": [
-    { "type": "textarea", "id": "notice", "label": "Notice under the content" }
+    { "type": "textarea", "id": "notice", "label": "Notice under the content" },
+    { "type": "text", "id": "notice_handles", "label": "Only show the notice on these pages", "info": "Page handles, comma-separated, e.g. what-are-fibroids. Leave empty for every page." },
+    { "type": "text", "id": "skip_handles", "label": "Don't show this section on these pages", "info": "Page handles, comma-separated, e.g. contact-us (it uses the contact section below)." }
   ]
 }
 {% endschema %}
