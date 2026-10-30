@@ -1,0 +1,224 @@
+
+<div data-role="accordion" data-collapsible="true" data-height-style="content"  data-icons="" class="product-tabs">
+      
+  <div>
+    <h3>{{ section.settings.desc_title  }} <i></i></h3>
+       <div>
+         <p>
+           {{ product.description | replace: '<iframe','<div class="flex-video widescreen youtube"><iframe' | replace: '</iframe>','</iframe></div>' }}
+          </p>
+       </div> 
+  </div> 
+    {% for block in section.blocks %}
+        {% case block.type %}
+            {% when 'Default-Tab' %}
+     <div>
+       <h3>{{ block.settings.title  }} <i></i></h3>
+       <div>
+         <p>
+          {{  block.settings.content  }}
+          </p>
+       </div> 
+  </div>
+      {% when 'Collection-Tab' %}
+{% assign found = false %}  
+{% for c in product.collections %}
+  {% if c.handle == block.settings.collection %}
+    {% assign found = true %}
+   {% endif %}
+{% endfor %}
+  {% if found == true %}
+     <div>
+       <h3>{{ block.settings.title  }} <i></i></h3>
+       <div>
+         <p>
+          {{  block.settings.content  }}
+          </p>
+       </div> 
+  </div>  
+ {% endif %}
+      {% when 'Product-Tab' %}
+    {% if product.handle == block.settings.product %}
+     <div>
+       <h3>{{ block.settings.title  }} <i></i></h3>
+       <div>
+         <p>
+          {{  block.settings.content  }}
+          </p>
+       </div> 
+  </div>    
+  {% endif %}
+       {% endcase %}
+    {% endfor %}
+    </div>  
+
+
+
+
+
+{% schema %}
+  {
+    "name": "Product Tabs",
+    "settings": [{
+        "id": "desc_title",
+        "type": "text",
+        "default": "Description",
+        "label": "Description Title"
+      }],
+   "blocks": [
+    {
+     "type": "Default-Tab",
+     "name": "Default Tab",
+     "settings" : [
+      {
+        "type": "paragraph",
+        "content": "Default Tabs show on all products"
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title"
+      },
+      {
+        "id": "content",
+        "type": "richtext",
+        "label": "Content"
+      }
+      ]
+    },
+    {
+     "type": "Product-Tab",
+     "name": "Product Tab",
+     "settings" : [
+      {
+        "type": "paragraph",
+        "content": "Product Tabs show on a specific product"
+      },
+      {
+        "id": "product",
+        "type": "product",
+        "label": "Product"
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title"
+      },
+      {
+        "id": "content",
+        "type": "richtext",
+        "label": "Content"
+      }
+      ]
+    },
+    {
+     "type": "Collection-Tab",
+     "name": "Collection Tab",
+     "settings" : [
+      {
+        "type": "paragraph",
+        "content": "Collection Tabs show on all products within a specific collection"
+      },
+      {
+        "id": "collection",
+        "type": "collection",
+        "label": "Collection"
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title"
+      },
+      {
+        "id": "content",
+        "type": "richtext",
+        "label": "Content"
+      }
+      ]
+    }
+   ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+
+.product-tabs {
+ > :first-child {
+   border-top:none;
+ }
+ > div {
+    border-top: 1px solid #323232;
+   & > :first-child {
+display: flex;
+    justify-content: space-between;
+    align-items: center;
+   & i {
+    position:relative;
+    &:before, &:after {
+    background: #505050;
+    content: '';
+    height: 2px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 10px;
+    transition: transform .5s ease;
+   }
+}
+& i:after {
+transform: rotate(90deg);
+    transform-origin: center;
+}
+&.ui-accordion-header-active {
+ & i:before, & i:after {
+    transform: rotate(180deg);
+ }
+}
+   }
+ }
+& .ui-accordion-header-active, & .ui-accordion-header.ui-state-active {
+    border:none;
+}
+& .ui-accordion-header:focus {
+    outline: none;
+}
+& .flex-video {
+    position: relative;
+    height: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 75%;
+    overflow: hidden;
+ &.widescreen {
+    padding-bottom: 56.25%;
+}
+& iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+}
+.ui-accordion-content {
+@media (max-width: 600px) {
+    padding: 1em 1em; 
+ }
+}
+.ui-accordion-header {
+@media (max-width: 600px) {
+    padding: .5em .5em .5em 0.3em;
+ }
+}
+}
+
+.ui-page-theme-a .product-tabs {
+& .ui-accordion-content {
+  background:none;
+ }
+}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}                                                        

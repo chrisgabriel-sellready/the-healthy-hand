@@ -1,0 +1,541 @@
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font.family | append: section.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font.family | append: section.settings.font.weight | append: section.settings.font.style | append: '|' %}
+
+
+ #product-{{ product.id }} #shopify-section-{{ section.id }}  .google-reviews-wrap > .title h2 {
+    font-family: {{ section.settings.font.family }}; 
+    font-weight:{{ section.settings.font.weight }}; 
+    font-style:{{ section.settings.font.style }};    
+      font-size:{{ section.settings.fontsize }}px;   
+ }
+
+
+
+  #product-{{ product.id }} #shopify-section-{{ section.id }} .google-reviews-wrap > .title {
+     text-align: left; 
+   }
+  
+{% endstyle %}
+
+
+<div class="google-reviews-wrap product">
+   
+<div class="title">
+  <div class="column">
+    {% unless section.settings.title == nil %}
+    <h2><span>{{ section.settings.title }}</span></h2>
+    {% endunless %}
+  </div>
+</div>
+  
+  
+   <div>
+      <!-- Slider main container -->
+      <div class="swiper-container google-swiper" id="google-reviews-{{ product.id }}">
+         <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+        
+
+       {% for block in section.blocks %}
+          {% case block.type %}
+             {% when 'Default-Review' %}
+      <div class="swiper-slide">
+        <div class="padding">
+         <div class="google-review">
+           <div>
+             <span>
+              <img src="{{ block.settings.google_pic | img_url: 'small' }}" />
+             </span>
+           </div>
+
+           <div>
+             <h1>{{ block.settings.title }}</h1>
+             <div>
+               <span class="wp-google-stars">
+                 <span class="wp-stars">
+                	 <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="1" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                	 <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="2" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% assign google_rating = block.settings.google_rating | plus: 0 %}
+                     {% if google_rating < 3 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="3" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="3" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% endif %}
+                   
+                     {% if google_rating < 4 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="4" style="display:inline-block;vertical-align:middle;;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="4" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% endif %}
+                   
+                     {% if google_rating < 5 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="5" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="5" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% endif %}
+                 </span>
+               </span>
+              {{ block.settings.google_caption }}</div>
+             <div class="footer">
+             <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg"><path d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z" fill="#4285f4"/><path d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z" fill="#34a853"/><path d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z" fill="#fbbc04"/><path d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z" fill="#ea4335"/></svg>
+             {{ block.settings.google_date }}
+             </div>
+           </div>
+
+          </div>
+        </div>
+      </div>  
+     {% when 'Product-Review' %}
+          {% if product.handle == block.settings.product %}
+              <div class="swiper-slide">
+        <div class="padding">
+         <div class="google-review">
+           <div>
+             <span>
+              <img src="{{ block.settings.google_pic | img_url: 'small' }}" />
+             </span>
+           </div>
+
+           <div>
+             <h1>{{ block.settings.title }}</h1>
+             <div>
+               <span class="wp-google-stars">
+                 <span class="wp-stars">
+                	 <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="1" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                	 <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="2" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% assign google_rating = block.settings.google_rating | plus: 0 %}
+                     {% if google_rating < 3 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="3" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="3" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% endif %}
+                   
+                     {% if google_rating < 4 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="4" style="display:inline-block;vertical-align:middle;;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="4" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% endif %}
+                   
+                     {% if google_rating < 5 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="5" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="5" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% endif %}
+                 </span>
+               </span>
+              {{ block.settings.google_caption }}</div>
+             <div class="footer">
+             <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg"><path d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z" fill="#4285f4"/><path d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z" fill="#34a853"/><path d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z" fill="#fbbc04"/><path d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z" fill="#ea4335"/></svg>
+             {{ block.settings.google_date }}
+             </div>
+           </div>
+
+          </div>
+        </div>
+      </div>  
+          {% endif %}
+     {% when 'Collection-Review' %}
+          {% assign found = false %}  
+{% for c in product.collections %}
+  {% if c.handle == block.settings.collection %}
+    {% assign found = true %}
+   {% endif %}
+{% endfor %}
+  {% if found == true %}
+      <div class="swiper-slide">
+        <div class="padding">
+         <div class="google-review">
+           <div>
+             <span>
+              <img src="{{ block.settings.google_pic | img_url: 'small' }}" />
+             </span>
+           </div>
+
+           <div>
+             <h1>{{ block.settings.title }}</h1>
+             <div>
+               <span class="wp-google-stars">
+                 <span class="wp-stars">
+                	 <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="1" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                	 <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="2" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% assign google_rating = block.settings.google_rating | plus: 0 %}
+                     {% if google_rating < 3 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="3" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="3" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% endif %}
+                   
+                     {% if google_rating < 4 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="4" style="display:inline-block;vertical-align:middle;;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="4" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% endif %}
+                   
+                     {% if google_rating < 5 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="5" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="5" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#F8CC26"></path></svg></span>
+                     {% endif %}
+                 </span>
+               </span>
+              {{ block.settings.google_caption }}</div>
+             <div class="footer">
+             <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg"><path d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z" fill="#4285f4"/><path d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z" fill="#34a853"/><path d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z" fill="#fbbc04"/><path d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z" fill="#ea4335"/></svg>
+             {{ block.settings.google_date }}
+             </div>
+           </div>
+
+          </div>
+        </div>
+      </div>  
+   {% endif %}
+         {% endcase %}
+      {% endfor %}
+      </div>
+
+      </div>
+   </div>
+</div>
+
+
+<script>
+  var callback{{ section.id | replace: '-', '_' }}_{{ product.id }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.Swiper) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/js/swiper.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/css/swiper.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callback{{ section.id | replace: '-', '_' }}_{{ product.id }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callback{{ section.id | replace: '-', '_' }}_{{ product.id }});
+}
+    
+  
+  
+  
+  
+function defer{{ section.id | replace: '-', '_' }}_{{ product.id }}(method{{ section.id | replace: '-', '_' }}_{{ product.id }}) {
+    if (window.Swiper) {
+        method{{ section.id | replace: '-', '_' }}_{{ product.id }}();
+    } else {
+        setTimeout(function() { defer{{ section.id | replace: '-', '_' }}_{{ product.id }}(method{{ section.id | replace: '-', '_' }}_{{ product.id }}) }, 50);
+    }
+}
+defer{{ section.id | replace: '-', '_' }}_{{ product.id }}(function () {  
+  
+  start{{ section.id | replace: '-', '_' }}_{{ product.id }}();
+
+  
+function start{{ section.id | replace: '-', '_' }}_{{ product.id }}() {
+   
+      var container = document.getElementById('google-reviews-{{ product.id }}');
+  
+      var swiper = new Swiper((container), {         
+     	effect: 'slide',
+		parallax: true,
+		speed: 600,
+        setWrapperSize:true,
+        spaceBetween:10,
+        slidesPerView: 1,
+        autoHeight: true,
+		autoplay: {
+			delay: 7000,
+			disableOnInteraction: true,
+			observeParents: true,
+		}
+      });   
+} 
+    
+  
+  
+  
+});  
+</script>
+
+
+{% schema %}
+  {
+    "name": "Google Reviews (New)",
+    "settings": [{
+       "id": "title",
+       "type": "text",
+       "label": "Title",
+       "default": "Google Reviews"
+},
+{
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "roboto_n7"
+   },
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       12,
+    "max":       36,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Title Font Size",
+    "default":   18
+     }],
+  "blocks": [
+    {
+     "type": "Default-Review",
+     "name": "Default Review",
+     "settings" : [
+      {
+        "type": "paragraph",
+        "content": "Default Reviews show on all products"
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Name"
+      },
+      {
+       "id": "google_pic",
+       "type": "image_picker",
+       "label": "Image"
+      },
+      {
+        "id": "google_caption",
+        "type": "textarea",
+        "label": "Caption"
+      },
+      {
+        "id": "google_date",
+        "type": "text",
+        "label": "Date",
+        "placeholder": "6/6/20"    
+      },
+      {
+        "type": "select",
+        "id": "google_rating",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ],
+        "label": "Rating"
+      }
+     ]
+  },
+{
+     "type": "Product-Review",
+     "name": "Product Review",
+     "settings" : [
+      {
+        "type": "paragraph",
+        "content": "Product Reviews show on a specific product"
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Name"
+      },
+      {
+       "id": "google_pic",
+       "type": "image_picker",
+       "label": "Image"
+      },
+      {
+        "id": "google_caption",
+        "type": "textarea",
+        "label": "Caption"
+      },
+      {
+        "id": "google_date",
+        "type": "text",
+        "label": "Date",
+        "placeholder": "6/6/20"    
+      },
+      {
+        "type": "select",
+        "id": "google_rating",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ],
+        "label": "Rating"
+      }
+     ]
+  },
+{
+     "type": "Collection-Review",
+     "name": "Collection Review",
+     "settings" : [
+      {
+        "type": "paragraph",
+        "content": "Collection Reviews show on all products within a specific collection"
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Name"
+      },
+      {
+       "id": "google_pic",
+       "type": "image_picker",
+       "label": "Image"
+      },
+      {
+        "id": "google_caption",
+        "type": "textarea",
+        "label": "Caption"
+      },
+      {
+        "id": "google_date",
+        "type": "text",
+        "label": "Date",
+        "placeholder": "6/6/20"    
+      },
+      {
+        "type": "select",
+        "id": "google_rating",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ],
+        "label": "Rating"
+      }
+     ]
+  }
+ ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+.google-reviews-wrap.product {
+ padding:0;
+margin: 25px auto;
+  max-width: 100%;
+ .title h2 span {
+ background:none;
+padding:0;
+}
+    .padding {
+     padding: 5px;
+    }
+    .google-review {
+    padding: 15px 10px;
+    box-shadow: 1px 1px 15px #0000000a;
+    border-radius: 14px;
+     max-width: 100%;
+    & > div:nth-child(1) {
+      max-width:70px;
+     }
+    }
+    h1 {
+    color:black;
+    font-weight: bold;
+    margin-bottom: 4px;
+    font-size: 16px;
+    line-height: 15px;
+    color:black;
+    }
+   .wp-google-stars {
+    display: block;
+   }
+   .footer { 
+    margin-top: 10px;
+    & svg {
+    max-width: 20px;
+    display: inline-block;
+    vertical-align: text-top;
+    margin-right: 10px;
+   }
+  } 
+}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}                

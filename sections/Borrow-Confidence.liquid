@@ -1,0 +1,448 @@
+
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font.family | append: section.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font.family | append: section.settings.font.weight | append: section.settings.font.style | append: '|' %}
+
+#shopify-section-{{ section.id}} h1 {
+    font-family: {{ section.settings.font.family }}; 
+    font-weight:{{ section.settings.font.weight }}; 
+    font-style:{{ section.settings.font.style }};    
+}
+
+
+
+
+
+
+{% unless section.settings.animation == 'none' %}
+
+#shopify-section-{{ section.id}} .borrow-confidence.hasAnimation .row div {
+      -webkit-animation-fill-mode: forwards;  
+      animation-fill-mode: forwards;  
+     will-change: transform; 
+   -webkit-transform: translateZ(0);
+   -moz-transform: translateZ(0);
+   -ms-transform: translateZ(0);
+   -o-transform: translateZ(0);
+   transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -ms-backface-visibility: hidden;
+   backface-visibility: hidden; 
+   -webkit-perspective: 1000;
+   -moz-perspective: 1000;
+   -ms-perspective: 1000;
+   perspective: 1000; 
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+       opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}  
+@keyframes popIn{
+ 0% {
+-webkit-transform: translateZ(0) scale(0);
+    -moz-transform: translateZ(0) scale(0);
+    -ms-transform: translateZ(0) scale(0);
+    -o-transform: translateZ(0) scale(0);
+    transform: translateZ(0) scale(0);
+   
+    }
+ 100% {
+-webkit-transform: translateZ(0) scale(1);
+    -moz-transform: translateZ(0) scale(1);
+    -ms-transform: translateZ(0) scale(1);
+    -o-transform: translateZ(0) scale(1);
+    transform: translateZ(0) scale(1);
+
+     }
+  }
+{% endunless %}
+
+
+
+{% case section.settings.animation %}
+{% when 'fadeIn' %} 
+#shopify-section-{{ section.id}} .borrow-confidence.hasAnimation .row div { 
+     opacity:0;
+}
+.loaded #shopify-section-{{ section.id}} .borrow-confidence.hasAnimation.effect .row div { 
+animation-name:fadeIn;
+-webkit-animation-name:fadeIn;
+animation-duration:0.8s;
+-webkit-animation-duration:0.8s;
+animation-timing-function:ease-out;
+-webkit-animation-timing-function:ease-out;
+}
+{% when 'popIn' %} 
+#shopify-section-{{ section.id}} .borrow-confidence.hasAnimation .row div { 
+     transform: translateZ(0) scale(0.001);
+}
+.loaded #shopify-section-{{ section.id}} .borrow-confidence.hasAnimation.effect .row div { 
+animation-name:popIn;
+-webkit-animation-name:popIn;
+animation-duration:1s;
+-webkit-animation-duration:1s;
+animation-timing-function:cubic-bezier(0,-0.5,0,1.75);
+-webkit-animation-timing-function:cubic-bezier(0,-0.5,0,1.75);
+}
+{% when 'zoomIn' %} 
+#shopify-section-{{ section.id}} .borrow-confidence.hasAnimation .row div { 
+     transform: translateZ(0) scale(0.001);
+}
+.loaded #shopify-section-{{ section.id}} .borrow-confidence.hasAnimation.effect .row div { 
+animation-name:popIn;
+-webkit-animation-name:popIn;
+animation-duration:0.4s;
+-webkit-animation-duration:0.4s;
+animation-timing-function:ease-out;
+-webkit-animation-timing-function:ease-out;
+}
+{% endcase %}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% if section.settings.css != nil %}
+{{ section.settings.css }}
+{% endif %}
+{% endstyle %}
+
+<div class="borrow-confidence {% unless section.settings.animation == 'none' %}hasAnimation{% endunless %}">
+<div class="inner"  style="background-color:{{ section.settings.background_color }};color:{{ section.settings.color }};">
+  
+{% if section.settings.title != '' %}
+<h1>{{ section.settings.title }}</h1>
+{% endif %}
+
+{% if section.settings.subtitle != '' %}
+<span>{{ section.settings.subtitle }}</span>
+{% endif %}
+
+<div class="row align-center align-middle">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'Logo' %}
+        <div data-title="{{ block.settings.title }}">
+        
+        {% if block.settings.url != '' %}<a href="{{ block.settings.url }}">{% endif %}
+          
+        {% if block.settings.svg != '' %}
+            {{ block.settings.svg }}
+          {% else %}
+  
+  
+         {% capture logo %}{{ block.settings.image | img_url: 'large' }}{% endcapture %}
+         {% if logo contains 'no-image' %}{% else %}
+         <img src="{{ block.settings.image | img_url: 'large' }}" />
+         {% endif %}
+  
+       {% endif %}
+          {% if block.settings.url != '' %}</a>{% endif %}
+        </div>
+  
+      {% endcase %}
+  {% endfor %} 
+</div>
+  
+</div>
+</div>
+{% unless section.settings.animation == 'none' %}
+<script>
+  // get the element to animate
+var element{{ section.id }} = document.querySelector('#shopify-section-{{ section.id }} .hasAnimation');
+var elementHeight{{ section.id }} = element{{ section.id }}.clientHeight;
+
+// listen for scroll event and call animate function
+setTimeout(function() {                                                     
+document.removeEventListener('scroll', animate{{ section.id }});                                     
+document.addEventListener('scroll', animate{{ section.id }});
+document.dispatchEvent(new CustomEvent('scroll'));    
+}, 600);
+// check if element is in view
+function inView{{ section.id }}() {
+
+  // get window height
+  var windowHeight = window.innerHeight;
+  // get number of pixels that the document is scrolled
+  var scrollY = window.scrollY || window.pageYOffset;
+  
+  // get current scroll position (distance from the top of the page to the bottom of the current viewport)
+  var scrollPosition = scrollY + windowHeight;
+  // get element position (distance from the top of the page to the bottom of the element)
+  var elementPosition = element{{ section.id }}.getBoundingClientRect().top + scrollY + (elementHeight{{ section.id }} / 5);
+  
+  // is scroll position greater than element position? (is element in view?)
+  if (scrollPosition > elementPosition) {
+    return true;
+  }
+  
+  return false;
+}
+
+// animate element when it is in view
+function animate{{ section.id }}() {
+  // is element in view?
+  if (inView{{ section.id }}()) {
+      // element is in view, add class to element
+      var scrolled = window.scrollY || window.pageYOffset;
+      if(scrolled > 0 && !element{{ section.id }}.classList.contains('effect')) {
+      element{{ section.id }}.classList.add('fast', 'effect');
+      }else{
+      element{{ section.id }}.classList.add('effect');
+      }
+  }
+} 
+</script>
+{% endunless %}
+
+
+{% schema %}
+  {
+    "name": "Borrow Confidence (Logos)",
+    "settings": [{
+       "id": "title",
+       "type": "text",
+       "label": "Title",
+       "default": "We've been seen & featured in"
+      },
+{
+    "type": "font_picker",
+     "id": "font",
+     "label": "Title Font",
+     "default": "work_sans_n6"
+},
+{
+       "id": "subtitle",
+       "type": "text",
+       "label": "Sub-title"
+      },
+{
+       "id": "color",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#000"
+},
+{
+       "id": "background_color",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#ffffff"
+},
+{
+   "type":      "header",
+   "content":   "Animation"
+},
+{
+   "type":      "select",
+   "id":        "animation",
+   "label":     "Logo Animation",
+    "options": [
+      { "value": "none", "label": "No Animation"},
+      { "value": "zoomIn", "label": "Zoom In"},
+      { "value": "fadeIn", "label": "Fade In"},
+      { "value": "popIn", "label": "Pop In"}
+   ],
+   "default":   "none"
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}], 
+  "blocks": [
+    {
+     "type": "Logo",
+     "name": "Logo",
+     "settings" : [
+      {
+       "id": "title",
+       "type": "text",
+       "label": "Title"
+      },
+      {
+       "id": "image",
+       "type": "image_picker",
+       "label": "Image"
+      },
+      {
+       "id": "svg",
+       "type": "html",
+       "label": "SVG"
+      },
+      {
+       "id": "url",
+       "type": "url",
+       "label": "Link to"
+      }
+     ]
+    }
+   ],
+  "presets": [
+    {
+      "name": "Borrow Confidence",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+@mixin bp($point) {
+
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+}  
+@else if $point == laptop {
+  @media #{$bp-laptop} { @content; }
+}
+@else if $point == tablet {
+  @media #{$bp-tablet} { @content; }
+}
+@else if $point == tabletup {
+  @media #{$bp-tabletup} { @content; }
+}
+@else if $point == phablet {
+  @media #{$bp-phablet} { @content; }
+}
+@else if $point == phabletup {
+  @media #{$bp-phabletup} { @content; }
+}
+@else if $point == mobile {
+  @media #{$bp-mobile}  { @content; }
+}
+@else if $point == mobileup {
+  @media #{$bp-mobileup} { @content; }
+}
+@else if $point == small {
+  @media #{$bp-small}  { @content; }
+}
+
+}
+
+.borrow-confidence {
+   & .inner {
+       text-align:center;
+    padding: 30px 0 35px;
+  @include bp(phablet) {
+      padding: 12px 0 10px;
+  }
+  & h1 {
+      text-transform: uppercase;
+font-size: 23px;
+    font-family: 'Open Sans',sans-serif;
+ margin: 0 0 20px 0;
+    line-height: 1.4;
+    @include bp(phablet) {
+        font-size: 17px;
+    }
+  }
+  & span {
+   display:block;
+    @include bp(phablet) {
+        font-size: 14px;
+    }
+  }
+  & .row {
+    flex-wrap: nowrap;
+@include bp(tablet) {
+    flex-wrap: wrap;
+}
+@include bp(mobile) {
+margin-top: 15px;
+}
+& div {
+    margin: 0 15px 10px;
+@include bp(laptop) {
+margin: 0 15px 15px;
+}
+@include bp(mobile) {
+       margin: 0px 5px 10px;
+}
+
+    
+
+
+
+
+
+    & svg, & img {
+max-height: 80px;
+    width: auto;
+    max-width: 100%;
+      @include bp(tablet) {
+       max-height: 39px;
+      }
+      @include bp(phablet) {
+       margin:0;
+       padding:0 10px;
+      }
+      @include bp(mobile) {
+        max-height: 30px;
+max-width: 82px;
+      }
+      & path {
+
+      }
+    }
+}
+  }
+  }
+  &.hasAnimation {
+    & .row {
+      & div {
+       @for $i from 1 to 20 {
+         &:nth-child(#{$i}) { animation-delay: $i * 0.5s + 2s; -webkit-animation-delay: $i * 0.5s + 2s;}
+       }
+      }
+    }
+    &.fast {
+    & .row {
+      & div {
+       @for $i from 1 to 20 {
+         &:nth-child(#{$i}) { animation-delay: $i * 0.5s; -webkit-animation-delay: $i * 0.5s;}
+       }
+      }
+    }
+    }
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}                     
+{% endjavascript %}                         

@@ -1,0 +1,997 @@
+{% unless section.settings.enablebuynow %}
+{% assign buynowtext = settings.buynowtext %}
+{% else %}
+{% assign buynowtext = section.settings.buynowtext %}
+{% style %}
+#shopify-section-{{ section.id }} .collection-featured li.product a.buynow  {
+color:{{ section.settings.buynowcolor}};
+ {% case settings.buy_now_button %}
+    {% when 'hide' %}
+     display:none;
+    {% when 'button' %}
+     background:{{ section.settings.buynowbackground }};
+     border-radius: 48px;
+     padding: 11px 35px;
+     display: inline-block;
+     margin: 20px 0 0 0; 
+     @media (max-width: 600px) {
+       padding: 11px 20px;
+     }
+    {% when 'link' %}
+     display: inline-block;
+     margin: 11px 0 0 0;
+     padding:0px;
+     @media (max-width: 600px) {
+       padding:0px;
+     }
+    {% endcase %}
+}
+
+
+
+{% endstyle %}
+{% endunless %}
+
+{% if section.settings.enablefontcolors %}
+{% style %}
+#shopify-section-{{ section.id }} .collection-featured li.product h3  {
+color:{{ section.settings.producttitlecolor }};
+}
+#shopify-section-{{ section.id }} .collection-featured li.product .h1 {
+color:{{ section.settings.productpricecolor }};
+}
+#shopify-section-{{ section.id }} .collection-featured li.product .desc {
+color:{{ section.settings.productdesccolor }};
+}
+{% endstyle %}
+{% endif %}
+
+
+
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font.family | append: section.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font.family | append: section.settings.font.weight | append: section.settings.font.style | append: '|' %}
+
+
+ #shopify-section-{{ section.id }} .collection-featured > .row.title h2 {
+    font-family: {{ section.settings.font.family }}, -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",Arial,sans-serif; 
+    font-weight:{{ section.settings.font.weight }}; 
+    font-style:{{ section.settings.font.style }};    
+      font-size:{{ section.settings.fontsize }}px;   
+     color:{{ section.settings.title_color }};
+        line-height: 1;
+ }
+{% if section.settings.fullwidth %}
+   #shopify-section-{{ section.id }} .collection-featured > .row {
+   max-width: 100%; 
+   }
+{% endif %}  
+    
+   #shopify-section-{{ section.id }} .collection-featured > .row.title {
+     text-align: {{ section.settings.alignment }}; 
+   }
+  
+{% if section.settings.linethrough %}
+
+   #shopify-section-{{ section.id }} .collection-featured .title h2 span {
+    background: #fff;
+   }
+
+   #shopify-section-{{ section.id }} .collection-featured > .row.title h2:before {  
+    position: absolute;
+    content: "";
+    height: 1px;
+    background-color: #e0e0e0;
+    top: -moz-calc(50% - 0.5px);
+    top: -webkit-calc(50% - 0.5px);
+    top: -ms-calc(50% - 0.5px);
+    top: calc(50% - 0.5px);
+    left: 0;
+    right: 0;
+    width: 100%;
+   }
+{% endif %}
+
+
+#shopify-section-{{ section.id }} .collection-featured .carousel {
+{% unless section.settings.fullwidth %}max-width: 78.5rem;{% endunless %}
+}  
+
+
+
+:root{--swiper-theme-color:#7d7d7d}
+
+
+
+
+
+
+
+#shopify-section-{{ section.id }} .collection-featured .show-more a  {
+background:{{ section.settings.showmorebackground }};
+color:{{ section.settings.showmorecolor}};
+}
+ 
+  
+
+    
+#shopify-section-{{ section.id }}:nth-child(2) {
+padding-top:50px;
+}
+@media (max-width: 1022px) { 
+#shopify-section-{{ section.id }}:nth-child(2) {
+padding-top:25px;
+}
+}  
+
+
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+
+
+
+
+
+  
+<div class="collection-featured {% if section.settings.animate %}animate{% endif %}">
+<div class="row title">
+  <div class="column">
+    <h2><span>{{ section.settings.title }}</span></h2>
+  {% if section.settings.subtitle %}
+  <p>{{ section.settings.subtitle }}</p>
+  {% endif %}
+  </div>
+</div>
+
+{% unless section.settings.carousel == false %}
+<div class="carousel">  
+<div class="swiper-button-prev"></div>   
+<div class="swiper-container">
+{% endunless %}    
+<ul class="{% unless section.settings.carousel == false %} swiper-wrapper {% else %}  row align-center align-bottom {% endunless %}">
+{% assign count = 0 %}  
+{% assign products_per = section.settings.products_per | plus: 0 %}  
+{% if products_per == 2 %}
+  {% assign sizes = 'large-6 medium-6' %}
+  {% elsif products_per == 3 %}
+  {% assign sizes = 'large-4 medium-4' %}
+  {% elsif products_per == 4 %}
+  {% assign sizes = 'large-3 medium-6' %}
+  {% else %}
+  {% assign sizes = 'large-3 medium-4' %}
+{% endif %}
+
+{% if section.settings.collection != nil %}
+{% assign thecollection = section.settings.collection %}
+{% else %}
+{% assign thecollection = false %}
+{% endif %}
+  
+{% if thecollection.all_products_count > 0 %}
+{% for product in collections[thecollection].products %}
+  
+  
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+
+{% if count >= products_per %}
+  {% assign hasmore = true %}
+{% endif %}
+      <li itemscope itemtype="http://schema.org/Product" data-id="{{ product.id }}" class="text-center product {% unless section.settings.carousel == false %}swiper-slide {% else %} columns {{ sizes }} small-6  {% unless product.available %} sold-out{% endunless %}{% if on_sale %} on-sale{% endif %}{% unless count >= products_per %} first-animate{% endunless %}{% endunless %}"  {% unless section.settings.carousel %} {% if count >= products_per %}style="display:none;"{% endif %} {% endunless %} >
+         
+      
+      
+       <a href="{{ product.url | within: collection }}" {% if settings.disableproductajax or settings.boldsubscriptions %}rel="external"{% endif %}>
+
+         
+      
+       <div class="image {% if settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product.images.size > 1  %} imgswitch {% case settings.product_image_hover %}{% when 'fade' %}fade{% when 'scroll' %}scroll{% endcase %}{% endif %}">
+         <div class="inner">
+         {% if product.featured_image %}<img class="{% unless settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product.media.size > 1  %}hvr-grow{% endunless %} lazyload" data-sizes="auto" data-src="{{ product.featured_image | img_url: '1024x1024' }}" />{% endif %}
+         </div>
+         {% if settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product.images.size > 1  %}
+         <div class="inner">
+            <img class="lazyload" data-sizes="auto" data-src="{{ product.images[1] | product_img_url: 'large' }}" />
+         </div>
+         {% endif %}
+       </div>
+         
+         
+         <h3><span>{{ product.title }}</span></h3>
+
+       
+        <div class="h1 medium-down--left">
+          {% if product.price_max > product.price %}
+           <span class="currPrice">{% include 'price' with product.price_min %}</span> {% if on_sale %}<span class="oldPrice"> {{ product.compare_at_price | money }} </span>{% endif %}
+        {% else %}
+           <span class="currPrice">{% include 'price' with product.price %}</span>   {% if on_sale %}<span class="oldPrice"> {{ product.compare_at_price | money }}</span> {% endif %}
+        {% endif %}
+        {% if on_sale %}
+          <div class="salew">
+            <span class="sale-tag medium-down--right{% if settings.product_reviews_enable %} has-reviews{% endif %}">
+              {% assign compare_price = product.compare_at_price %}
+              {% assign product_price = product.price %}
+              {% include 'price-sale' %}
+            </span>
+         </div>
+        {% endif %}  
+        {% unless product.available %}
+          <span class="product-price__sold-out">{{ 'products.product.sold_out' | t }}</span>
+        {% endunless %} 
+       </div>
+
+       {% if settings.affirm != blank %}   
+       <p class="affirm-as-low-as" data-page-type="product" data-amount="{{product.price_min}}"></p>
+       {% endif %}  
+
+         
+        {% if section.settings.desc %}
+         <div class="desc">
+           {{ product.description | strip_html | truncate: 300, ", ..." }}
+         </div>
+         {% endif %}
+         
+         
+         
+       </a> 
+        
+   
+        
+        
+        <a href="{{ product.url }}" class="buynow" {% if settings.disableproductajax or settings.boldsubscriptions %}rel="external"{% endif %}>{{ buynowtext }}</a>
+     </li>
+  
+  
+  {% assign count = count | plus: 1 %}
+     {% endfor %}
+  {% else %}
+
+
+  {% if products_per >= 2 %}
+  <li class="text-center columns {{ sizes }} small-6 product first-animate demo">
+   <a href="#">
+      <div class="image">
+         <img class="hvr-grow" src="//user-images.githubusercontent.com/8041502/70945752-e10ea900-2023-11ea-8d7d-cddf9bbeefb9.jpg" />
+      </div>
+     <h3><span>Demo Product</span></h3>
+      <p class="h1 medium-down--left">
+        <small>$80.00</small>
+      </p>
+   </a>
+   <a href="#" class="buynow">{{ buynowtext }}</a>
+</li>
+    {% endif %}
+  
+  {% if products_per >= 2 %}
+    <li class="text-center columns {{ sizes }} small-6 product first-animate demo">
+   <a href="#">
+      <div class="image">
+         <img class="hvr-grow" src="//user-images.githubusercontent.com/8041502/70945753-e10ea900-2023-11ea-9793-a9ab9f015597.jpg" />
+      </div>
+     <h3><span>Demo Product</span></h3>
+      <p class="h1 medium-down--left">
+        <small>$90.00</small>
+      </p>
+   </a>
+   <a href="#" class="buynow">{{ buynowtext }}</a>
+</li>
+  {% endif %}
+  
+  {% if products_per >= 3 %}
+    <li class="text-center columns {{ sizes }} small-6 product first-animate demo">
+   <a href="#">
+      <div class="image">
+         <img class="hvr-grow" src="//user-images.githubusercontent.com/8041502/70945754-e10ea900-2023-11ea-8bc1-09820ac16e95.jpg" />
+      </div>
+     <h3><span>Demo Product</span></h3>
+      <p class="h1 medium-down--left">
+        <small>$100.00</small>
+      </p>
+   </a>
+   <a href="#" class="buynow">{{ buynowtext }}</a>
+</li>
+  {% endif %}
+  
+   {% if products_per >= 4 %}
+    <li class="text-center columns {{ sizes }} small-6 product first-animate demo">
+   <a href="#">
+      <div class="image">
+         <img class="hvr-grow" src="//user-images.githubusercontent.com/8041502/70945755-e10ea900-2023-11ea-9f47-cb9e9a6e8339.jpg" />
+      </div>
+     <h3><span>Demo Product</span></h3>
+      <p class="h1 medium-down--left">
+        <small>$110.00</small>
+      </p>
+   </a>  
+   <a href="#" class="buynow">{{ buynowtext }}</a>
+</li>
+  {% endif %}
+  
+  
+  
+ {% endif %}
+</ul>  
+{% unless section.settings.carousel == false %}  
+   <!-- If we need navigation buttons -->
+
+  </div> <div class="swiper-button-next"></div> </div> 
+{% endunless %}  
+  {% unless section.settings.showmore == false %}  
+  <div class="row show-more">
+    <div class="column text-center">
+      {% if thecollection.size > 0 %}
+          <a href="{{ collections['all'].url }}">Show More</a>      {% else %}
+       <a href="#">Show More</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endunless %}
+</div>
+
+
+<script>
+ document.addEventListener("shopify:section:select", function (e) { 
+  var target = e.target;
+   if(target.id == 'shopify-section-{{ section.id }}') {
+      document.body.classList.add('editing','edit-{{ section.id }}');
+   
+      document.addEventListener("shopify:section:deselect", function (e) { 
+        document.body.classList.remove('edit-{{ section.id }}');
+        document.removeEventListener("shopify:section:deselect");                               
+      })
+      
+   }
+ }); 
+</script>   
+{% unless section.settings.carousel == false %}
+<script>
+  var callback{{ section.id | replace: '-', '_' }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.Swiper) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/js/swiper.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/css/swiper.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callback{{ section.id | replace: '-', '_' }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callback{{ section.id | replace: '-', '_' }});
+}
+    
+function defer{{ section.id | replace: '-', '_' }}(method{{ section.id | replace: '-', '_' }}) {
+    if (window.jQuery && window.Swiper) {
+        method{{ section.id | replace: '-', '_' }}();
+    } else {
+        setTimeout(function() { defer{{ section.id | replace: '-', '_' }}(method{{ section.id | replace: '-', '_' }}) }, 4);
+    }
+}
+defer{{ section.id | replace: '-', '_' }}(function () {  
+  
+  
+SliderFeatured{{ section.id | replace: '-', '_' }}();  
+  
+function SliderFeatured{{ section.id | replace: '-', '_' }}() {
+  
+      var container = document.getElementById('shopify-section-{{ section.id }}').querySelector('.swiper-container');
+      var swiper = new Swiper((container), {         
+      effect: 'slide',  
+      speed: 1200,
+      autoplay: {
+        delay: 9000,
+        disableOnInteraction: true,
+      },
+  {% if products_per == 2 %}
+      slidesPerView: 2,
+  {% elsif products_per == 3 %}      
+      slidesPerView: 3, 
+  {% elsif products_per >= 4 %}      
+      slidesPerView: 4,  
+  {% endif %}
+        slidesPerGroup: 1,
+      loop: true,
+    {% if products_per == 3 %}    
+     //   centeredSlides: true,  
+     {% endif %}      
+      direction: 'horizontal',
+      navigation: {
+        nextEl: document.getElementById('shopify-section-{{ section.id }}').querySelector('.swiper-button-next'),
+        prevEl: document.getElementById('shopify-section-{{ section.id }}').querySelector('.swiper-button-prev'),
+      },
+  breakpoints: {
+    1022: {
+  {% if products_per == 2 %}
+      slidesPerView: 2,
+      slidesPerGroup: 2,
+  {% elsif products_per == 3 %}      
+      slidesPerView: 3, 
+        slidesPerGroup: 3,                                   
+  {% elsif products_per >= 4 %}      
+      slidesPerView: 4,  
+     slidesPerGroup: 4,
+  {% endif %}
+      spaceBetween: 15,
+      
+    },
+    720: {
+      slidesPerView: 3,
+      spaceBetween: 2,
+      slidesPerGroup: 3,
+    },
+    480: {
+      slidesPerView: 2,
+      spaceBetween: 15,
+      slidesPerGroup: 2,
+    },
+    320: {
+      slidesPerView: 2,
+      spaceBetween: 15,
+      slidesPerGroup: 2,
+    },
+  }
+      });   
+} 
+    
+  
+});    
+</script>
+{% endunless %}   
+{% if section.settings.animate %}
+<script>
+// get the element to animate
+var element{{ section.id }} = document.querySelector('#shopify-section-{{ section.id }} .animate');
+var elementHeight{{ section.id }} = element{{ section.id }}.clientHeight;
+
+// listen for scroll event and call animate function
+setTimeout(function() {                                                     
+document.removeEventListener('scroll', animate{{ section.id }});                                     
+document.addEventListener('scroll', animate{{ section.id }});
+document.dispatchEvent(new CustomEvent('scroll'));    
+}, 600);
+// check if element is in view
+function inView{{ section.id }}() {
+
+  // get window height
+  var windowHeight = window.innerHeight;
+  // get number of pixels that the document is scrolled
+  var scrollY = window.scrollY || window.pageYOffset;
+  
+  // get current scroll position (distance from the top of the page to the bottom of the current viewport)
+  var scrollPosition = scrollY + windowHeight;
+  // get element position (distance from the top of the page to the bottom of the element)
+  var elementPosition = element{{ section.id }}.getBoundingClientRect().top + scrollY + (elementHeight{{ section.id }} / 5);
+  
+  // is scroll position greater than element position? (is element in view?)
+  if (scrollPosition > elementPosition) {
+    return true;
+  }
+  
+  return false;
+}
+
+// animate element when it is in view
+function animate{{ section.id }}() {
+  // is element in view?
+  if (inView{{ section.id }}()) {
+      // element is in view, add class to element
+      element{{ section.id }}.classList.add('effect');
+  }
+} 
+</script>
+{% endif %} 
+    
+{% unless section.settings.carousel %}
+<script>
+var showmorebutton = document.querySelector('#shopify-section-{{ section.id }} .show-more a');    
+if(showmorebutton) {                                            
+showmorebutton.addEventListener("click", showmore);
+  function showmore(e) {
+  // if has hidden 
+  {% if hasmore == false %}
+    e.preventDefault() 
+    var ul = this.closest('.collection-featured').getElementsByTagName("ul")[0];
+    var lis = ul.querySelectorAll("li");
+    var i = 0
+    lis.forEach(li => li.style.display == 'none' ? null : i++ );
+    // now lets show em
+    for (a = 0; (a + 1) < (i * 2) && a < {{ section.settings.products_per }} && (i + a) <= (ul.childElementCount - 1) ; a++) {
+    ul.children.item((i + a)).style.display = 'block';
+    }
+    if((i * 2) >= ul.childElementCount) {
+     this.classList.add('disabled');
+    }
+    {% endif %} 
+  }
+}
+</script>
+{% endunless %}
+{% schema %}
+  {
+    "name": "Featured Collection",
+    "settings": [
+{
+       "id": "title",
+       "type": "text",
+       "label": "Title"
+},
+ {
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "work_sans_n6"
+   },
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       20,
+    "max":       75,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Title Font Size",
+    "default":   40
+     },
+{
+       "id": "title_color",
+       "type": "color",
+       "label": "Title Font Color",
+       "default": "#000000"
+},
+{
+"type": "checkbox",
+"id": "linethrough",
+"label": "Line Through",
+"default": false
+}, 
+{
+       "id": "subtitle",
+       "type": "text",
+       "label": "Sub Title"
+},
+{
+   "type":      "radio",
+   "id":        "alignment",
+   "label":     "Alignment",
+   "options": [
+     { "value": "center", "label": "Center" },
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "center"
+},
+{
+       "id": "collection",
+       "type": "collection",
+       "label": "Collection"
+},
+{
+"type": "checkbox",
+"id": "fullwidth",
+"label": "Full Width",
+"default": false
+}, 
+{
+   "type": "select",
+   "id": "products_per",
+   "options": [
+      { "value": "2", "label": "2 Products"},
+      { "value": "3", "label": "3 Products"},
+      { "value": "4", "label": "4 Products"},
+      { "value": "6", "label": "6 Products"},
+      { "value": "8", "label": "8 Products"},
+      { "value": "12", "label": "12 Products"},
+      { "value": "16", "label": "16 Products"},
+      { "value": "50", "label": "All"}
+   ],
+   "default": "4",
+   "label": "Show how many at a time?"
+},
+{
+"type": "checkbox",
+"id": "desc",
+"label": "Show Shortened Product Description",
+"default": false
+}, 
+{
+"type": "checkbox",
+"id": "carousel",
+"label": "Show As Carousel (refresh page after enabling this)",
+"default": false
+}, 
+{
+"type": "checkbox",
+"id": "animate",
+"label": "Animate In",
+"default": true
+},
+{
+ "type": "header",
+ "content": "Font Colors"
+},
+{
+ "type": "paragraph",
+ "content": "Making changes here will override Styles set in the settings area"
+},
+      {
+        "id": "enablefontcolors",
+        "default": false,
+        "label": "Enable Font Colors Settings",
+        "info": "This Replaces Existing Buy Now Button Styles from the Settings page with the new settings below",
+        "type": "checkbox"
+      },
+{
+       "id": "producttitlecolor",
+       "type": "color",
+       "label": "Product Title Color",
+       "default": "#000000"
+},
+{
+       "id": "productpricecolor",
+       "type": "color",
+       "label": "Product Price Color",
+       "default": "#000000"
+},
+{
+       "id": "productdesccolor",
+       "type": "color",
+       "label": "Product Description Color",
+       "default": "#000000"
+},
+{
+ "type": "header",
+ "content": "Buy Now Button"
+},
+{
+ "type": "paragraph",
+ "content": "Making changes here will override Styles set in the settings area"
+},
+      {
+        "id": "enablebuynow",
+        "default": false,
+        "label": "Enable Buy Now Button Settings",
+        "info": "This Replaces Existing Buy Now Button Styles from the Settings page with the new settings below",
+        "type": "checkbox"
+      },
+{
+        "type": "radio",
+        "id": "buynowbutton",
+        "label": "Buy Now Button",
+        "options": [
+          {
+            "value": "hide",
+            "label": "Do not display"
+          },
+          {
+            "value": "button",
+            "label": "Display as button"
+          },
+          {
+            "value": "link",
+            "label": "Display as link"
+          }
+        ],
+        "default": "button"
+      },
+{
+       "id": "buynowtext",
+       "type": "text",
+       "label": "Button Text",
+       "default": "Buy Now"
+},
+{
+       "id": "buynowbackground",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#000000"
+},
+{
+       "id": "buynowcolor",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#FFFFFF"
+},
+{
+ "type": "header",
+ "content": "Show More Button"
+},
+{
+"type": "checkbox",
+"id": "showmore",
+"label": "Show More",
+"default": true
+}, 
+{
+       "id": "showmorebackground",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#000000"
+},
+{
+       "id": "showmorecolor",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#FFFFFF"
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}
+],
+  "presets": [
+    {
+      "name": "Featured Collection",
+      "category": "Collections"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+.editing {
+& .shopify-section {
+& .collection-featured {
+ &.animate li.first-animate {
+opacity:1;
+}
+}
+}
+}
+
+.shopify-section {
+& .collection-featured {
+    margin-bottom: 30px;
+ & ul {
+   margin:0 auto;
+   padding:0;
+ }
+ &.animate {
+ &.effect {
+    li.first-animate {
+    -webkit-animation-name: fadeInUp-Collection-Featured;
+         animation-name: fadeInUp-Collection-Featured;
+        
+            -webkit-animation-duration: 800ms;
+            animation-duration: 800ms;
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+    @for $i from 1 to 10 {
+     &:nth-child(#{$i}) { animation-delay: $i * 0.25s; -webkit-animation-delay: $i * 0.25s;}
+    } 
+    }
+ }
+ & li.first-animate {
+        opacity:0;
+         will-change: transform;
+   -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -ms-backface-visibility: hidden;
+   backface-visibility: hidden;
+
+   -webkit-perspective: 1000;
+   -moz-perspective: 1000;
+   -ms-perspective: 1000;
+   perspective: 1000;
+  }
+}
+ & .title {
+  	& h2 {
+     position:relative;
+    & span {
+    z-index: 2;
+    position: relative;
+    padding: 0 20px;
+     font-size:100%;
+    @include bp(mobile) {
+      font-size:80%;
+      padding: 0;
+    }
+     }
+   }
+  }
+  & li.product  {
+     margin-bottom: 35px;
+     list-style:none; 
+       position:relative;
+     @include bp(mobile) {
+          margin-bottom: 30px; 
+     }
+
+      & .image {
+           z-index: 1;
+    position: relative; 
+            overflow: hidden; 
+      }
+      & h3 {
+    margin: 20px 0 5px;
+       z-index: 2;
+    position: relative;
+      }
+       & .salew {
+        display:inline;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",Arial,sans-serif;
+       }
+       & .h1 {
+    margin-top: 0px;
+    margin-bottom: 0;
+         & .money {
+        color:#FA65A3;       
+        font-size: 16px;    
+        }
+      }
+       & .sale-tag {
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 900;
+    padding: 0 8px;
+    border-radius: 3px;
+    vertical-align: text-bottom;
+color: #ba5485;
+    border: 2px solid #b95388;
+    }
+      & .pricewrap {
+    text-transform: uppercase;
+    color: #6d6d6d;
+    font-size: 19px;
+    font-family: 'Gotham';
+    font-weight: 300;
+       & .compare-price {
+       text-decoration: line-through;
+          font-size: 80%;
+       }
+      }
+ & .desc {
+margin-top: 10px;
+}
+      & .buynow {
+   
+    &:hover {
+    }
+      }
+
+    }
+& .show-more a {
+padding: 15px 20px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 300px;
+    width: 100%;
+&.disabled {
+opacity:0.2;
+}
+}
+
+& .carousel {
+display: flex;
+align-items: center;
+    margin: 0 auto;
+   & .swiper-wrapper {
+margin-left:0;
+margin-right:0;
+padding: 0;
+& li.product {
+margin-bottom:0px;
+}
+}
+   & .swiper-button-next {
+    right:auto;
+   }
+   & .swiper-button-prev {
+     left:auto;
+   }
+   & .swiper-button-next, & .swiper-button-prev {
+   position: relative;
+   width: auto;
+   @include bp(phablet) {
+        align-self: start;
+    margin-top: 15%;
+   }
+   }
+   & .swiper-button-next:after, & .swiper-button-prev:after {
+    font-weight: bold;
+    padding: 0 30px;
+    font-size: 20px;
+     @include bp(phablet) {
+  font-size:16px;  
+  padding: 0 10px;
+     }  
+   }
+   & .swiper-button-next:focus, & .swiper-button-prev:focus {
+  outline: none;
+   }
+}
+} 
+}
+
+
+@keyframes fadeInUp-Collection-Featured {
+   0% {
+      opacity: 0;
+      transform: translateY(150px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}   
+{% endstylesheet %}
+
+
+{% javascript %}       
+ 
+{% endjavascript %}     

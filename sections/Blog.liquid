@@ -1,0 +1,572 @@
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font.family | append: section.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font.family | append: section.settings.font.weight | append: section.settings.font.style | append: '|' %}
+
+  #shopify-section-Blog .page-header h2 {
+    font-family: {{ section.settings.font.family }}; 
+    font-weight:{{ section.settings.font.weight }}; 
+    font-style:{{ section.settings.font.style }};
+    font-size:{{ section.settings.fontsize }}px;
+    color:{{ section.settings.color_title }};
+    line-height:1;
+  }
+
+  #shopify-section-Blog .searchwrap .form button {
+  color:{{ section.settings.searchbuttoncolor }};
+  background:{{ section.settings.searchbuttonbackground }};
+  }
+
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+{% if section.settings.blog != nil %}
+{% assign theblog = section.settings.blog %}
+{% else %}
+{% assign theblog = 'news' %}
+{% endif %}
+
+
+
+
+<div class="searchwrap">
+ <form class="form" action="/search" _lpchecked="1">
+     <input type="hidden" name="type" value="article">
+     <div class="search-input-wrap">
+        <input id="searchblog" data-role="none" type="text" value="" placeholder="Search The Blog..." name="q">
+     </div>
+  <button type="submit">search</button>          
+ </form>  
+</div>
+<div class="page-header">
+  <div class="row align-middle align-justify">
+  <div class="large-12 columns text-center">
+    <h2><span>{{ section.settings.title}}</span></h2>
+   {% if section.settings.subtitle %}<p>{{ section.settings.subtitle}}</p>{% endif %}
+  </div>
+  </div>
+</div>
+{% unless blogs[theblog].articles.size == 0 %}
+<div class="articles-wrap"> 
+<div class="row align-stretch align-left">
+{% assign blog = blogs[theblog] %} 
+{% paginate blog.articles by section.settings.blogs_per %}
+  {% assign i = 0 %}
+{% for article in blog.articles %}
+            
+             <a href="{{ article.url }}" class="{% if i == 0 %}large-12 article-big{% else %}large-4{% endif %} medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="{{ article.image.src | img_url: 'large' }}" alt="{{ article.title }}" />
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>{{ article.title }}</title>
+                      <tags>
+                      {% for tag in article.tags %}
+                        <span>{{ tag }}</span>
+                      {% endfor %}
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  {% assign i = i | plus: 1 %}
+{% endfor %}
+</div>
+
+</div>
+  
+  
+{% if paginate.pages > 1 %}
+<div class="pagination">
+{{ paginate | default_pagination | replace: 'Previous', 'Newer articles' | replace: 'Next', 'Older articles' }}
+</div>
+{% endif %}  
+</div>
+<script> 
+var callbackBlog = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.InfiniteScroll) {
+   // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);   
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackBlog();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackBlog);
+}
+  
+function deferBlog(methodBlog) {
+    if (window.InfiniteScroll) {
+        methodBlog();
+    } else {
+        setTimeout(function() { deferBlog(methodBlog) }, 50);
+    }
+}
+deferBlog(function() {  
+
+   loadBlogs();
+  
+  // if jquery mobile
+  if(window.$.mobile) {
+   jQuery(document).on('pagecontainerhide', function (event, ui) {
+     if(ui.prevPage[0].id == 'blog') {
+      var page = ui.prevPage[0];
+      page.infScroll.destroy();
+
+     } 
+   });
+  jQuery(document).on('pagecontainershow', function (event, ui) {
+    if(ui.toPage[0].id == 'blog') {
+       loadBlogs();
+    }
+  });
+    
+    
+  }
+  
+  
+});  
+  
+function loadBlogs() {
+
+  var page = document.querySelector('#shopify-section-{{ section.id}}').closest('[data-role="page"]');
+  var container = page.querySelector('.articles-wrap .row');
+  
+  page.infScroll = new InfiniteScroll( container, {
+  path: '#' + page.id + ' .next a',
+  append: '.article-wrap',
+  history: false,
+  status: '.ui-loader',
+  });
+
+   page.infScroll.on( 'last', function() {
+       $.mobile.loading().hide();
+   });
+  
+}  
+  
+  
+</script>
+{% endpaginate %}
+{% else %}
+
+
+<div class="articles-wrap"> 
+<div class="row align-stretch align-left">
+  
+
+            
+             <a href="#" class="large-12 article-big medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/70937413-3b9f0980-2012-11ea-80fe-392812a43114.jpg" alt="How to Tell the Difference Between Mr. Right and Mr. Right Now">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>Everything you need to know about  {{ shop.name }} and why we're the best</title>
+                      <tags>
+                      
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  
+
+            
+             <a href="#" class="large-4 medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/70937499-638e6d00-2012-11ea-803d-6f4533184943.jpg" alt="3 REASONS WHY A MAN SHOULDN’T CHASE AFTER A WOMAN">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>3 Reasons why you should choose {{ shop.name }}</title>
+                      <tags>
+                      
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  
+
+            
+             <a href="#" class="large-4 medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/70937522-6be6a800-2012-11ea-96c6-b318659075bf.jpg" alt="It’s Cuffing Season 3 Signs He’s Only With You Because He’s Lonely">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>The difference between {{ shop.name }} and the alternatives. </title>
+                      <tags>
+                      
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  
+  
+              
+             <a href="#" class="large-4 medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/70937556-7608a680-2012-11ea-82a4-9037da4cfdb0.jpg" alt="It’s Cuffing Season 3 Signs He’s Only With You Because He’s Lonely">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>No one else will tell you about this helpful tip but we will </title>
+                      <tags>
+                      
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  
+
+</div>
+
+</div>
+{% endunless %}
+
+
+
+{% schema %}
+  {
+    "name": "Blog",
+    "settings": [{
+   "type": "blog",
+   "id": "blog",
+   "label": "Blog"
+},
+{
+   "type": "select",
+   "id": "blogs_per",
+   "options": [
+      { "value": "4", "label": "4 Articles"},
+      { "value": "7", "label": "7 Articles"},
+      { "value": "13", "label": "13 Articles"}
+   ],
+   "default": "7",
+   "label": "Show how many at a time?"
+},
+{
+       "id": "title",
+       "type": "text",
+       "label": "Title",
+       "default": "Tips & Tricks"
+},
+{
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "work_sans_n6"
+},
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       30,
+    "max":       70,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Font Size",
+    "default":   40
+     },
+{
+       "id": "color_title",
+       "type": "color",
+       "label": "Title Color",
+       "default": "#000000"
+},
+{
+       "id": "subtitle",
+       "type": "text",
+       "label": "Sub Title"
+},
+{
+"type": "header",
+"content": "Search Button Style"
+},
+{
+       "id": "searchbuttonbackground",
+       "type": "color",
+       "label": "Search Button Background",
+       "default": "#000000"
+},
+{
+       "id": "searchbuttoncolor",
+       "type": "color",
+       "label": "Search Button Color",
+       "default": "#ffffff"
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}
+]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+// responsive sizes
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+
+
+#shopify-section-Blog {
+      margin-top: 30px;
+    @include bp(phablet) {
+  margin-top:0px;
+ }
+
+& .searchwrap {
+    padding-top: 20px;
+    padding-bottom: 60px;
+@include bp(tablet) {
+    padding-top: 15px;
+    padding-bottom: 35px;
+}
+@include bp(phablet) {
+    position: fixed;
+    z-index: 9;
+    padding: 5px 10px 5px;
+    background: #fff;
+    border-bottom: 1px solid #00000014;
+    box-shadow: 1px 1px 11px #00000014;
+    width: 100%;
+}
+ & .form {
+    display: flex;
+    width: 100%;
+    -ms-flex: 0 0 55.33333%;
+    flex: 0 0 55.33333%;
+    max-width: 55.33333%;
+    margin: 0 auto;
+   @include bp(phablet) {
+   -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    align-items: center;
+   }
+  & .search-input-wrap {
+    margin-right: 25px;
+    width: 100%;
+     & input {
+    margin-bottom: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border-bottom: 1px rgba(0,0,0,0.16) solid;
+    font-size: 19px;
+    font-family: 'Open Sans', sans-serif;
+    padding-bottom: 10px;
+    min-height: 50px;
+       @include bp(tablet) {
+           font-size: 21px;
+      }
+       @include bp(phablet) {
+            font-size: 18px;
+          border-bottom: none;
+    min-height: 42px;
+      }
+     } 
+	}
+    & button {
+    font-weight: bold;
+    text-transform: capitalize;
+    display: inline-block;
+    color: #fff;
+    padding: 13px 46px;
+    font-size: 21px;
+    border-radius: 25px;
+     @include bp(tablet) {
+     padding: 10px 40px;
+     font-size: 16px;
+      }
+     @include bp(phablet) {
+            padding: 10px 35px;
+    font-size: 15px;
+     }
+    }
+ }
+}
+& .page-header {
+ & h2 {
+display: inline-block;
+  & span {
+   @include bp(mobile) {
+    font-size: 80%;
+   }
+  }
+ }
+  @include bp(phablet) {
+    padding-top: 75px;
+display: none;
+}
+}
+& .articles-wrap {
+& .article-wrap {
+    margin-bottom: 30px;
+   @include bp(phablet) {
+   padding:0;
+margin-bottom:0;
+  }
+  & .article-inner {
+    min-height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+   @include bp(phablet) {
+    border:none;
+   }
+    & .top-image {
+     padding-bottom: 58.7%;
+     margin: 0;
+     overflow: hidden;
+     background: #F7F8FA;
+     position: relative;
+     height: 0;
+      & img {
+     	width: auto;
+   	    height: auto;
+        min-width: 100%;
+        min-height: 100%;
+        position: absolute;
+        object-fit: cover;
+      }
+    }
+    & .bottom-content {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+      & .bottom-inner {
+          width: 100%;
+        & title {
+            color: #000;
+    		display: block;
+  		    font-size: 18px;
+            margin-bottom: 10px;
+        }
+      }
+    }
+  }
+  &.article-big {
+    @include bp(phabletup) {
+    & .article-inner {
+     display:flex;
+      & .top-image {
+        padding-bottom: 32%;
+        width: 55%;
+      }
+      & .bottom-content {
+      width: 45%;
+  	  text-align: center;
+      padding: 30px 30px;
+        & title {
+            font-size: 30px;
+        }
+      }
+    }
+    }
+  }
+ }
+}
+& .pagination {
+text-align: center;
+    display: none;
+    justify-content: center;
+& .current {
+background: #efefef;
+    color: #000000;
+}
+}
+}
+
+
+
+
+
+
+
+
+
+{% endstylesheet %}
+
+{% javascript %}      
+{% endjavascript %}                 

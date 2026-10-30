@@ -1,0 +1,474 @@
+{% if section.settings.activate_slider != false %}  
+<div id="slick-{{ section.id }}">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'Slider' %}
+         <div><a href="{{ block.settings.slide_url }}"><img src="{{ block.settings.slide_image | img_url: '2048x2048' }}" /></a></div>
+       {% endcase %}
+   {% endfor %}
+</div>
+
+<script>
+ var callback{{ section.id }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.$.fn.slick) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/{{ settings.slickjsversion }}/slick.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/{{ settings.slickjsversion }}/slick.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style);
+ 
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callback{{ section.id }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callback{{ section.id }});
+}   
+  
+function defer{{section.id}}(method{{section.id}}) {
+    if (window.$.fn.slick) {
+        method{{section.id}}();
+    } else {
+        setTimeout(function() { defer{{section.id}}(method{{section.id}}) }, 10);
+    }
+}
+defer{{section.id}}(function () {  
+  
+$('#slick-{{ section.id }}').slick({infinite:true,speed:800,slidesToShow:1,adaptiveHeight:true,autoplay:true,autoplaySpeed:5000,arrows: false});
+  
+});
+</script>
+{% else %}
+{% unless section.settings.rev == '' %}
+
+{% assign urls = section.settings.rev | split: '"http' %} 
+
+{% for url in urls %}
+{% assign link = url %} 
+{% assign link = url | split: '"' %} 
+{% assign link = link[0] %} 
+
+<!-- check for google and declare google_font_link -->
+{% if link contains 'google' %}
+{% assign google_font_link = link | prepend: 'https' %}
+{% endif %} 
+
+<!-- check for transparent png and declare admin_assets_images_link -->
+{% if link contains '/plugins/revslider/admin/assets/images/' %}
+{% assign link_parts = link | split: '/' %}
+{% capture admin_assets_images_link %}{% for link_part in link_parts %}{% unless forloop.first == true %}/{% endunless %}{% unless forloop.last == true %}{{ link_part }}{% endunless %}{% endfor %}{% endcapture %}
+{% assign admin_assets_images_link = admin_assets_images_link | prepend: 'http' %}
+{% endif %} 
+
+
+<!-- check for svg and declare admin_assets_svg_link -->
+{% if link contains '/svg/' %}
+{% assign link_parts = link | split: '/' %}
+{% capture admin_assets_svg_link %}{% for link_part in link_parts %}{% unless forloop.first == true %}/{% endunless %}{% unless forloop.last == true %}{{ link_part }}{% endunless %}{% endfor %}{% endcapture %}
+{% assign admin_assets_svg_link = admin_assets_svg_link | prepend: 'http' %}
+{% endif %} 
+
+<!-- check for svg and declare admin_assets_svg_link -->
+{% if link contains '/wp-content/uploads/' %}
+{% assign link_parts = link | split: '/' %}
+{% capture image_link %}{% for link_part in link_parts %}{% unless forloop.first == true %}/{% endunless %}{% unless forloop.last == true %}{{ link_part }}{% endunless %}{% endfor %}{% endcapture %}
+{% assign image_link = image_link | prepend: 'http' %}
+{% endif %} 
+
+{% endfor %}
+
+<!-- get file structure and declare file_structure -->
+{% capture file_structure %}{{ '' | file_url }}{% endcapture %}
+{% assign file_structure = file_structure | split: '?' %} 
+{% assign file_structure = file_structure[0] %} 
+
+<!-- get theme asset structure and declare asset_structure -->
+{% capture theme_file_structure %}{{ 'transparent.png' | asset_url }}{% endcapture %}
+{% assign theme_file_structure = theme_file_structure | split: '?' %} 
+{% assign theme_file_structure = theme_file_structure[0] %} 
+{% assign theme_file_structure = theme_file_structure | split: 'transparent.png' %} 
+{% assign assets_structure = theme_file_structure[0] %} 
+
+
+
+<!-- see if it has close tag -->
+{% assign slider_html_with_script_test = section.settings.rev | split: '<script' %}
+{% assign slider_html_with_script_test = slider_html_with_script_test[1] | slice: 0 %}
+{% if slider_html_with_script_test == '>' %}
+  {% assign fromBody = true %}
+{% else %} 
+  {% assign fromBody = false %}
+{% endif %}
+
+
+
+<!-- if regular script tag -->
+{% if fromBody %}
+{% assign slider_html_with_script = section.settings.rev | split: '<script>' %}
+{% assign slider_html = slider_html_with_script[0] | append: '</div>' %}
+{% else %}
+{% assign slider_html_with_script = section.settings.rev | split: '<script type="text/javascript">' %}
+{% assign slider_additional_css = slider_html_with_script.last | split: '</script>' %}
+{% assign slider_additional_css = slider_additional_css.last | split: '</div>' %}
+{% assign slider_additional_css = slider_additional_css.first %}
+{% assign slider_html = slider_html_with_script[0] | append: '</div>' %}
+{% assign slider_html = slider_html | prepend: slider_additional_css %}
+{% endif %}
+
+
+<!-- replace all links -->
+{% if admin_assets_svg_link %}
+{% assign slider_html =  slider_html | replace: admin_assets_svg_link, file_structure %}
+{% endif %}
+{% if image_link %}
+{% assign slider_html =  slider_html | replace: image_link, file_structure %}
+{% endif %}
+{% if admin_assets_images_link %}
+{% assign slider_html =  slider_html | replace: admin_assets_images_link, assets_structure %}
+{% endif %}
+{% if google_font_link %}
+{% assign slider_html = slider_html | split: 'type="text/css" media="all">' %}
+{% assign slider_html = slider_html[1] %}
+{% endif %}
+
+
+<!-- get all the duplicates out -->
+{% for i in (1..30) %}
+{% assign png = i | prepend: '-' | append: '.png' %}
+{% assign jpg = i | prepend: '-' | append: '.jpg' %}
+{% assign slider_html =  slider_html | replace: png, '.png' %}
+{% assign slider_html =  slider_html | replace: jpg, '.jpg' %}
+{% endfor %}
+
+
+{% assign slider_html =  slider_html | remove: 'target="_self"' %}
+
+
+{% capture slider_js %}{% for script_part in slider_html_with_script %}{% unless forloop.first == true %}{{ script_part | remove: '<script type="text/javascript">' | remove: '</script>' | remove: '</div>' | remove: '<!-- END REVOLUTION SLIDER -->' }}{% endunless %}{% endfor %}{% endcapture %}
+{% unless fromBody %}
+{% assign slider_js = slider_js | split: '<style' %}
+{% assign slider_js = slider_js.first %}
+{% endunless %}
+{% assign slider_js_edit = slider_js | split: 'jsFileLocation:"' %}
+{% assign slider_js_edit = slider_js_edit[1] | split: '"' %}
+{% assign slider_js_edit = slider_js_edit[0] %}
+{% assign slider_js = slider_js | remove: slider_js_edit %}
+
+
+<!-- if has syle tag at the end lets capture it -->
+{% if section.settings.rev contains 'type="text/css"' %}
+{% assign slider_css = section.settings.rev | split: '<style' %}  
+{% assign slider_css_part_1 = slider_css[2] | split: '</style>' %}  
+{% assign slider_css_part_1 = slider_css_part_1[0] %}  
+{% assign slider_css_part_1 = slider_css_part_1 | prepend: '<style ' | append: '</style>'  %}  
+{{ slider_css_part_1 }}
+{% if slider_css[3] contains 'type="text/css"' %}
+{% assign slider_css_part_2 = slider_css[3] | split: '</style>' %}  
+{% assign slider_css_part_2 = slider_css_part_2[0] %}  
+{% assign slider_css_part_2 = slider_css_part_2 | prepend: '<style ' | append: '</style>'  %}  
+{{ slider_css_part_2 }}
+{% endif %}
+{% endif %}
+
+{% assign slider_js = slider_js | replace: 'tpj(document).ready(function() {','' | replace: '});	/*ready*/', '' %}
+
+
+
+{% if section.settings.wait_slider %}
+{% unless slider_js contains 'waitForInit' %}
+  {% assign slider_js = slider_js | replace: 'jsFileLocation:"",','jsFileLocation:"",waitForInit: true,' %}
+{% endunless %}
+{% endif %}
+
+
+{{ slider_html }}
+
+
+
+  
+<script>
+  
+function setREVStartSize(e) {
+    try {
+        e.c = jQuery(e.c);
+        var i = jQuery(window).width(),
+            t = 9999,
+            r = 0,
+            n = 0,
+            l = 0,
+            f = 0,
+            s = 0,
+            h = 0;
+        if (e.responsiveLevels && (jQuery.each(e.responsiveLevels, function(e, f) {
+                f > i && (t = r = f, l = e), i > f && f > r && (r = f, n = e)
+            }), t > r && (l = n)), f = e.gridheight[l] || e.gridheight[0] || e.gridheight, s = e.gridwidth[l] || e.gridwidth[0] || e.gridwidth, h = i / s, h = h > 1 ? 1 : h, f = Math.round(h * f), "fullscreen" == e.sliderLayout) {
+            var u = (e.c.width(), jQuery(window).height());
+            if (void 0 != e.fullScreenOffsetContainer) {
+                var c = e.fullScreenOffsetContainer.split(",");
+                if (c) jQuery.each(c, function(e, i) {
+                    u = jQuery(i).length > 0 ? u - jQuery(i).outerHeight(!0) : u
+                }), e.fullScreenOffset.split("%").length > 1 && void 0 != e.fullScreenOffset && e.fullScreenOffset.length > 0 ? u -= jQuery(window).height() * parseInt(e.fullScreenOffset, 0) / 100 : void 0 != e.fullScreenOffset && e.fullScreenOffset.length > 0 && (u -= parseInt(e.fullScreenOffset, 0))
+            }
+            f = u
+        } else void 0 != e.minHeight && f < e.minHeight && (f = e.minHeight);
+        e.c.closest(".rev_slider_wrapper").css({
+            height: f
+        })
+    } catch (d) {
+        console.log("Failure at Presize of Slider:" + d)
+    }
+}  
+
+   
+  
+{% if google_font_link %}
+  var styleArray = Array.prototype.slice.call(document.styleSheets);
+  var callbackSliderFont{{section.id}} = function(){
+  // Handler when the DOM is fully loaded
+    if(!styleArray.includes("{{ google_font_link }}")) {
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = '{{ google_font_link }}';
+    document.getElementsByTagName("head")[0].appendChild(style);
+  }
+ 
+};
+
+  
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackSliderFont{{section.id}}();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackSliderFont{{section.id}});
+}  
+{% endif %} 
+  
+  
+var callback{{ section.id }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.revSliderLib) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = '{{ 'jquery.themepunch.revolution.min.js' | asset_url }}';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = '{{ 'jquery.themepunch.tools.min.js' | asset_url }}';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = '{{ 'revolution.settings.css' | asset_url }}';
+    document.getElementsByTagName("head")[0].appendChild(style);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = '{{ 'revolution.captions-original.css' | asset_url }}';
+    document.getElementsByTagName("head")[0].appendChild(style);
+   
+ 
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callback{{ section.id }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callback{{ section.id }});
+}  
+  
+  
+  
+function deferSlider{{section.id}}(methodSlider{{section.id}}) {
+   
+    if (window.jQuery) {
+      if (window.jQuery.mobile) {
+        methodSlider{{section.id}}();
+      }else{
+        setTimeout(function() { deferSlider{{section.id}}(methodSlider{{section.id}}) }, 10);
+      }
+    } else {
+        setTimeout(function() { deferSlider{{section.id}}(methodSlider{{section.id}}) }, 10);
+    }
+}
+deferSlider{{section.id}}(function () {  
+   
+$(document).one("pagecreate", function (event, ui) {
+	$(document).one("pagecontainerbeforeshow", function (event, ui) {
+		//if (ui.toPage[0].id == 'index') {
+			var page = ui.toPage[0];
+            window.dataPrev{{ section.id }} = ui.prevPage[0];
+			window.scrollTo(0, 0);
+			var slider = jQuery(page).find('#shopify-section-{{ section.id }} .rev_slider');
+                   
+                                                    
+            // lets wait for RSANYID then load slider js
+            (function listenRS{{section.id}}() {  
+               if (window.revSliderLib && window.revSliderLibTools) {
+                 logLoadedRS{{ section.id }}();
+               }else{
+                 window.setTimeout(listenRS{{section.id}}, 10);
+               }
+            })();                            
+            function logLoadedRS{{section.id}}() {
+                   
+               // start slider                                        
+               {{slider_js }} 
+              
+               (function listen{{section.id}}() {
+							if (window.loaded && window.revSlider) {
+                      if(document.getElementById("shopify-section-Loader") == null) {
+						logLoaded{{section.id}}();
+                      }else if(window.loaded && typeof window.dataPrev{{ section.id }} != 'undefined') {
+                      	logLoaded{{section.id}}();
+                      }else{
+                        setTimeout(function () {
+                        logLoaded{{section.id}}();                   
+                        }, 2000);
+                      }
+					} else {
+						window.setTimeout(listen{{section.id}}, 10);
+					}
+				})();
+                function logLoaded{{section.id}}() {
+                   
+                      var slider = jQuery(page).find('#shopify-section-{{ section.id }} .rev_slider');
+                      slider.revstart();
+              
+                }
+           }
+	});
+      
+});
+  
+$(document).one( "pageremove", '#index', function( event, ui ) {
+  var sliders = this.querySelectorAll('.rev_slider');
+  if(sliders ) {
+    sliders.forEach(function(slider) {
+  	$(slider).revkill();
+    });
+  }
+});
+$(document).one( "pagehide", '#index', function( event, ui ) {
+  var sliders = this.querySelectorAll('.rev_slider');
+  if(sliders ) {
+    sliders.forEach(function(slider) {
+  	var video = slider.querySelector('video');
+      if(video) {
+       video.muted = true;
+      }
+    });
+  }
+});  
+  
+
+
+
+
+  
+});
+</script>
+{% else %}
+<div class="emptyRev">
+ <span>
+ Please Enter Slider HTML/JS 
+ </span>
+</div>
+{% endunless %}
+{% endif %} 
+
+{% schema %}
+  {
+    "name": "Slider",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Customize Your Slider"
+      },
+      {
+        "type": "paragraph",
+        "content": "Your Design comes with a premium animation slider thats very difficult to customize, so we added a simpler basic slider you can swap into when you need to display your own simple banners, it can be activated at any time and replace the premium slider for promotions and other ideas. (Please upload at least 1920w by 1200h image"
+      },
+      {
+        "type": "checkbox",
+        "id": "activate_slider",
+        "label": "Activate Basic Slider",
+        "default": false
+      },
+      {
+        "type": "html",
+        "id": "rev",
+        "label": "Slider HTML"
+      },
+      {
+        "type": "checkbox",
+        "id": "wait_slider",
+        "label": "Wait for Page Load",
+        "default": true
+      }
+     ],
+     "blocks": [
+     {
+     "type": "Slider",
+     "name": "Slide",
+     "settings" : [
+      {
+       "id": "slide_image",
+       "type": "image_picker",
+       "label": "Slide Image"
+      },
+      {
+       "id": "slide_url",
+       "type": "url",
+       "label": "Slide Link"
+      }
+     ]
+    } 
+   ],
+  "presets": [
+    {
+      "name": "Animated Slider",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+.emptyRev {
+display:flex;
+justify-content:center;
+margin:0 auto;
+padding:100px 20px;
+& span {
+border: 3px solid red;
+padding: 20px 35px;
+}
+}
+{% endstylesheet %}
+
+{% javascript %}
+
+
+{% endjavascript %}        

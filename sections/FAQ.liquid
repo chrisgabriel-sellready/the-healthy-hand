@@ -1,0 +1,390 @@
+{% style %}
+#pageFAQ  {
+{% if section.settings.background_color_2 contains 'transparent' %}
+      background-color:{{ section.settings.background_color }};                            
+  {% else %}      
+background: -moz-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+background: -webkit-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+background: radial-gradient(ellipse at center, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+  {% endif %}
+}
+#shopify-section-FAQ .search-title h3, #shopify-section-FAQ .search-title h3, #shopify-section-FAQ .searchwrap .search-title h2  {  
+  color:{{ section.settings.font_color }};
+}
+#shopify-section-FAQ .searchwrap .popular-faq h2 {
+    color:{{ section.settings.font_color }}59;
+}
+#shopify-section-FAQ .popular-faq>div>h3 {
+    color:{{ section.settings.font_color }};
+  border: 1px solid {{ section.settings.font_color }}57;
+}
+
+#shopify-section-FAQ .popular-faq>div>h3 svg path {
+  fill:{{ section.settings.font_color }};
+}
+
+#shopify-section-FAQ .searchwrap .cta-wrap a {  
+  background: {{ section.settings.button_background_color }};
+  color: {{ section.settings.button_font_color }};
+}
+{% endstyle %}
+
+
+<div class="searchwrap">
+ <div class="row align-center">
+  <div class="column large-7 search-title">
+    <h3 class="text-center">Frequently Asked Questions</h3>
+    <h2>Look up a Question, if we haven't answered it you can email us</h2>
+   </div>
+ </div> 
+  
+  
+{% comment %}  
+  <div class="row align-center">
+   <div class="column large-7 searchform-wrap">
+ 
+<form id="searchform" class="search" action="/search?view=faq">
+ <input type="hidden" name="type" value="article" />
+  <input id="helpsearch" type="text" name="q" placeholder="start a question here..." value="{{ search.terms }}"  data-role="none" autocomplete="off" />
+</form>
+
+     
+     
+     <div id="searchhelp-results-wrap" class="searchhelp-results-wrap">
+       <ul id="searchhelp-results">
+  
+       </ul>
+     </div>
+   </div>
+ </div> 
+{% endcomment %}  
+  
+<div class="row align-center popular-faq">
+  <div class="large-7 column">
+    <h2>Most Popular Questions</h2>
+    
+    
+    
+   <div data-role="accordion" data-collapsible="true" data-height-style="content" data-icons="" class="popular-faq">
+    {% for block in section.blocks %}
+        {% case block.type %}
+            {% when 'Faq' %}
+          <div>
+          <h3>{{ block.settings.title  }}
+          <svg width="30pt" height="18pt" viewBox="0 0 1071 625" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<g id="#000000ff">
+<path fill="#000000" opacity="1.00" d=" M 46.44 16.42 C 55.77 7.16 68.83 1.78 81.99 1.97 C 94.88 1.89 107.62 7.20 116.83 16.17 C 253.52 155.48 390.20 294.79 526.89 434.10 C 529.68 437.02 532.34 440.15 535.67 442.50 C 543.03 435.61 549.85 428.12 556.99 420.98 C 688.82 286.81 820.57 152.57 952.40 18.40 C 961.71 8.32 975.24 2.28 989.00 2.45 C 1001.82 2.24 1014.62 7.21 1023.81 16.18 C 1033.87 26.13 1043.79 36.20 1053.85 46.15 C 1063.41 55.45 1069.11 68.64 1069.03 82.01 C 1069.21 94.93 1064.03 107.77 1055.05 117.04 C 896.49 278.16 737.86 439.20 579.33 600.34 C 573.30 606.31 567.62 612.94 559.94 616.88 C 544.46 625.53 524.39 625.00 509.32 615.67 C 500.74 610.49 494.61 602.38 487.43 595.57 C 330.36 435.98 173.23 276.44 16.17 116.83 C 1.02 101.73 -2.44 76.64 7.92 57.95 C 10.82 52.44 14.98 47.73 19.41 43.41 C 28.47 34.46 37.40 25.39 46.44 16.42 Z" />
+</g>
+</svg>  
+          </h3>
+            
+       <div>
+         <p>
+          {{ block.settings.answer }}
+          </p>
+       </div> 
+      </div>
+       {% endcase %}
+    {% endfor %}
+    </div></div></div> 
+  
+  
+  <div class="row align-center cta-wrap">
+    <div class="large-7 column text-right">
+      <a data-transition="fade" href="{{ section.settings.url }}">email us</a>
+    </div>
+  </div>
+</div>
+
+
+  
+
+{% schema %}
+  {
+    "name": "FAQ",
+    "settings": [
+{
+   "type":      "header",
+   "content":   "Background Colors"
+},
+{
+       "id": "background_color",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#000000"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Background Color #2 (Optional Gradient)",
+       "default": "#4B4B4B"
+},
+{
+       "id": "font_color",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#FFFFFF"
+},
+{
+   "type":      "header",
+   "content":   "Contact Us"
+},
+      {
+       "id": "url",
+       "type": "url",
+       "label": "Contact Page"
+      },
+{
+       "id": "button_background_color",
+       "type": "color",
+       "label": "Button Background Color",
+       "default": "#000000"
+},{
+       "id": "button_font_color",
+       "type": "color",
+       "label": "Button Font Color",
+       "default": "#FFFFFF"
+}
+],"blocks": [
+    {
+     "type": "Faq",
+     "name": "Faq",
+     "settings" : [
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Question"
+      },
+      {
+        "id": "answer",
+        "type": "richtext",
+        "label": "Answer"
+      }
+      ]
+    }
+   ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+// responsive sizes
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+#shopify-section-FAQ {
+
+.searchwrap {
+  padding: 50px 0;
+  @include bp(mobile) {
+    background:none;
+  }
+  @include bp(mobile) {
+    padding:0 0 30px 0; 
+  }
+  & .search-title {
+    @include bp(mobile) {
+      padding:0;
+    }
+    & h3 {
+    font-family: 'Open Sans';
+    font-weight: bold;
+      font-size: 43px;
+      @include bp(mobile) {
+        font-size: 21px;
+        padding: 11px 0;
+        margin-bottom: 13px;
+      }
+    }
+    & h2 {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+      font-weight: normal;
+      text-align: center;
+      @include bp(mobile) {
+        font-size: 13px;
+        line-height: 21px;
+        max-width: 75%;
+        margin: 0 auto;
+      }
+    }
+  }
+  & .searchform-wrap {
+    position:relative;
+    margin: 25px 0;
+    & input[type=text] {
+      border: none;
+      box-shadow: none;
+      padding: 30px 25px;
+      font-family: 'Raleway';
+      font-size: 22px;
+      margin: 0px 0;
+      border-radius: 7px;
+      @include bp(mobile) {
+        font-size: 18px;
+        margin: 5px 0; 
+      }
+    }
+    &:focus {
+      border:none; 
+      border-bottom: 1px solid rgba(0, 0, 0, 0.22);
+      box-shadow:none;
+    }
+    & .searchhelp-results-wrap {
+      display:none;
+      opacity:0;
+      z-index: 8889;
+      list-style-type: none;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      left: 0;
+      overflow: hidden;
+      position: absolute;
+      padding-left: .9375rem;
+      padding-right: .9375rem;
+      &.active {
+        display:block;
+        opacity:1;
+        @include transition(opacity,0.3s);
+      }
+      & #searchhelp-results {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 7px;
+        list-style: none;
+        -webkit-box-shadow: 0px 4px 7px 0px rgba(0,0,0,0.1);
+        box-shadow: 0px 4px 7px 0px rgba(0,0,0,0.1);
+        & a {
+          display: block;
+          padding: 10px 20px;
+          color: #000;
+          font-weight: normal;
+          &:hover {
+            color: #11699a;
+            font-weight: bold; 
+          }
+        }
+      }
+    }
+  }
+  & .popular-faq {
+    margin-top: 30px;
+    & h2 {
+      font-family: 'Open Sans', sans-serif;
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 26px;
+      margin-bottom: 25px;
+      text-align: center;
+      @include bp(mobile) {
+        font-size: 21px; 
+      }
+    }
+  }
+  & .cta-wrap {
+    & a {
+      font-weight: normal;
+      text-transform: capitalize;
+      padding: 20px 40px;
+      display: inline-block;
+      border-radius: 6px;
+      font-size: 19px;
+    }
+  }
+}
+
+
+
+.popular-faq {
+      & > div {   
+        margin-bottom:30px;
+      & > h3 {
+        display: flex;
+    justify-content: space-between;
+     background: none;
+
+    cursor: pointer;
+    padding: 18px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 19px;
+    font-family: 'Open Sans', sans-serif;
+            text-shadow: none;
+        @include bp(phablet) {
+            font-size: 15px;
+    line-height: 1.6;
+        }
+        &:hover, &:active, &.ui-accordion-header-active {
+        background: none;
+
+    text-shadow: none;
+        }
+        & svg {
+         display:inline-block;
+         text-align:right;  
+         max-width: 18px;
+         @include transition(transform,0.3s);
+        }
+        &.ui-accordion-header-active {
+          & svg {
+          	 transform: rotate(180deg);
+          }
+        }
+      }
+    }
+   }
+
+
+
+}
+{% endstylesheet %}
+
+{% javascript %}   
+$(document).on("shopify:section:load",'#shopify-section-FAQ',function(e){
+
+});          
+{% endjavascript %} 

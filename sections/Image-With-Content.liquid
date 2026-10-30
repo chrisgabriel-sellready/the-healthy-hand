@@ -1,0 +1,948 @@
+{% assign loadedfonts = '' %}   
+{% style %}
+#shopify-section-{{ section.id }} {
+overflow: hidden; 
+background-size: cover;
+background-position: center;
+{% capture backgroundimage %}{{ section.settings.background_image | img_url: '1024x1024' }}{% endcapture %}                                   
+{% if backgroundimage contains 'no-image' %}
+  {% if section.settings.background_color_2 contains 'transparent' %}
+     {% if section.settings.background_color contains 'transparent' %}
+     {% else %}
+      background-color:{{ section.settings.background_color }};    
+     {% endif %}
+  {% else %}     
+    background: -moz-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: -webkit-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: linear-gradient(to right, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);   
+  {% endif %}
+{% else %}
+background-image:url({{ section.settings.background_image | img_url: '1024x1024' }}); background-color:{{ section.settings.background_color }};
+{% endif %}    
+}  
+  
+@media only screen and (min-width: 1022px) { 
+  #shopify-section-{{ section.id }} .image {
+    flex: 0 0 {{ section.settings.image_width }}%;
+    max-width: {{ section.settings.image_width }}%;
+}  
+}  
+{% for block in section.blocks %}
+   {% case block.type %}
+    {% when 'Image' %}   
+  #shopify-section-{{ section.id }} .block-{{ block.id }} {
+    max-width: {{ block.settings.image_width }}%;
+    align-self:{{ block.settings.alignment }};
+    margin-top:{{ block.settings.topposition }}px;
+    margin-bottom:{{ block.settings.bottomposition }}px;
+  }
+    {% when 'Button' %}  
+{% assign familyandweight = block.settings.font.family | append: block.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ block.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: block.settings.font.family | append: blocksettings.font.weight | append: block.settings.font.style | append: '|' %}
+
+#shopify-section-{{ section.id}} .block-{{ block.id }} {
+   text-align:{{ block.settings.alignment }};
+    margin-top:{{ block.settings.topposition }}px;
+    margin-bottom:{{ block.settings.bottomposition }}px;
+}
+
+#shopify-section-{{ section.id}} .block-{{ block.id }} a {
+    font-family: {{ block.settings.font.family }}; 
+    font-weight:{{ block.settings.font.weight }}; 
+    font-style:{{ block.settings.font.style }};    
+    font-size:{{ block.settings.fontsize }}px;
+    color: {{ block.settings.color }};
+    background: {{ block.settings.background }};
+}
+
+    {% when 'Text' %}  
+ 
+{% assign familyandweight = block.settings.font.family | append: block.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ block.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: block.settings.font.family | append: blocksettings.font.weight | append: block.settings.font.style | append: '|' %}
+
+#shopify-section-{{ section.id}} .block-{{ block.id }} {
+    font-family: {{ block.settings.font.family }}; 
+    font-weight:{{ block.settings.font.weight }}; 
+    font-style:{{ block.settings.font.style }};    
+    font-size:{{ block.settings.fontsize }}px;
+   text-align:{{ block.settings.alignment }};
+  color: {{ block.settings.color }};
+    margin-top:{{ block.settings.topposition }}px;
+    margin-bottom:{{ block.settings.bottomposition }}px;
+}
+{% when 'Mailing-List' %} 
+#shopify-section-{{ section.id}} .block-{{ block.id }} {
+    margin-top:{{ block.settings.topposition }}px;
+    margin-bottom:{{ block.settings.bottomposition }}px;
+}
+#shopify-section-{{ section.id}} .block-{{ block.id }} form input[type=email] {
+ background:{{ block.settings.form_background_color }};
+ color:{{ block.settings.form_color }};
+}
+#shopify-section-{{ section.id}} .block-{{ block.id }} form input[type=email]::-webkit-input-placeholder, #shopify-section-{{ section.id}} .block-{{ block.id }} form input[type=email]::placeholder {
+  color: {{ block.settings.form_color }};
+}
+  {% endcase %}
+{% endfor %}  
+{% if section.settings.css != nil %}
+{{ section.settings.css }}
+{% endif %}
+{% endstyle %}
+
+<div class="image-with-content-wrap">
+ <div class="row align-middle {{ section.settings.alignment }}">
+  
+<div class="columns text">
+  {% for block in section.blocks %}
+  {% case block.type %}
+    {% when 'Image' %}
+    
+  <div class="block-{{ block.id }}">{% unless block.settings.url == nil %}<a class="hvr-grow" href="{{ block.settings.url }}">{% endunless %}<img src="{{ block.settings.image | img_url: 'large' }}" />{% unless block.settings.url == nil %}</a>{% endunless %}</div>
+    {% when 'Button' %} 
+   <div class="block-{{ block.id }} isButton">
+     <a class="hvr-grow" href="{{ block.settings.url }}" >{{ block.settings.text }}</a>
+   </div>  
+    {% when 'Text' %}
+   <div class="block-{{ block.id }} text-block">
+       {{ block.settings.text }}
+   </div>  
+   {% when 'HTML' %}
+   <div class="block-{{ block.id }} html-block">
+       {{ block.settings.html }}
+   </div>  
+   {% when 'Mailing-List' %}
+      <div class="mailing-list-wrap mail-{{ block.id }} block-{{ block.id }}">
+       <div class="mailing-list-inner">
+     {% if block.settings.mailchimp_url %}
+              {% assign mailchimpform = block.settings.mailchimp_url | split: 'u=' %}
+              {% assign mailchimpform = mailchimpform[1] %}
+              {% assign mailchimpformids = mailchimpform | split: '&amp;id=' %}
+             <!-- Begin Mailchimp Signup Form -->
+
+          
+     <div id="mc_embed_signup">    
+     <form id="mc-embedded-subscribe-form-{{ section.id}}-{{ block.id }}" name="mc-embedded-subscribe-form" class="validate" action="{{ block.settings.mailchimp_url }}"  method="post" target="_blank" novalidate>
+      <input class="email" type="email" value="" name="EMAIL" id="mce-EMAIL" placeholder="Your@email.com">
+      <div style="position: absolute; left: -5000px;" aria-hidden="true">
+          <input type="text" name="b_{{ mailchimpformids[0] }}_{{ mailchimpformids[1] }}" tabindex="-1" value="">
+      </div>
+       
+       
+      <button name="subscribe" id="mc-embedded-subscribe" style="background:{{ block.settings.button_color }};color:{{ block.settings.button_font_color }};" type="submit" class="mc-button">{{ block.settings.button_text }}</button>
+
+     </form>  
+
+		<div class="response" id="mce-error-response" style="display:none;"></div>
+     </div>  
+<!--End mc_embed_signup-->
+       {% else %}     
+     <form id="klaviyo-{{ section.id}}-{{ block.id }}" class="klaviyoform" action="//manage.kmail-lists.com/subscriptions/subscribe" data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe" method="GET" target="_blank" novalidate="novalidate">
+      <input type="hidden" name="g" value="{{ block.settings.klaviyo_list }}">
+      <input type="email" value="" name="email" id="k_id_email" placeholder="Your@email.com">
+      <button style="background:{{ block.settings.button_color }};color:{{ block.settings.button_font_color }};" type="submit" class="klaviyo_submit_button">{{ block.settings.button_text }}</button>
+     </form>
+      {% endif %}
+       </div>
+    </div>
+    {% assign ajax = block.settings.ajax %}
+    {% endcase %}
+{% endfor %} 
+</div>
+  
+  
+
+{% capture image %}{{ section.settings.image | img_url: '1024x1024' }}{% endcapture %}                                   
+      {% if image contains 'no-image' %}
+      {% else %} 
+       <div class="large-8 small-12 columns image {% if section.settings.animate %} animate{% endif %}">
+        <img src="{{ section.settings.image | img_url: '1024x1024' }}" />
+       </div>
+{% endif %}  
+
+</div>
+</div>
+
+
+
+<script>
+ document.addEventListener("shopify:section:select", function (e) { 
+  var target = e.target;
+   if(target.id == 'shopify-section-{{ section.id }}') {
+      document.body.classList.add('editing','edit-{{ section.id }}');
+   
+      document.addEventListener("shopify:section:deselect", function (e) { 
+        document.body.classList.remove('edit-{{ section.id }}');
+        document.removeEventListener("shopify:section:deselect");                               
+      })
+      
+   }
+ }); 
+  
+{% if section.settings.animate %}
+// get the element to animate
+var element{{ section.id }} = document.querySelector('#shopify-section-{{ section.id }} .animate');
+var elementHeight{{ section.id }} = element{{ section.id }}.clientHeight;
+
+// listen for scroll event and call animate function
+setTimeout(function() {                                                     
+document.removeEventListener('scroll', animate{{ section.id }});                                     
+document.addEventListener('scroll', animate{{ section.id }});
+document.dispatchEvent(new CustomEvent('scroll'));    
+}, 600);
+// check if element is in view
+function inView{{ section.id }}() {
+
+  // get window height
+  var windowHeight = window.innerHeight;
+  // get number of pixels that the document is scrolled
+  var scrollY = window.scrollY || window.pageYOffset;
+  
+  // get current scroll position (distance from the top of the page to the bottom of the current viewport)
+  var scrollPosition = scrollY + windowHeight;
+  // get element position (distance from the top of the page to the bottom of the element)
+  var elementPosition = element{{ section.id }}.getBoundingClientRect().top + scrollY + (elementHeight{{ section.id }} / 5);
+  
+  // is scroll position greater than element position? (is element in view?)
+  if (scrollPosition > elementPosition) {
+    return true;
+  }
+  
+  return false;
+}
+
+// animate element when it is in view
+function animate{{ section.id }}() {
+  // is element in view?
+  if (inView{{ section.id }}()) {
+      // element is in view, add class to element
+      element{{ section.id }}.classList.add('effect');
+  }
+} 
+{% endif %}
+</script>
+
+<script>
+{% unless mailchimpform %}  
+var callback{{ section.id | replace: '-', '_' }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.KlaviyoSubscribe) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://www.klaviyo.com/media/js/public/klaviyo_subscribe.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callback{{ section.id | replace: '-', '_' }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callback{{ section.id | replace: '-', '_' }});
+}    
+{% endunless %}  
+  
+function defer{{ section.id | replace: '-', '_' }}(method{{ section.id | replace: '-', '_' }}) {
+    if (window.jQuery) {
+        method{{ section.id | replace: '-', '_' }}();
+    } else {
+            setTimeout(function() { defer{{ section.id | replace: '-', '_' }}(method{{ section.id | replace: '-', '_' }}) }, 4);
+    }
+}
+defer{{ section.id | replace: '-', '_' }}(function () {
+  
+  
+    var callbackImageWithContent = {
+             extra_properties: {
+                $source: 'Image With Content Section'
+            },
+            success: function() {
+                var form = $('#klaviyo-{{ section.id}}-{{ block.id }}');
+                form.children('#k_id_email').hide('fast');
+                form.children('.klaviyo_submit_button').attr("disabled", true).text('Thank You');
+            } 
+  }  
+  
+  
+  
+  
+ {% if ajax %}  
+   {% if mailchimpform %}
+    $.ajaxChimp = {
+        responses: {
+            "We have sent you a confirmation email": 0,
+            "Please enter a value": 1,
+            "An email address must contain a single @": 2,
+            "The domain portion of the email address is invalid (the portion after the @: )": 3,
+            "The username portion of the email address is invalid (the portion before the @: )": 4,
+            "This email address looks fake or invalid. Please enter a real email address": 5
+        },
+        translations: {
+            en: null
+        },
+        init: function(selector, options) {
+            $(selector).ajaxChimp(options)
+        }
+    };
+    $.fn.ajaxChimp = function(options) {
+        $(this).each(function(i, elem) {
+            var form = $(elem);
+            var email = form.find("input[type=email]");
+            var errorrsp = form.siblings('#mce-error-response');
+			var button = form.find("[type='submit']");
+			var buttontext = button.text();
+            var settings = $.extend({
+                url: form.attr("action"),
+                language: "en"
+            }, options);
+            var url = settings.url.replace("/post?", "/post-json?").concat("&c=?");
+            form.attr("novalidate", "true");
+            email.attr("name", "EMAIL");
+            form.submit(function() {
+                var msg;
+                errorrsp.hide();
+                function successCallback(resp) {
+                    if (resp.result === "success") {
+						button.html(buttontext);
+						// success functions
+						email.hide('fast');
+				        button.attr("disabled", true).text('Thank You');				
+                    } else {
+                        var index = -1;
+                        try {
+                            var parts = resp.msg.split(" - ", 2);
+                            if (parts[1] === undefined) {
+                                msg = resp.msg
+                            } else {
+                                var i = parseInt(parts[0], 10);
+                                if (i.toString() === parts[0]) {
+                                    index = parts[0];
+                                    msg = parts[1]
+                                } else {
+                                    index = -1;
+                                    msg = resp.msg
+                                }
+                            }
+                        } catch (e) {
+                            index = -1;
+                            msg = resp.msg
+                        }
+						
+					errorrsp.html(msg);
+                    errorrsp.show('fast');
+				    button.html(buttontext);
+                    }
+                    if (settings.language !== "en" && $.ajaxChimp.responses[msg] !== undefined && $.ajaxChimp.translations && $.ajaxChimp.translations[settings.language] && $.ajaxChimp.translations[settings.language][$.ajaxChimp.responses[msg]]) {
+                        msg = $.ajaxChimp.translations[settings.language][$.ajaxChimp.responses[msg]]  	
+                    }
+                    if (settings.callback) {
+                        settings.callback(resp)
+                    }
+                }
+                var data = {};
+                var dataArray = form.serializeArray();
+                $.each(dataArray, function(index, item) {
+                    data[item.name] = item.value
+                });
+                $.ajax({
+                    url: url,
+                    data: data,
+                    success: successCallback,
+                    dataType: "jsonp",
+                    error: function(resp, text) {
+                        console.log("mailchimp ajax submit error: " + text)
+                    }
+                });
+                var submitMsg = "Submitting...";
+                if (settings.language !== "en" && $.ajaxChimp.translations && $.ajaxChimp.translations[settings.language] && $.ajaxChimp.translations[settings.language]["submit"]) {
+                    submitMsg = $.ajaxChimp.translations[settings.language]["submit"]
+                }
+                button.html(submitMsg).show(2e3);
+                return false
+            })
+        });
+        return this
+    }
+    $('#mc-embedded-subscribe-form-{{ section.id}}-{{ block.id }}').ajaxChimp();
+   {% else %}
+    KlaviyoSubscribe.attachToForms('#klaviyo-{{ section.id}}-{{ block.id }}', callbackImageWithContent);
+   {% endif %}
+ {% endif %}
+  
+});
+</script>
+
+{% schema %}
+  {
+    "name": "Image With Content",
+    "settings": [
+{ "type":"header",
+"content": "Background Colors or Image"
+},
+{
+       "id": "background_image",
+       "type": "image_picker",
+       "label": "Background Image (Optional)"
+},
+{
+       "id": "background_color",
+       "type": "color",
+       "label": "Background Color",
+       "default": "transparent"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Background Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+{ "type": "header",
+ "content": "Image"
+},
+{
+       "id": "image",
+       "type": "image_picker",
+       "label": "Model Image PNG! (Optional)"
+},
+  {
+    "type":   "range",
+    "id":     "image_width",
+    "min":       10,
+    "max":       100,
+    "step":     1,
+    "unit":      "%",
+    "label":     "Image Width",
+    "default":   50
+     }, 
+{
+   "type":      "radio",
+   "id":        "alignment",
+   "label":     "Image Alignment",
+   "options": [
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "left"
+},
+{
+"type": "checkbox",
+"id": "animate",
+"label": "Animate In",
+"default": false
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS"
+}],"blocks": [
+    {
+     "type": "Image",
+     "name": "Image",
+     "settings" : [
+{
+       "id": "image",
+       "type": "image_picker",
+       "label": "Model Image PNG! (Optional)"
+},
+{
+        "id": "url",
+        "type": "url",
+        "label": "Link to (optional)"
+},
+  {
+    "type":   "range",
+    "id":     "image_width",
+    "min":       10,
+    "max":       100,
+    "step":     1,
+    "unit":      "%",
+    "label":     "Image Width",
+    "default":   100
+     },
+{
+   "type":      "radio",
+   "id":        "alignment",
+   "label":     "Title Alignment",
+   "options": [
+     { "value": "center", "label": "Center" },
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "center"
+},
+      {
+    "type":   "range",
+    "id":     "topposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Top",
+    "default":   15
+     },
+     {
+    "type":   "range",
+    "id":     "bottomposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Bottom",
+    "default":   15
+     }]
+},
+    {
+     "type": "Text",
+     "name": "Text",
+     "settings" : [
+{
+       "id": "text",
+       "type": "richtext",
+       "label": "Text"
+},
+{
+       "id": "color",
+       "type": "color",
+       "label": "Color",
+       "default": "#000000"
+},
+ {
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "work_sans_n6"
+   },
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       12,
+    "max":       75,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Font Size",
+    "default":   20
+     },
+{
+   "type":      "radio",
+   "id":        "alignment",
+   "label":     "Alignment",
+   "options": [
+     { "value": "center", "label": "Center" },
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "center"
+},
+      {
+    "type":   "range",
+    "id":     "topposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Top",
+    "default":   15
+     },
+     {
+    "type":   "range",
+    "id":     "bottomposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Bottom",
+    "default":   15
+     }]
+},
+ {
+     "type": "Button",
+     "name": "Button",
+     "settings" : [
+{
+       "id": "url",
+       "type": "url",
+       "label": "Url"
+},
+{
+       "id": "text",
+       "type": "text",
+       "label": "Text",
+       "default": "Click Here"
+},
+{
+       "id": "color",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#ffffff"
+},
+{
+       "id": "background",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#000000"
+},
+ {
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "work_sans_n6"
+   },
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       12,
+    "max":       75,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Font Size",
+    "default":   20
+     },
+{
+   "type":      "radio",
+   "id":        "alignment",
+   "label":     "Alignment",
+   "options": [
+     { "value": "center", "label": "Center" },
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "center"
+},
+      {
+    "type":   "range",
+    "id":     "topposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Top",
+    "default":   15
+     },
+     {
+    "type":   "range",
+    "id":     "bottomposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Bottom",
+    "default":   15
+     }]
+},
+{
+     "type": "Mailing-List",
+     "name": "Mailing-List",
+    "limit": 1,
+     "settings" : [
+         {
+        "type": "header",
+        "content": "Marketing Message"
+      },
+         {
+        "type": "header",
+        "content": "A Klaviyo or Mailchimp Account is Required"
+      },
+      {
+        "type": "paragraph",
+"content": "Sign Up for your FREE Klaviyo Account [Click Here](https://www.klaviyo.com/partner/signup?utm_source=001d0000024G2vY&utm_medium=partner). After you sign up watch this video on how to get your List ID [Watch Tutorial Video](https://www.youtube.com)"
+      },
+         {
+        "type": "header",
+        "content": "Klaviyo Settings"
+      },
+         {
+        "id": "klaviyo_list",
+        "type": "text",
+        "label": "Klaviyo List Id (ex: m4stTTd)"
+      },
+         {
+        "type": "header",
+        "content": "Mailchimp Settings"
+      },
+      {
+        "id": "mailchimp_url",
+        "type": "url",
+        "label": "Form action URL (ex: https://dbz.us3.list-manage.com/subscribe/...)"
+      },
+       {
+        "type": "header",
+        "content": "Form Color"
+      },
+      {
+        "id": "form_color",
+        "type": "color",
+        "label": "Form Font Color",
+        "default": "#FFF"
+      },
+      {
+        "id": "form_background_color",
+        "type": "color",
+        "label": "Form Background Color",
+        "default": "#000"
+      },
+       {
+        "type": "header",
+        "content": "Button Style & Colors"
+      },
+      {
+        "id": "button_text",
+        "type": "text",
+        "label": "Button Text",
+        "default": "Sign Up"
+      },
+      {
+        "id": "button_color",
+        "type": "color",
+        "label": "Button Background Color",
+        "default": "#000"
+      },
+      {
+        "id": "button_font_color",
+        "type": "color",
+        "label": "Button Font Color",
+        "default": "#fff"
+      },
+      {
+    "type":   "range",
+    "id":     "topposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Top",
+    "default":   0
+     },
+     {
+    "type":   "range",
+    "id":     "bottomposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Bottom",
+    "default":   30
+     }]
+},
+ {
+     "type": "HTML",
+     "name": "HTML (Advanced)",
+     "settings" : [
+{
+       "id": "html",
+       "type": "html",
+       "label": "HTML"
+},
+      {
+    "type":   "range",
+    "id":     "topposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Top",
+    "default":   15
+     },
+     {
+    "type":   "range",
+    "id":     "bottomposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Bottom",
+    "default":   15
+     }]
+}
+],
+  "presets": [
+    {
+      "name": "Image With Content",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+// responsive sizes
+@mixin bp($point) {
+
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+}  
+@else if $point == laptop {
+  @media #{$bp-laptop} { @content; }
+}
+@else if $point == tablet {
+  @media #{$bp-tablet} { @content; }
+}
+@else if $point == tabletup {
+  @media #{$bp-tabletup} { @content; }
+}
+@else if $point == phablet {
+  @media #{$bp-phablet} { @content; }
+}
+@else if $point == phabletup {
+  @media #{$bp-phabletup} { @content; }
+}
+@else if $point == mobile {
+  @media #{$bp-mobile}  { @content; }
+}
+@else if $point == mobileup {
+  @media #{$bp-mobileup} { @content; }
+}
+@else if $point == small {
+  @media #{$bp-small}  { @content; }
+}
+
+}
+
+.editing .image-with-content-wrap .row .animate {
+opacity:1;
+}
+
+.image-with-content-wrap {
+     & .row {
+      @include bp(phabletup) {
+          -ms-flex-align: center;
+          align-items: center;
+      }
+     & .animate {
+    opacity:0;
+         will-change: transform;
+   -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -ms-backface-visibility: hidden;
+   backface-visibility: hidden;
+
+   -webkit-perspective: 1000;
+   -moz-perspective: 1000;
+   -ms-perspective: 1000;
+   perspective: 1000;
+     &.effect {     -webkit-animation-name: fadeInRight-image-with-content;
+         animation-name: fadeInRight-image-with-content;
+        
+            -webkit-animation-duration: 800ms;
+            animation-duration: 800ms;
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+      }
+     }
+     &.right {
+      @include bp(phabletup) {
+           flex-direction: row-reverse;
+      }
+      & .image {
+        text-align:left;
+       }
+      & .animate.effect {
+         -webkit-animation-name: fadeInLeft-image-with-content;
+         animation-name: fadeInLeft-image-with-content;
+      }
+     }
+     & .text {
+       display: flex;
+       flex-flow: column;
+       & .isButton a {
+    display: inline-block;
+    align-items: center;
+    line-height: 1;
+    padding: 22px 35px;
+    border-radius: 8px;
+        }
+     }
+     & .image {
+       text-align:right;
+       & img {
+@include bp(phabletup) {
+min-height:100%;
+}
+}
+     }
+  & form {
+      max-width: 823px;
+    margin: 0 auto;
+    display: flex;
+    @include bp(mobile) {
+    display: block;
+    padding: 0 15px;
+text-align: center;
+    }
+    & input[type=email] {
+    margin: 0;
+    box-shadow:none;
+    border: none;
+    border-radius: unset;
+    outline: none;
+    text-align: center;
+    height: 4.9375rem;
+    font-size: 26px;
+    line-height: normal;
+     color:#fff;
+    }
+    & button {
+    background: #D71180;
+    color: #fff;
+    display: inline-block;
+    padding: 0 30px;
+    font-size: 23px;
+     min-width: 185px; 
+      cursor:pointer;
+      @include bp(mobile) {
+          padding: 17px 30px;
+        margin-top:20px;
+      }
+    }
+  }
+    }
+   }
+
+
+@keyframes fadeInLeft-image-with-content {
+   0% {
+      opacity: 0;
+      transform: translateX(-150px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateX(0);
+   }
+}   
+
+@keyframes fadeInRight-image-with-content {
+   0% {
+      opacity: 0;
+      transform: translateX(150px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateX(0);
+   }
+}   
+{% endstylesheet %}
+
+{% javascript %}
+
+{% endjavascript %}                                          

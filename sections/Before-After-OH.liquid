@@ -1,0 +1,524 @@
+
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.button_font.family | append: section.settings.button_font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.button_font.family | append: section.settings.button_font.weight | append: section.settings.button_font.style | append: '|' %}
+
+
+
+
+#shopify-section-{{ section.id }} {
+background-size:cover;  
+{% capture backgroundimage %}{{ section.settings.background_image | img_url: '1024x1024' }}{% endcapture %}                                   
+{% if backgroundimage contains 'no-image' %}
+  {% if section.settings.background_color_2 contains 'transparent' %}
+      background-color:{{ section.settings.background_color }};                            
+  {% else %}     
+    background: -moz-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: -webkit-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: linear-gradient(to right, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);                            
+  {% endif %}
+{% else %}
+background-image:url({{ section.settings.background_image | img_url: '1024x1024' }}); background-color:{{ section.settings.background_color }};
+{% endif %}  
+}
+
+#shopify-section-{{ section.id }} .before-wrap-oh .swiper-slide>.inner .quote .inner, .before-wrap-oh .carousel .swiper-button-next:after, .before-wrap-oh .carousel .swiper-button-prev:after {
+color:{{ section.settings.quote_color }};
+}
+
+#shopify-section-{{ section.id }} .before-wrap-oh .swiper-slide>.inner .quote .inner a {
+background:{{ section.settings.button_background }};
+color:{{ section.settings.button_color }};
+font-family: {{ section.settings.button_font.family }}; 
+font-weight:{{ section.settings.button_font.weight }}; 
+font-style:{{ section.settings.button_font.style }};    
+
+}
+
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+
+
+<div class="before-wrap-oh">
+  <div class="carousel">
+    <div class="swiper-button-prev"></div>   
+    <div class="swiper-container">       
+     <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% case block.type %}
+             {% when 'Before-After' %}  
+              <div class="swiper-slide">
+                <div class="inner">
+                  <div class="quote" >
+ 	                <div class="inner">
+<svg width="90pt" height="70pt" viewBox="0 0 90 70" version="1.1" xmlns="http://www.w3.org/2000/svg" data-swiper-parallax-scale="0" data-swiper-parallax-y="0%" data-swiper-parallax-duration="600">
+<g id="#e2c8c3ff">
+<path fill="#e2c8c3" opacity="1.00" d=" M 14.18 12.25 C 20.59 6.72 28.27 2.79 36.24 0.01 C 36.24 1.68 36.23 3.35 36.23 5.03 C 29.18 7.69 22.63 12.13 18.47 18.51 C 14.50 24.38 11.78 31.78 13.45 38.88 C 16.50 38.73 18.76 36.12 21.86 36.03 C 31.87 34.03 41.06 44.31 39.65 54.02 C 39.04 61.03 33.61 67.15 27.02 69.28 C 20.98 70.77 14.10 69.83 9.33 65.60 C 2.87 60.49 -0.09 52.07 0.09 44.01 C -0.38 31.99 5.13 20.09 14.18 12.25 Z" />
+<path fill="#e2c8c3" opacity="1.00" d=" M 56.62 21.63 C 63.32 10.81 74.88 4.16 86.60 0.01 C 86.61 1.69 86.62 3.36 86.62 5.04 C 74.01 9.43 63.58 21.36 63.33 35.04 C 63.48 36.34 63.07 38.76 64.98 38.86 C 67.87 37.64 70.67 35.86 73.91 35.82 C 82.02 35.27 89.30 42.37 90.00 50.26 L 90.00 54.60 C 89.33 60.18 85.58 65.04 80.80 67.82 C 76.69 70.25 71.61 70.29 67.04 69.40 C 59.10 67.22 53.20 60.01 51.42 52.13 C 49.12 41.81 50.92 30.57 56.62 21.63 Z" />
+</g>
+</svg>
+                        {{ block.settings.quote }}
+                      <div class="name">- {{ block.settings.title }}</div>
+                      {% if block.settings.url != nil %}
+                      <div class="text-center" data-swiper-parallax-scale="0" data-swiper-parallax-y="0%" data-swiper-parallax-duration="900">
+                      <a href="{{ block.settings.url }}">
+                        <span> {{ section.settings.button_text }}</span>
+                      </a>
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  
+                  <div class="images">
+                    <a href="{{ block.settings.after | img_url: '1024x1024' }}" class="after" data-fancybox="{{section.id }}{{ block.id }}" data-swiper-parallax-scale="0" data-swiper-parallax-y="-100%" data-swiper-parallax-duration="1200">
+                      <span>
+                        {% unless section.settings.replace %}
+                        After
+                        {% else %}
+                         {% if section.settings.brand_logo_svg != '' %}
+                          {{ section.settings.brand_logo_svg }}
+                         {% else %}
+                          <img alt="{{ shop.name}} logo" src="{{ section.settings.brand_logo | img_url: 'medium' }}" />
+                         {% endif %}
+                        {% endunless %}
+                      </span>
+                      <img src="{{ block.settings.after | img_url: 'large' }}"  /></a>
+                    <div data-swiper-parallax-scale="0" data-swiper-parallax-x="-100%" data-swiper-parallax-duration="1000"><a href="{{ block.settings.before | img_url: '1024x1024' }}" class="before" data-fancybox="{{section.id }}{{ block.id }}"><span>Before</span><img src="{{ block.settings.before | img_url: 'large' }}" /></a></div>
+                  </div>
+                  
+                </div>
+              </div>
+           {% endcase %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="swiper-button-next"></div> 
+  </div>
+</div>
+
+
+
+<script>
+  var callback{{ section.id }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.Swiper) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/js/swiper.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/css/swiper.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callback{{ section.id }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callback{{ section.id }});
+}
+    
+function defer{{ section.id }}(method{{ section.id }}) {
+    if (window.jQuery && window.Swiper) {
+        method{{ section.id }}();
+    } else {
+        setTimeout(function() { defer{{ section.id }}(method{{ section.id }}) }, 50);
+    }
+}
+defer{{ section.id }}(function () {  
+  
+  
+Slider{{ section.id }}();  
+  
+function Slider{{ section.id }}() {
+  
+      var container = document.getElementById('shopify-section-{{ section.id }}').querySelector('.swiper-container');
+      var swiper = new Swiper((container), {         
+      effect: 'slide',  
+      speed: 1200,
+      parallax: true,
+      autoplay: {
+        delay: 9000,
+        disableOnInteraction: true,
+      },
+        slidesPerView: 1,  
+        slidesPerGroup: 1,
+      loop: true,
+      direction: 'horizontal',
+      navigation: {
+        nextEl: document.getElementById('shopify-section-{{ section.id }}').querySelector('.swiper-button-next'),
+        prevEl: document.getElementById('shopify-section-{{ section.id }}').querySelector('.swiper-button-prev'),
+      },
+      });   
+} 
+    
+  
+});    
+</script>
+
+{% schema %}
+  {
+    "name": "Before & After (OH)",
+    "settings": [{ "type":"header",
+"content": "Background Colors or Image"
+},
+{
+       "id": "background_image",
+       "type": "image_picker",
+       "label": "Background Image (Optional)"
+},
+{
+       "id": "background_color",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#ffffff"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Background Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+{
+        "id": "quote_color",
+        "type": "color",
+        "label": "Quote Font Color",
+        "default": "#ffffff"
+},
+{
+        "type": "header",
+        "content": "Button Style"
+},
+{
+        "type": "font_picker",
+        "id": "button_font",
+        "label": "Font",
+        "default": "lato_n4"
+      },
+      {
+        "id": "button_text",
+        "type": "text",
+        "label": "Button Text",
+        "default": "Learn More"
+      },
+      {
+        "id": "button_color",
+        "type": "color",
+        "label": "Button Font Color",
+        "default": "#FFFFFF"
+      },
+      {
+        "id": "button_background",
+        "type": "color",
+        "label": "Button Background Color",
+        "default": "#000000"
+      },
+{
+        "type": "header",
+        "content": "Additional Styling"
+},
+{
+  "type": "checkbox",
+  "id": "replace",
+  "label": "Replace \"After\" Text with Logo",
+  "default": false
+},
+{
+       "id": "brand_logo",
+       "type": "image_picker",
+       "label": "Brand Logo"
+      },
+      {
+       "id": "brand_logo_svg",
+       "type": "html",
+       "label": "Brand Logo SVG (Optional)"
+      },
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS"
+}
+],"blocks": [
+    {
+     "type": "Before-After",
+     "name": "before & after",
+     "settings" : [
+{
+        "type": "header",
+        "content": "Images"
+},
+{
+       "id": "before",
+       "type": "image_picker",
+       "label": "Before Image"
+},
+{
+       "id": "after",
+       "type": "image_picker",
+       "label": "After Image"
+},
+{
+        "type": "header",
+        "content": "Text"
+},
+{
+        "id": "title",
+        "type": "text",
+        "label": "Name"
+},
+{
+        "id": "quote",
+        "type": "textarea",
+        "label": "Quote"
+},
+{
+        "type": "header",
+        "content": "Button"
+},
+{
+        "id": "url",
+        "type": "url",
+        "label": "Link to (optional)"
+}]
+}
+],
+  "presets": [
+    {
+      "name": "Before & After (OH)",
+      "category": "Wanted Custom"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+
+.before-wrap-oh {
+    padding: 40px 0;
+ @include bp(phablet) {
+  padding: 10px 0;
+}
+@include bp(mobile) {
+    padding: 20px 0 30px;
+}
+  & .carousel {
+display: flex;
+align-items: center;
+    margin: 0 auto;
+position:relative;
+  & .swiper-slide {
+     & > .inner {
+       display:flex;
+       justify-content: center;
+       align-items: center;
+ @include bp(mobile) {
+flex-direction: column-reverse;
+}
+       & .quote {
+         -ms-flex: 0 0 40%;
+         flex: 0 0 40%;
+         max-width: 40%;
+padding: 20px 20px;
+@include bp(mobile) {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0px 20px;
+}
+         & .inner {
+          font-size: 20px;
+          line-height: 1.8;
+ @include bp(phablet) {
+    font-size: 14px;
+    line-height: 1.6;
+}
+           & svg {
+             max-width: 68px;
+             height: auto;
+             margin-right: 8px;
+ @include bp(phablet) {
+    max-width: 39px;
+}
+           }
+           & .name {
+                text-align: center;
+           }
+           & a {
+            display: inline-block;
+   			padding: 10px 30px;
+   			margin-top: 30px;
+           & span {
+             display:inline-block;
+            }
+           }
+         }
+       }
+      & .images {
+            display: flex;
+               padding: 40px 25px;
+    align-items: center;
+    position: relative;
+@include bp(mobile) {
+    padding: 15px 22px;
+}
+        & a {
+position: relative;
+    height: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 64%;
+    overflow: hidden;
+&:focus {
+outline:none;
+}
+& img {
+width:100%;
+}
+        &.after {
+       box-shadow: 20px 5px 18px rgba(0, 0, 0, 0.27);
+       z-index: 2;
+         flex: 1; 
+          & span {
+             left: 0px;
+         }
+        }
+        &.before {
+    transform: scale(0.9) rotate(-2deg);
+    z-index: 1;
+    box-shadow: 12px 0px 29px rgba(0, 0, 0, 0.27);
+    display:block;
+    padding-bottom: 126%;
+    & img {
+       filter: brightness(0.8);
+    }
+       }
+       }
+        & div {
+        width: 49%;
+        margin-right: 1%; 
+        margin-left: -9%;
+       & span {
+         right: 0px;
+       }
+} 
+& span {
+    position: absolute;
+    bottom: 10px;
+    padding: 0px 20px;
+    color: #fff;
+    font-size: 19px;
+    z-index: 3;
+@include bp(mobile) {
+    bottom: 7px;
+    padding: 0px 9px;
+    line-height: 1;
+font-size: 11px;
+}
+& svg, & img {
+    max-width: 50%;
+    height: auto;
+}
+}
+      }
+     }
+  }
+  & .swiper-button-next {
+    right:auto;
+   }
+   & .swiper-button-prev {
+     left:auto;
+   }
+   & .swiper-button-next, & .swiper-button-prev {
+   position: relative;
+   width: auto;
+   @include bp(phablet) {
+        align-self: start;
+    margin-top:27%;
+   }
+   }
+   & .swiper-button-next:after, & .swiper-button-prev:after {
+    font-weight: bold;
+    padding: 0 30px;
+    font-size: 20px;
+     @include bp(phablet) {
+  font-size:16px;  
+  padding: 0 10px;
+     }  
+   }
+   & .swiper-button-next:focus, & .swiper-button-prev:focus {
+  outline: none;
+   }
+   }
+}
+
+
+{% endstylesheet %}    
+
+{% javascript %}
+{% endjavascript %}                                                                               

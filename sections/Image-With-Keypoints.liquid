@@ -1,0 +1,679 @@
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font.family | append: section.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font.family | append: section.settings.font.weight | append: section.settings.font.style | append: '|' %}
+
+
+#shopify-section-{{ section.id }} .image-with-keypoints-wrap>.row:nth-child(1) h2 {
+    font-family: {{ section.settings.font.family }}; 
+    font-weight:{{ section.settings.font.weight }}; 
+    font-style:{{ section.settings.font.style }};    
+    color:{{ section.settings.color_title }};
+}
+
+#shopify-section-{{ section.id }} .image-with-keypoints-wrap>.row:nth-child(1) p {
+color:{{ section.settings.color_subtitle }};
+}
+
+
+#shopify-section-{{ section.id }} {
+  
+background-size: cover;
+background-position: center;
+{% capture backgroundimage %}{{ section.settings.background_image | img_url: '1024x1024' }}{% endcapture %}                                   
+{% if backgroundimage contains 'no-image' %}
+  {% if section.settings.background_color_2 contains 'transparent' %}
+     {% if section.settings.background_color contains 'transparent' %}
+     {% else %}
+      background-color:{{ section.settings.background_color }};    
+     {% endif %}
+  {% else %}     
+    background: -moz-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: -webkit-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: linear-gradient(to right, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);   
+  {% endif %}
+{% else %}
+background-image:url({{ section.settings.background_image | img_url: '1024x1024' }}); background-color:{{ section.settings.background_color }};
+{% endif %}    
+}  
+  
+#shopify-section-{{ section.id }} .row:nth-child(2) .text a {
+ background:{{ section.settings.buttonbackground }};
+ color:{{ section.settings.buttoncolor }};
+}
+  
+#shopify-section-{{ section.id }} .image-with-keypoints-wrap>.row:nth-child(2) .text ol li {
+   color:{{ section.settings.keypointcolor }};
+}
+  
+#shopify-section-{{ section.id }} .image-with-keypoints-wrap>.row:nth-child(2) .text ol li:before {
+  background:{{ section.settings.bubblebackground }};
+  color:{{ section.settings.bubblecolor }};
+}
+
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+
+<div class="image-with-keypoints-wrap">
+ <div class="row title">
+   {% if section.settings.title %}
+   <h2>
+     {% assign firstword =  section.settings.title | split: ' ' | first %}     
+     {{ firstword }}
+     <span>{{ section.settings.title | remove_first: firstword }}</span>
+   </h2>
+   {% endif %}
+   {% if section.settings.subtitle %}<p>{{ section.settings.subtitle }}</p>{% endif %}
+ </div>
+  
+ <div class="row align-middle right">
+  
+<div class="columns text">
+ <ol class="{% if section.settings.animate %} animate{% endif %}">
+    {% unless section.settings.keypoint_1 == '' %}<li>{{ section.settings.keypoint_1 }}</li>{% endunless %}
+    {% unless section.settings.keypoint_2 == '' %}<li>{{ section.settings.keypoint_2 }}</li>{% endunless %}
+    {% unless section.settings.keypoint_3 == '' %}<li>{{ section.settings.keypoint_3 }}</li>{% endunless %}
+ </ol>
+  <div>
+    <a class="hvr-grow" href="{{ section.settings.url }}">{{ section.settings.buttontext }}</a>
+  </div>  
+</div>
+  
+  
+
+{% capture image %}{{ section.settings.image | img_url: '1024x1024' }}{% endcapture %}      
+   
+    {% unless section.settings.mp4_url == nil and image contains 'no-image' %}
+   
+ 
+ 
+       <div class="large-6 small-12 columns image">
+{% unless section.settings.youtube_url == nil %}      
+ <a data-fancybox class="hvr-grow" href="{{ section.settings.youtube_url }}">
+   <svg version="1.1"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+            x="0px" y="0px" width="213.7px" height="213.7px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7"
+            xml:space="preserve">
+            <polygon class='triangle' id="XMLID_18_" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+               73.5,62.5 148.5,105.8 73.5,149.1 "/>
+            <circle class='circle' id="XMLID_17_" fill="none"  stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3"/>
+   </svg>
+</a>
+         {% else %}   
+ <span class="mute"><i><svg width="931pt" height="931pt" viewBox="0 0 931 931" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<g id="#000000ff">
+<path fill="#000000" opacity="1.00" d=" M 3.70 24.69 C 9.17 12.55 20.64 2.82 34.02 0.93 C 42.42 -0.04 51.25 0.35 59.04 3.94 C 65.10 6.39 70.17 10.67 74.59 15.40 C 147.55 88.44 220.61 161.38 293.56 234.43 C 295.87 236.53 297.72 239.39 300.68 240.62 C 312.43 229.75 323.41 218.05 335.02 207.03 C 372.14 170.47 409.32 133.99 446.51 97.51 C 467.13 77.13 488.00 57.00 508.44 36.43 C 516.51 29.18 523.61 20.75 532.81 14.84 C 542.27 8.55 553.58 4.35 565.07 5.15 C 574.96 5.71 584.73 10.20 591.00 17.99 C 600.22 29.01 603.10 43.97 602.79 58.00 C 602.86 219.02 602.62 380.04 602.95 541.05 C 602.75 542.99 603.67 544.67 605.11 545.91 C 706.08 646.93 807.08 747.93 908.09 848.91 C 914.48 855.54 922.17 861.34 925.96 870.01 C 935.02 887.72 928.79 911.26 912.43 922.46 C 902.83 929.16 890.37 932.19 878.92 929.15 C 868.62 927.12 859.91 920.61 853.35 912.64 C 573.91 633.09 294.33 353.67 14.90 74.11 C 7.71 67.52 1.93 58.81 0.74 48.96 C 0.18 40.81 -0.03 32.20 3.70 24.69 Z" />
+<path fill="#000000" opacity="1.00" d=" M 89.36 298.46 C 93.85 297.58 98.45 297.65 103.00 297.67 C 114.68 297.77 126.36 297.59 138.04 297.72 C 142.94 297.54 145.57 302.33 148.81 305.19 C 299.48 455.87 450.13 606.55 600.83 757.19 C 602.15 758.42 602.92 760.10 602.80 761.94 C 602.79 788.63 602.79 815.32 602.79 842.01 C 602.50 858.61 604.05 875.54 599.76 891.79 C 596.75 902.83 590.84 913.63 581.22 920.20 C 573.09 925.79 562.59 927.14 553.08 925.00 C 542.13 922.51 532.30 916.46 524.00 909.03 C 513.79 899.92 504.43 889.91 494.49 880.52 C 410.67 798.69 326.82 716.88 243.05 635.03 C 241.93 634.15 240.37 634.48 239.07 634.33 C 191.72 634.34 144.37 634.34 97.02 634.35 C 77.76 634.60 60.16 619.30 56.40 600.66 C 55.35 595.17 55.72 589.56 55.69 584.00 C 55.68 505.34 55.70 426.67 55.69 348.00 C 55.73 341.93 55.31 335.75 56.74 329.79 C 60.55 314.34 73.74 301.58 89.36 298.46 Z" />
+</g>
+</svg>
+</i> Tap for sound
+</span>
+{% endunless %}
+        {% if section.settings.mp4_url %}
+         <video playsinline="" autoplay="" preload="auto" loop="loop" muted="muted" onclick="event.preventDefault();">
+            <source src="{{ section.settings.mp4_url }}" type="video/mp4">
+         </video>
+        {% else %}
+        <img src="{{ section.settings.image | img_url: '1024x1024' }}" />
+        {% endif %}
+       </div>
+
+    {% endunless %}
+   
+
+</div>
+</div>
+
+
+
+
+
+<script> 
+
+ document.addEventListener("shopify:section:select", function (e) { 
+  var target = e.target;
+   if(target.id == 'shopify-section-{{ section.id }}') {
+      document.body.classList.add('editing','edit-{{ section.id }}');
+   
+      document.addEventListener("shopify:section:deselect", function (e) { 
+        document.body.classList.remove('edit-{{ section.id }}');
+        document.removeEventListener("shopify:section:deselect");                               
+      })
+      
+   }
+ }); 
+  
+{% if section.settings.animate %}  
+// get the element to animate
+var element{{ section.id }} = document.querySelector('#shopify-section-{{ section.id }} .animate');
+var elementHeight{{ section.id }} = element{{ section.id }}.clientHeight;
+
+// listen for scroll event and call animate function
+setTimeout(function() {                                                     
+document.removeEventListener('scroll', animate{{ section.id }});                                     
+document.addEventListener('scroll', animate{{ section.id }});
+document.dispatchEvent(new CustomEvent('scroll'));  
+}, 600);
+
+// check if element is in view
+function inView{{ section.id }}() {
+
+  // get window height
+  var windowHeight = window.innerHeight;
+  // get number of pixels that the document is scrolled
+  var scrollY = window.scrollY || window.pageYOffset;
+  
+  // get current scroll position (distance from the top of the page to the bottom of the current viewport)
+  var scrollPosition = scrollY + windowHeight;
+  // get element position (distance from the top of the page to the bottom of the element)
+  var elementPosition = element{{ section.id }}.getBoundingClientRect().top + scrollY + (elementHeight{{ section.id }} / 5);
+  
+  // is scroll position greater than element position? (is element in view?)
+  if (scrollPosition > elementPosition) {
+    return true;
+  }
+  
+  return false;
+}
+
+// animate element when it is in view
+function animate{{ section.id }}() {
+  // is element in view?
+  if (inView{{ section.id }}()) {
+      // element is in view, add class to element
+      element{{ section.id }}.classList.add('effect');
+  }
+} 
+{% endif %} 
+</script>
+
+  {% unless section.settings.mp4_url == nil %}
+<script>
+  {% unless section.settings.youtube_url == nil %}
+  var callbacksection{{ section.id }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.jQuery.fancybox) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);  
+    setTimeout(function() {
+ 
+    })
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style); 
+  }
+ };   
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbacksection{{ section.id }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callbacksection{{ section.id }});
+}
+{% else %}
+  var videowrap = document.getElementById('shopify-section-{{ section.id }}').querySelector('.image');
+  videowrap.addEventListener('click', clickMute)  
+  
+  function clickMute() {
+ 
+    if(!this.classList.contains('unmute')){
+     this.classList.add('unmute');
+     this.querySelector('video').muted = false;
+    }else{
+     this.classList.remove('unmute');
+     this.querySelector('video').muted = true;    
+    }
+  }    
+{% endunless %}
+</script>
+{% endunless %}
+
+{% schema %}
+  {
+    "name": "Image With Keypoints",
+    "settings": [
+
+
+{
+       "id": "title",
+       "type": "text",
+       "label": "Title",
+       "default": "BEFORE & AFTER"
+},
+{
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "work_sans_n6"
+},
+{
+       "id": "color_title",
+       "type": "color",
+       "label": "Title Color",
+       "default": "#000000"
+},
+{
+       "id": "subtitle",
+       "type": "text",
+       "label": "Sub Title",
+       "default": "REAL TRANSFORMATION WITH OUR PREMIUM VIRGIN HAIR"
+},
+{
+       "id": "color_subtitle",
+       "type": "color",
+       "label": "Subtitle Color",
+       "default": "#333333"
+},
+{ "type":"header",
+"content": "Background Colors or Image"
+},
+{
+       "id": "background_image",
+       "type": "image_picker",
+       "label": "Background Image (Optional)"
+},
+{
+       "id": "background_color",
+       "type": "color",
+       "label": "Background Color",
+       "default": "transparent"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Background Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+{ "type": "header",
+ "content": "Image"
+},
+{
+       "id": "image",
+       "type": "image_picker",
+       "label": "Model Image PNG! (Optional)"
+},
+{
+"id": "mp4_url",
+"type": "url",
+"label": "MP4 Preview URL (Overwrites Image)",
+"info": "If filled out, this will show in place of image"
+},
+{
+"id": "youtube_url",
+"type": "video_url",
+"accept": ["youtube"],
+"label": "Youtube URL (Optional)",
+"info": "If left empty will not link or show play button"
+},
+{
+"type": "checkbox",
+"id": "animate",
+"label": "Animate In",
+"default": false
+},
+{ "type": "header",
+ "content": "Keypoints"
+},
+{
+       "id": "keypoint_1",
+       "type": "text",
+       "label": "Keypoint 1",
+       "default": "Key Point Goes Herer"
+},
+{
+       "id": "keypoint_2",
+       "type": "text",
+       "label": "Keypoint 2",
+       "default": "Key Point Goes Here"
+},
+{
+       "id": "keypoint_3",
+       "type": "text",
+       "label": "Keypoint 3",
+       "default": "Key Point Goes Here"
+},
+{
+       "id": "keypointcolor",
+       "type": "color",
+       "label": "Keypoint Font Color",
+       "default": "#000000"
+},
+{
+       "id": "bubblebackground",
+       "type": "color",
+       "label": "Bubble Background Color",
+       "default": "#000000"
+},
+{
+       "id": "bubblecolor",
+       "type": "color",
+       "label": "Bubble Font Color",
+       "default": "#FFFFFF"
+},
+{
+ "type": "header",
+ "content": "Button"
+},
+{
+       "id": "buttontext",
+       "type": "text",
+       "label": "Button Text",
+       "default": "Shop Now"
+},
+{
+       "id": "url",
+       "type": "url",
+       "label": "Button Url"
+},
+{
+       "id": "buttonbackground",
+       "type": "color",
+       "label": "Button Background Color",
+       "default": "#000000"
+},
+{
+       "id": "buttoncolor",
+       "type": "color",
+       "label": "Button Font Color",
+       "default": "#FFFFFF"
+},
+{
+       "id": "css",
+       "type": "html",
+       "label": "Custom CSS"
+}],
+  "presets": [
+    {
+      "name": "Image With Keypoints",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+// responsive sizes
+@mixin bp($point) {
+
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+}  
+@else if $point == laptop {
+  @media #{$bp-laptop} { @content; }
+}
+@else if $point == tablet {
+  @media #{$bp-tablet} { @content; }
+}
+@else if $point == tabletup {
+  @media #{$bp-tabletup} { @content; }
+}
+@else if $point == phablet {
+  @media #{$bp-phablet} { @content; }
+}
+@else if $point == phabletup {
+  @media #{$bp-phabletup} { @content; }
+}
+@else if $point == mobile {
+  @media #{$bp-mobile}  { @content; }
+}
+@else if $point == mobileup {
+  @media #{$bp-mobileup} { @content; }
+}
+@else if $point == small {
+  @media #{$bp-small}  { @content; }
+}
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+
+.editing .image-with-keypoints-wrap>.row:nth-child(2).right .animate, .editing .image-with-keypoints-wrap>.row:nth-child(2) .animate  {
+  & li {
+   opacity:1;
+  }
+}
+
+
+.image-with-keypoints-wrap {
+    padding: 50px 0;
+@include bp(phablet) {
+padding: 30px 0;
+}
+     & > .row:nth-child(1) {
+       flex-flow:column;
+      text-align: center;
+    margin-bottom: 25px;
+@include bp(phablet) {
+padding: 0 15px;
+}
+       & h2 {
+  		margin: 0;
+		line-height: normal;
+@include bp(phablet) {
+    font-size: 1.5rem;
+}
+       & span {
+        font-weight:bold;
+		}
+		}
+& p {
+letter-spacing: 3px;
+    font-size: 0.8rem;
+@include bp(phablet) {
+    margin: 0;
+}
+}
+     }
+     & > .row:nth-child(2) {
+          -ms-flex-align: center;
+          align-items: center;
+@include bp(phablet) {
+       flex-flow: column-reverse;
+}
+     &.right {
+      @include bp(phabletup) {
+           flex-direction: row-reverse;
+      }
+      & .image {
+        text-align:left;
+       }
+      & .animate.effect {
+         -webkit-animation-name: fadeInLeft-image-with-content;
+         animation-name: fadeInLeft-image-with-content;
+      }
+     }
+     & .text {
+@include bp(phablet) {
+    margin-top: 30px;
+}
+& ol {
+list-style:none;
+    padding: 0;
+    margin: 0;
+ & li {
+    margin: 0 0 25px 0;
+font-size: 26px;
+   counter-increment: item;
+@include bp(phablet) {
+font-size: 18px;
+}
+ &:before {
+margin-right: 25px;
+    content: counter(item);
+    border-radius: 100%;
+    width: auto;
+    text-align: center;
+    display: inline-block;
+    padding: 11px 18px 13px;
+    line-height: 1;
+    font-weight: bold;
+}
+}
+&.animate {
+& li {
+    opacity:0;
+         will-change: transform;
+   -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -ms-backface-visibility: hidden;
+   backface-visibility: hidden;
+
+   -webkit-perspective: 1000;
+   -moz-perspective: 1000;
+   -ms-perspective: 1000;
+   perspective: 1000;
+}
+&.effect {    
+
+& li {
+-webkit-animation-name: fadeInRight-image-with-keypoints;
+         animation-name: fadeInRight-image-with-keypoints;
+        
+            -webkit-animation-duration: 800ms;
+            animation-duration: 800ms;
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+    @for $i from 1 to 4 {
+     &:nth-child(#{$i}) { animation-delay: $i * 0.3s; -webkit-animation-delay: $i * 0.3s;}
+    }
+}
+}
+  }
+}
+& div {
+    margin-top: 10px;
+@include bp(phablet) {
+    text-align: center;
+}
+& a {
+    display: inline-block;
+    padding: 17px 30px;
+    border-radius: 30px;
+    font-size: 21px;
+}
+}
+     }
+     & .image {
+position:relative;
+text-align:right;
+    & .mute {
+				color: #fff;
+				font-size: 13px;
+				position: absolute;
+				bottom: 10px;
+				left: 10px;
+				z-index: 4;
+				display: flex;
+				align-items: center;
+				font-weight: normal;
+				letter-spacing: 1px;
+				pointer-events: none;
+				@include transition(opacity, 0.3s);
+				@include bp(mobile) {
+					font-size: 9px;
+				}
+				& i {
+					background: rgba(0, 0, 0, 0.61);
+					padding: 7px 8px 2px;
+					margin-right: 10px;
+					border-radius: 100%;
+                
+                    display: inline-block;
+					@include bp(mobile) {
+                    
+						padding: 4px 7px 1px;
+						margin-right: 7px;
+					}
+					& svg {
+						width: 21px;
+						height: 100%;
+						@include bp(phablet) {
+							max-width: 20px;
+						}
+						& path {
+							fill: #fff;
+						}
+					}
+				}
+			}
+            &.unmute {
+            & .mute {
+              opacity:0;
+            }
+          }
+& a {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 9;
+     & svg {
+       max-width: 70%;
+    height: auto;
+    max-height: 70%;
+      & .triangle {
+-webkit-transition: all 0.7s ease-in-out;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 480;
+    stroke: #fff;
+    transform: translateY(0);
+} 
+     }  
+	}
+       & img {
+@include bp(phabletup) {
+min-height:100%;
+}
+}
+& video {
+max-width:100%;
+}
+     }
+    }
+   }
+
+
+
+@keyframes fadeInRight-image-with-keypoints {
+   0% {
+      opacity: 0;
+      transform: translateX(150px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateX(0);
+   }
+}   
+{% endstylesheet %}
+
+{% javascript %}       
+{% endjavascript %}                  

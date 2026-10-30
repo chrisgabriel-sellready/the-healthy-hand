@@ -1,0 +1,571 @@
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font_title.family | append: section.settings.font_title.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font_title | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font_title.family | append: section.settings.font_title.weight | append: section.settings.font_title.style | append: '|' %}
+
+.album-{{ article.id }} .page-header h2 {
+ font-family: {{ section.settings.font_title.family }}; 
+    font-weight:{{ section.settings.font_title.weight }}; 
+    font-style:{{ section.settings.font_title.style }};
+    line-height:1;
+}
+
+.album-{{ article.id }} {
+{% if section.settings.background_color_2 contains 'transparent' %}
+      background-color:{{ section.settings.background_color }};                            
+  {% else %}     
+    background: -moz-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+    background: -webkit-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+    background: radial-gradient(ellipse at center, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);                            
+  {% endif %}
+}
+
+
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+
+{% for block in section.blocks %}
+  {% case block.type %}
+    {% when 'album' %}
+       {% if block.settings.album == article.handle %}
+
+
+
+
+
+{% style %}
+.album-{{ article.id }} .page-header .image {
+background-image:url({{ article.image.src | img_url: '2048x2048' }});
+}
+.album-{{ article.id }} .page-header h2 {
+color: {{ block.settings.color_title }};
+}
+
+.album-{{ article.id }} .button_photo a {
+background:{{ section.settings.button_background_color }};
+color:{{ section.settings.button_color }};
+}
+
+
+{% unless section.settings.parallax %}
+.album-{{ article.id }} .page-header {
+   padding: 135px 20px;
+}
+@media (max-width: 1022px) {
+.album-{{ article.id }} .page-header {
+   padding: 78px 20px;
+}
+}
+{% else %}
+.album-{{ article.id }} .page-header .rellax-element {
+height:400px;
+}
+.album-{{ article.id }} .page-header .rellax-element img {
+min-height:600px;
+min-width: 100%;
+max-width: 120%;
+}
+
+@media (max-width: 1022px) {
+.album-{{ article.id }} .page-header .rellax-element {
+height:300px;
+}
+.album-{{ article.id }} .page-header .rellax-element img {
+min-height:450px;
+max-width: 160%;
+}
+}
+{% endunless %}
+{% endstyle %}
+<div id="album-{{ article.id }}" class="album-article album-{{ article.id }}">
+  
+<div class="page-header">
+  {% if section.settings.parallax %}
+   <div class="rellax-element" data-rellax-container>
+  {% endif %}
+  <div class="wrap">
+   <h2>{{ article.title }}</h2>
+  </div>
+  {% if block.settings.overlay %}
+  <div class="overlay"></div>
+  {% endif %}
+  {% unless section.settings.parallax %}
+    <div class="image"></div>
+   {% else %}
+   <img class="fill rellax-{{ article.id }}" data-rellax data-rellax-speed="1.5" data-rellax-percentage="0.1" data-rellax-zindex="0" src="{{ article.image.src | img_url: '2048x2048' }}">
+  {% endunless %}
+     
+  {% if section.settings.parallax %}
+  </div>
+  {% endif %}   
+   
+</div>
+
+<div class="photo-list">
+  
+  <ul class="row">
+  {% for i in (1..24) %}
+  {% assign image = 'image' | append: forloop.index %}
+{% capture photo %}{{ block.settings[image] | img_url: '1024x1024' }}{% endcapture %}                                   
+{% if photo contains 'no-image' %}
+    {% else %}
+  <li class="large-4 small-12 columns photo">
+       <a href="{{ block.settings[image] | img_url: 'master' }}" data-fancybox="{{ article.id }}">
+         <img src="{{ block.settings[image] | img_url: 'large' }}" />
+       </a>
+  </li>
+{% endif %}    
+  {% endfor %}
+  </ul>
+  
+{% for block in section.blocks %}
+  {% case block.type %}
+    {% when 'album' %}
+       {% if block.settings.album == article.handle %}
+         {% if block.settings.button_url != nil %}
+         <div class="button_photo text-center">
+             <a href="{{ block.settings.button_url }}">{{ block.settings.button_text }}</a>
+         </div>
+         {% endif %}
+       {% endif %}
+     {% endcase %}
+  {% endfor %}
+</div>
+
+
+</div>
+    {% endif %}
+   {% endcase %}
+{% endfor %}
+
+
+<script>
+ var album = document.querySelector('#album-{{ article.id }}');
+ var page = album.closest('.ui-page');      
+  page.classList.add('album-{{ article.id }}');
+                     
+var callbackAlbum = function(){
+  // Handler when the DOM is fully loaded
+    if(!window.jQuery.fancybox) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/{{ settings.fancybox3version }}/jquery.fancybox.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);  
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/{{ settings.fancybox3version }}/jquery.fancybox.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style); 
+  }
+  if(!window.Rellax) {  
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/rellax/1.12.1/rellax.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);  
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackAlbum();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackAlbum);
+}  
+          
+function deferAlbum{{ article.id }}(methodAlbum{{ article.id }}) {
+    if (window.jQuery && window.Rellax) {
+        methodAlbum{{ article.id }}();
+    } else {
+        setTimeout(function() { deferAlbum{{ article.id }}(methodAlbum{{ article.id }}) }, 50);
+    }
+}
+deferAlbum{{ article.id }}(function () {    
+  
+  var rellaxEl = document.querySelector('.rellax-{{ article.id }}');
+  var page = rellaxEl.closest('.ui-page');                                       
+  rellaxEl.setAttribute("data-rellax-percentage", "0.08")                                       
+  var rellax = new Rellax('.rellax-{{ article.id }}', {
+    round: true,
+    vertical: true,
+    horizontal: false
+  });
+
+});  
+</script>
+{% schema %}
+  {
+    "name": "Album",
+    "settings": [
+{
+    "type": "font_picker",
+     "id": "font_title",
+     "label": "Title Font",
+     "default": "work_sans_n6"
+},
+{
+ "id": "parallax",
+ "default": false,
+ "label": "Enable Parallax",
+ "info": "Enable Parallax on header images",
+ "type": "checkbox"
+},
+{
+"type": "header",
+"content": "Background Settings"
+},
+{
+       "id": "background_color",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#ffffff"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Background Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+{
+"type": "header",
+"content": "Button Style"
+},
+{
+       "id": "button_background_color",
+       "type": "color",
+       "label": "Button Background Color",
+       "default": "#000000"
+},
+{
+       "id": "button_color",
+       "type": "color",
+       "label": "button Font Color",
+       "default": "#ffffff"
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}],
+"blocks": [
+    {
+     "type": "album",
+     "name": "Album",
+     "settings" : [
+      {
+       "id": "album",
+       "type": "article",
+       "label": "Link to Album Page (required)"
+      },
+{
+       "id": "color_title",
+       "type": "color",
+       "label": "Title Color",
+       "default": "#ffffff"
+},
+      {
+        "id": "overlay",
+        "default": false,
+        "label": "Add Dark Overlay",
+        "type": "checkbox"
+      },
+{
+"type": "header",
+"content": "Link (Optional)"
+},
+{
+        "id": "button_url",
+        "type": "url",
+        "label": "Button Url"
+},
+{
+        "id": "button_text",
+        "type": "text",
+        "label": "Button Text",
+        "default": "Click Here"
+},
+{
+"type": "header",
+"content": "Images"
+},
+      {
+       "id": "image1",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image2",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image3",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image4",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image5",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image6",
+       "type": "image_picker",
+       "label": "image"
+      },      
+      {
+       "id": "image7",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image8",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image9",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image10",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image11",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image12",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image13",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image14",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image15",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image16",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image17",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image18",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image19",
+       "type": "image_picker",
+       "label": "image"
+      },      
+      {
+       "id": "image20",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image21",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image22",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image23",
+       "type": "image_picker",
+       "label": "image"
+      },
+      {
+       "id": "image24",
+       "type": "image_picker",
+       "label": "image"
+      }
+]
+  }
+]
+}
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+// responsive sizes
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+.album-article {
+    overflow: hidden;
+     padding-bottom: 50px;
+ & .page-header {
+   overflow:hidden;
+   position:relative;
+   & .wrap {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   & h2 {
+    text-align:center;
+    z-index: 3;
+    position: relative;
+   } 
+  }
+  & .rellax-element {
+
+  }
+  & .overlay {
+    position:absolute;
+    height:100%;
+    width:100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 2;
+  }
+ & img {
+      min-width: 100%;
+     max-width:none;
+ }
+ & .image {
+   background-size: cover;
+   background-position: top center;
+    position:absolute;
+    height:100%;
+    width:100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+ }
+ & .photo-list {
+    margin-top: 40px;
+  & .row {
+max-width: 97%;
+@include bp(phablet) {
+max-width:100%;
+}
+  & .photo {
+    list-style:none;
+    margin-bottom:20px;
+    & a {
+    position: relative;
+    height: 0;
+    padding-bottom: 60%;
+    overflow: hidden;
+    display: block;
+    @include transition(all,0.3s);
+    &:hover {
+     opacity:0.6;
+    }
+    &:focus {
+     outline:none;
+     border:none;
+    }
+    & img {
+     min-width: 100%;
+     }
+     }
+   }
+  }
+  & .button_photo {
+    & a {
+    padding: 20px 40px;
+    border-radius: 10px;
+    font-size: 21px;
+    display: inline-block;
+    }
+  }
+ }
+}
+
+{% endstylesheet %}
+
+{% javascript %} 
+{% endjavascript %}                                                                    

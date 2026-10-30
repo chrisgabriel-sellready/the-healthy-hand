@@ -1,0 +1,6 @@
+{% case settings.product_page_layout %}
+   {% when 'original_scroll' %}
+      {% include 'product-page-1' %}
+   {% when 'advanced_full' %}
+     {% include 'product-page-2' %}
+{% endcase %}

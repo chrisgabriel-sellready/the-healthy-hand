@@ -1,0 +1,355 @@
+{% style %}
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+
+{% if section.settings.fullwidth %}
+{% assign image_size = '1024x1024' %}
+{% else %}
+{% assign image_size = 'large' %}
+{% endif %}
+
+<div class="media-list">
+  <ul class="row align-stretch align-center media-widget {% unless section.blocks.size < 4 %}tworows{% endunless %}">
+       {% for block in section.blocks %}
+        {% case block.type %}
+         {% when 'Image' %}
+         <li class="media-wrap columns {{ section.settings.mediaPerRow }} block-{{ block.id }} image">
+           <a href="{{ block.settings.url }}">
+             <img src="{{ block.settings.image | img_url: image_size }}">   
+           </a>
+         </li>
+         {% when 'Video' %}
+          {% unless block.settings.position == 0 %}
+          {% style %}
+           @media (min-width: 1022px) {
+            .block-{{ block.id }}.two div {
+                  position: relative;
+                  height: 100%;
+                  overflow: hidden;
+                }
+            .media-list ul .block-{{ block.id }}.two video {
+                position:absolute;
+                top:-{{ block.settings.position }}%;
+              }
+             }
+          {% endstyle %}
+          {% endunless %}
+         <li class="media-wrap columns {{ section.settings.mediaPerRow }} block-{{ block.id }} video">
+           <div>
+           <a data-fancybox href="{{ block.settings.youtube_url }}">
+             {% unless block.settings.playbutton.size > 0 %}
+             {% style %}
+              .block-{{ block.id }} a svg.play .triangle {
+                 stroke: {{ block.settings.playbuttoncolor }};
+               }
+             {% endstyle %}
+                <svg class="play" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+            x="0px" y="0px" width="213.7px" height="213.7px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7"
+            xml:space="preserve">
+            <polygon class='triangle' id="XMLID_18_" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+               73.5,62.5 148.5,105.8 73.5,149.1 "/>
+            <circle class='circle' id="XMLID_17_" fill="none"  stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3"/>
+             </svg>
+             {% else %}
+              {{ block.settings.playbutton }}
+             {% endunless %}
+           </a>
+          <video playsinline="" autoplay="" preload="auto" loop="loop" muted="muted" onclick="event.preventDefault();">
+                  <source src="{{ block.settings.mp4_url }}" type="video/mp4">
+          </video>
+           </div>
+         </li>    
+  <script>
+  var callbacksection{{ section.id }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.jQuery.fancybox) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/{{ settings.fancybox3version }}/jquery.fancybox.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);  
+    setTimeout(function() {
+ 
+    })
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/{{ settings.fancybox3version }}/jquery.fancybox.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style); 
+  }
+ };   
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbacksection{{ section.id }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callbacksection{{ section.id }});
+}
+      
+</script>  
+         {% when 'HTML' %}
+         <li class="media-wrap columns {{ section.settings.mediaPerRow }} block-{{ block.id }} html">
+           {{ block.settings.html }}
+         </li>
+       {% endcase %}
+     {% endfor %}
+  </ul>
+</div>
+
+
+
+
+{% schema %}
+  {
+    "name": "Media List",
+    "settings": [
+{
+   "type":      "select",
+   "id":        "mediaPerRow",
+   "label":     "Media Per Row",
+   "options": [
+      { "value": "three", "label": "Three"},
+      { "value": "two", "label": "Two"}
+   ],
+   "default":   "three",
+   "info":      "Choose the number of media elements per row"
+},
+{
+"type": "checkbox",
+"id": "fullwidth",
+"label": "Full Width",
+"default": false
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}],
+"blocks": [
+    {
+     "type": "Image",
+     "name": "Image",
+     "settings" : [    
+      {
+        "id": "image",
+        "type": "image_picker",
+        "label": "Preview Image"
+      },
+{
+   "id": "url",
+   "type": "url",
+   "label": "URL"
+}
+      ]
+    },
+    {
+     "type": "Video",
+     "name": "MP4 Video",
+     "settings" : [    
+{
+       "id": "mp4_url",
+       "type": "url",
+       "label": "mp4 preview"
+},
+{
+    "type":   "range",
+    "id":     "position",
+    "min":       0,
+    "max":       200,
+    "step":      10,
+    "unit":      "%",
+    "label":     "mp4 Position",
+    "default":   0
+},
+{
+"id": "youtube_url",
+"type": "video_url",
+"accept": ["youtube"],
+"label": "Youtube URL",
+"default": "https://www.youtube.com/watch?v=xgT4HDqNnyg",
+"info": "If left empty mute button will be shown instead for on page playback with sound"
+},
+{
+       "id": "playbuttoncolor",
+       "type": "color",
+       "label": "Play Button Color",
+       "default": "#ffffff"
+},
+  {
+       "id": "playbutton",
+       "type": "html",
+       "label": "Custom Play Button SVG"
+}
+      ]
+    },
+    {
+     "type": "HTML",
+     "name": "HTML",
+     "settings" : [    
+     {
+       "id": "html",
+       "type": "html",
+       "label": "HTML"
+},
+     {
+       "id": "css",
+       "type": "html",
+       "label": "Custom CSS"
+}
+      ]
+    }
+   ],
+  "presets": [
+    {
+      "name": "Media List",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+.media-list {
+margin-bottom: 25px;
+  & ul {
+margin: 0 auto;
+   padding:0;
+    & li {
+    position: relative;
+      list-style:none;
+      &.two {
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+margin-bottom: 15px;
+        @include bp(phablet) {
+         -ms-flex: 0 0 100%;
+	    flex: 0 0 100%;
+    	max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+        }
+      }
+      &.three {
+      -ms-flex: 0 0 33.33333%;
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+        @include bp(phablet) {
+        -ms-flex: 0 0 50%;
+	    flex: 0 0 50%;
+    	max-width: 50%;
+
+        }
+      }
+      & a {
+    position: relative;
+    z-index: 1000;
+    display: block;  
+        & img {
+        width:100%;
+        }
+      }
+     & video { 
+       width:100%;
+       z-index: 8;
+       position: relative;
+     }
+     &.video {
+       & div {
+       position: relative;
+       & a {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 9;
+	& svg {
+    max-width: 36%;
+    height: auto;
+    &.play {
+      & .triangle {
+-webkit-transition: all 0.7s ease-in-out;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 480;
+    transform: translateY(0);
+} 
+     }
+     }
+       }
+     }
+     }
+    }
+  &.tworows {
+    & li {
+     @include bp(phabletup) {
+    	margin-bottom:20px;
+	}
+	}
+   } 
+  }
+}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}                               

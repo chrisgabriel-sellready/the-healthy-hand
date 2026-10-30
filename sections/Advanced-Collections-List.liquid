@@ -1,0 +1,879 @@
+{% style %}
+@media (min-width: 1025px) {
+.advanced-collections-list-wrap .nav-wrap .inner {
+background-color:{{ section.settings.background_color }};
+}
+@media (max-width: 1024px) {
+.advanced-collections-list-wrap .nav-wrap .inner2 {
+background-color:{{ section.settings.background_color }};
+}
+}
+.advanced-collections-list-wrap .collection-wrap:nth-of-type(even) .collection-row {
+background-color:{{ section.settings.background_color }};
+}
+
+.advanced-collections-list-wrap .collection-wrap .collection-row {
+background-color:{{ section.settings.background_color_2 }};
+}
+
+}
+{% endstyle %}
+<div class="advanced-collections-list-wrap">
+	<div class="title padding40">
+		<h3>
+			{{ section.settings.title }}
+		</h3>
+	</div>
+  <div class="nav-wrap">
+    <div class="inner">
+      <div class="inner2">
+        <ul id="nav" class="nav nav-{{ section.id }}">
+          <li>
+            <a href="#">
+             <span>All</span>
+            </a>
+          </li>
+         {% for link in linklists[section.settings.menu].links %}
+         <li><a href="{{ link.url }}">
+           <span>{{ link.title }}</span>
+           </a>
+          </li>
+         {% endfor %}
+      </ul>
+  </div>
+  </div>
+  </div>
+  <div class="advanced-collection-list-body">
+    <div class="inner">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'Collection' %}
+        {% assign collection = collections[block.settings.collection] %}
+     	 <div class="collection-wrap">
+           <div class="collection-row">
+             <div class="intro">
+               <div class="description">
+                 <a href="{{ collection.url }}">
+                   <h2>
+                     {{ collection.title }}
+                   </h2>
+                 </a>
+                 <p>
+                    {{ block.settings.description }}
+                 </p>
+               </div>
+               <div class="cta">
+                 <a href="{{ collection.url }}">
+                  See all {{ collection.title }} ({{ collection.all_products_count }}) 
+                   <svg aria-labelledby="7bc1b059-5bc9-4bde-af84-cf90e2b6f4ff" class="Icon CPSubcatIntroCTA-icon" role="img" viewBox="0 0 50 50"><g><path d="M30.1,5.3L50,25.1L30.1,45h-6.6l18-17.6H0v-4.8h41.5l-18-17.6h6.6V5.3z"></path></g></svg>
+                 </a>
+               </div>
+             </div>
+             
+             <div class="collection-scroll">
+                
+                <div class="swiper-container">
+                  <ul class="swiper-wrapper">
+                    {% for product in collection.products %}
+                      	
+{% assign hasVideo = false %}
+ {% for media in product.media %}
+  {% case media.media_type %}
+    {% when 'video' %}
+     {% capture videoTag %}{{ media | video_tag: controls:false,autoplay:false,muted:true,loop:true }}{% endcapture %}
+     {% assign hasVideo = true %}
+  {% endcase %}
+ {% endfor %}
+
+ {% for media in product.media %}
+  {% case media.media_type %}
+    {% when 'image' %}
+
+  {% endcase %}
+ {% endfor %}                    
+                    
+                          
+<li data-id="{{ product.id }}" class="swiper-slide product">
+  <div itemscope itemtype="http://schema.org/Product" data-video="{{ hasVideo }}" class="text-center {% if on_sale %} on-sale{% endif %}">
+ <a href="{{ product.url | within: collection }}" {% if settings.disableproductajax %}rel="external"{% endif %}>     
+   {% if hasVideo %}
+   <div class="video-preloader">
+     <svg width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-rolling" style="background: none;"><circle cx="50" cy="50" fill="none" ng-attr-stroke="" ng-attr-stroke-width="" ng-attr-r="" ng-attr-stroke-dasharray="" stroke="#000000" stroke-width="10" r="25" stroke-dasharray="117.80972450961724 41.269908169872416" transform="rotate(41.2639 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg>
+   </div> 
+   {% endif %}
+       {% if product.featured_image %}
+       <picture>
+       <source srcset="{{ product.featured_image | img_url: '1024x1024' }}" media="(min-width: 1025px)">
+         <source srcset="{{ product.featured_image | img_url: 'grande' }}" media="(min-width: 0px)">
+         <img alt="{{ product.title }}">   
+       </picture>
+       {% endif %} 
+ </a> 
+   
+{% for product_option in product.options_with_values %}
+    {% assign downcased_option = product_option.name | downcase %}
+    {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+      <div class="colors-wrap">
+      {% for value in product_option.values %}
+      {% assign current_color_handle = value | handleize %}
+        {% if cssColors contains current_color_handle %}{% assign is_cssColor = true %}{% else %}{% assign is_cssColor = false %}{% endif %} 
+        <span class="color-bubble colorList-{{ current_color_handle  }}" {% if is_cssColor %}style="background-color:{{ current_color_handle }};"  {% endif %}></span>
+      {% endfor %}
+    </div>
+    {% endif %}
+{% endfor %}    
+    
+    
+   <h3><span>{{ product.title }}</span></h3>
+       
+        <div class="h1 medium-down--left">
+          {% case product.variants.size %}
+             {% when 2 %}
+                {{ product.variants.size }} Sizes /  From
+             {% when 1 %}
+                {% unless product.variants.first.options.first == 'Default Title' %} 
+                {{ product.variants.first.options.first }} /
+                {% endunless %}
+             {% when 0 %}
+          
+          {% endcase %}
+          
+          {% if product.price_max > product.price %}
+           <span class="currPrice">{% include 'price' with product.price_min %}</span> {% if on_sale %}<span class="oldPrice"> {{ product.compare_at_price | money }} </span>{% endif %}
+        {% else %}
+           <span class="currPrice">{% include 'price' with product.price %}</span>   {% if on_sale %}<span class="oldPrice"> {{ product.compare_at_price | money }}</span> {% endif %}
+        {% endif %}
+        {% if on_sale %}
+          <div class="salew">
+            <span class="sale-tag medium-down--right{% if settings.product_reviews_enable %} has-reviews{% endif %}">
+              {% assign compare_price = product.compare_at_price %}
+              {% assign product_price = product.price %}
+              {% include 'price-sale' %}
+            </span>
+         </div>
+        {% endif %}  
+        {% unless product.available %}
+          <span class="product-price__sold-out">{{ 'products.product.sold_out' | t }}</span>
+        {% endunless %} 
+       </div>
+       </a> 
+      
+</div>
+</li>
+                          
+                          
+                
+                 
+                    {% endfor %}
+       
+               
+                  </ul>
+                <div class="swiper-nav">
+                <div class="swiper-button-prev">
+                  <button class="navBtn">
+                     <div class="navBtnWrapper">
+                       <svg aria-labelledby="248cc147-eb98-40c0-a529-22c64cfee62d" class="Icon CPBodyScrollable-navBtnIcon" role="img" viewBox="0 0 50 50"><title id="248cc147-eb98-40c0-a529-22c64cfee62d">Scroll left</title><g><polygon points="25,31.3 4.2,10.5 0.1,14.6 25,39.5 50,14.6 45.9,10.5 "></polygon></g></svg>
+                    </div>
+                  </button>
+                </div> 
+                <div class="swiper-button-next">
+                  <button class="navBtn">
+                     <div class="navBtnWrapper">
+<svg aria-labelledby="b60d20b5-cb1e-4b06-b868-bc29497be38f" class="Icon CPBodyScrollable-navBtnIcon" role="img" viewBox="0 0 50 50"><title id="b60d20b5-cb1e-4b06-b868-bc29497be38f">Scroll right</title><g><polygon points="25,31.3 4.2,10.5 0.1,14.6 25,39.5 50,14.6 45.9,10.5 "></polygon></g></svg>                    </div>
+                  </button>
+                </div>  
+                </div>
+               </div>
+               
+             </div>
+      
+      
+                <div class="cta2">
+                 <a href="{{ collection.url }}">
+                  See all {{ collection.title }} ({{ collection.all_products_count }}) 
+                   <svg aria-labelledby="7bc1b059-5bc9-4bde-af84-cf90e2b6f4ff" class="Icon CPSubcatIntroCTA-icon" role="img" viewBox="0 0 50 50"><g><path d="M30.1,5.3L50,25.1L30.1,45h-6.6l18-17.6H0v-4.8h41.5l-18-17.6h6.6V5.3z"></path></g></svg>
+                 </a>
+               </div>
+      
+      
+      
+           </div>
+     	 </div>
+      {% endcase %}
+    {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+{% assign sectionId =  section.id | replace: '-','_' %}
+<script>
+  var callbacksection{{ sectionId }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.Swiper) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/js/swiper.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/css/swiper.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbacksection{{ sectionId }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callbacksection{{ sectionId }});
+}
+    
+function defersection{{ sectionId }}(methodsection{{ sectionId }}) {
+    if (window.Swiper) {
+        methodsection{{ sectionId }}();
+    } else {
+        setTimeout(function() { defersection{{ sectionId }}(methodsection{{ sectionId }}) }, 4);
+    }
+}
+defersection{{ sectionId }}(function () {   
+
+  var section = document.querySelector('#shopify-section-{{ section.id }}');
+  var containers = document.querySelectorAll('#shopify-section-{{ section.id }} .swiper-container');
+
+[].forEach.call(containers, function(container) {
+    
+var swiper = new Swiper((container), { 
+    spaceBetween: 0,
+    loop: false,
+    loopedSlides: 0,
+    direction: 'horizontal',
+    
+    navigation: {
+        nextEl: container.querySelector('.swiper-button-next'),
+        prevEl: container.querySelector('.swiper-button-prev'),
+    },
+   pagination: {
+      el: section.querySelector('.swiper-pagination'),
+      type: 'bullets',
+        clickable: true
+    },  
+     on: {
+        init: function(){
+           var el = this.el;
+          setTimeout(function() {
+           checkVideo(el) 
+          });
+        }
+     },
+    breakpoints: {
+        0: {
+            slidesPerView: '2',
+            spaceBetween: 0,
+            speed: 500,
+          freeMode:true,
+          centeredSlides:true,
+          freeModeSticky:true
+     
+        },    
+        640: {
+            slidesPerView: '2.5',
+           slidesPerGroup: '1',
+           slidesOffsetAfter: 130,
+        },
+        1024: {
+            slidesPerView: '3.5',
+           slidesPerGroup: '1',
+          //slidesPerGroupSkip:1,	
+          slidesOffsetAfter: 200,
+        }
+    }
+});  
+    
+});    
+      
+function checkVideo(swiper) {
+var videoWraps = swiper.querySelectorAll('.hasVideo');
+ [].forEach.call(videoWraps, function(videoWrap) {
+  // do whatever
+ 
+  var video = videoWrap.querySelector('video');
+   if(video) {
+  var videoLi = videoWrap.closest('li');
+  
+  video.oncanplay = (event) => {
+   videoLi.classList.add('video_loaded');
+  };
+  videoLi.addEventListener("mouseover",  (event) => {
+    if(video.readyState >= 3) {
+    videoLi.classList.add('video_loaded');
+    }
+     video.play();
+     
+   });
+  videoLi.addEventListener("mouseout",  (event) => {
+     video.pause();
+   });    
+     
+  }
+});    
+  
+}  
+      
+});
+</script>
+{% schema %}
+  {
+    "name": "Advanced Collections List",
+    "settings": [{
+       "id": "title",
+       "type": "text",
+       "label": "Title",
+       "default": "All Collections"
+},
+{
+   "type":"link_list",
+   "id": "menu",
+   "label": "Linklist"
+},
+{
+   "type":      "header",
+   "content":   "Colors"
+},
+{
+       "id": "background_color",
+       "type": "color",
+       "label": "Row Background Color",
+       "default": "#EBEADE"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Alternate Row Background Color",
+       "default": "#F6F5E8"
+}
+],
+"blocks": [
+    {
+     "type": "Collection",
+     "name": "Collection",
+     "settings" : [
+      {
+       "id": "title",
+       "type": "text",
+       "label": "Title"
+      },
+      {
+       "id": "description",
+       "type": "textarea",
+       "label": "Description"
+      },
+      {
+       "id": "collection",
+       "type": "collection",
+       "label": "Collection"
+      }
+     ]
+    }
+   ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.advanced-collections-list-wrap {
+padding-top: 40px;
+.title {
+h3 {
+font-weight: 600;
+font-size: 1.4em;
+    margin-bottom: 30px;
+}
+}
+ .padding40 {
+ 	padding:0 40px;
+ }
+ .nav-wrap {
+.inner {
+position: relative;
+    transition: top 300ms cubic-bezier(0.215, 0.61, 0.355, 1), border-bottom 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    width: 100%;
+@media (min-width: 1025px) {
+    display: -ms-grid;
+    display: grid;
+    grid-template-areas:
+        'subnav subnavToggler'
+        'subnavPanel subnavPanel';
+    -ms-grid-columns: 1fr auto;
+    grid-template-columns: 1fr auto;
+
+    animation: fade-in 800ms cubic-bezier(0.215, 0.61, 0.355, 1) both;
+    background-color: #EBEADE;
+    transition: top 300ms cubic-bezier(0.215, 0.61, 0.355, 1), background-color 800ms cubic-bezier(0.215, 0.61, 0.355, 1), border-bottom 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+}
+.inner2 {
+animation: fade-in 800ms cubic-bezier(0.215, 0.61, 0.355, 1) both;
+    display: -ms-flexbox;
+    display: flex;
+    height: 64px;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    transition: height 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    z-index: 2;
+@media (max-width: 1024px) {
+    background-color: #EBEADE;
+}
+@media (min-width: 1025px) {
+    grid-area: subnav;
+    -ms-grid-column: 1;
+    grid-column: 1;
+    -ms-grid-row: 1;
+    grid-row: 1;
+    height: 111px;
+}
+&::after, &::before {
+    animation: fade-in 200ms 900ms cubic-bezier(0.215, 0.61, 0.355, 1) both;
+    content: '';
+    height: calc(100% - 10px);
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+@media (min-width: 1025px) {
+    height: calc(100% - 20px);
+}
+}
+&:before {
+background: linear-gradient( to right, rgba(235, 234, 222, 1) 0%, rgba(235, 234, 222, 0) 100% );
+    left: 0;
+    width: 20px;
+@media (min-width: 640px) {
+    width: 30px;
+}
+}
+}
+.nav-wrap {
+@media (max-width: 1024px) {
+    background-color: #EBEADE;
+}
+    color: #666;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 1.4rem;
+    overflow: auto;
+}
+ul.nav {
+    display: -ms-flexbox;
+    display: flex;
+    list-style: none;
+    margin-bottom: 0;
+    margin-top: 0;
+    white-space: nowrap;
+@media (min-width: 1025px) {
+    overflow: hidden;
+    padding-top: 45px;
+    scrollbar-color: rgba(0, 0, 0, .1) rgba(0, 0, 0, .05);
+    scrollbar-width: thin;
+}
+@media (max-width: 1024px) {
+    -ms-flex-align: center;
+    align-items: center;
+    overflow: auto;
+}
+}
+  ul {
+    display: flex;
+    list-style: none;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 0;
+    white-space: nowrap;
+   li {
+    position:relative;
+    list-style:none;
+    padding:0rem 1rem;
+     &:first-child {
+      &::after {
+    background-color: currentColor;
+    content: '';
+    display: inline-block;
+    height: 10px;
+    position: absolute;
+    right: -1px;
+    top: 4px;
+    width: 1px;
+     }
+     & span {
+      &:after {
+        transform: scaleX(1);
+       }
+     }
+    }
+     & span {
+       display: block;
+       &:after {
+    border-bottom: solid 1px #333;
+    content: '';
+    display: block;
+    margin-top: -3px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 250ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    border-bottom-color: currentColor;
+    margin-top: 0;
+       }
+     }
+     & a {
+      font-weight:normal;
+      &:hover {
+       span {
+         &:after {
+          transform: scaleX(1);
+         }
+        }
+      }
+     }
+    }
+   }
+ }
+.swiper-container {
+    height: 100%;
+}
+.swiper-wrapper {
+    padding: 0;
+    margin: 0;
+ 
+		@for $i from 0 to 20 {
+			 & .product:nth-child(#{$i}) {
+			animation-delay: calc( ( #{$i} * 100ms) + ( 1 * 300ms + 1000ms ) );
+			}
+		}
+
+
+
+}
+.swiper-nav {
+    height: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+@media (max-width: 639px) { 
+display:none;
+}
+}
+.swiper-button-prev, .swiper-button-next {
+top:auto;
+margin-top:unset;    
+-ms-flex-align: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .001);
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    width: 20%;
+height: 320px;
+@media (min-width: 640px) {   
+    height: 370px;
+}
+@media (min-width: 1025px) {
+height: 530px;
+width: 14.28571%;
+}
+&.swiper-button-disabled {
+pointer-events: none;
+opacity:1;
+}
+&:after {
+content:'';
+}
+
+.navBtn {
+height: 60px;
+    transition: all 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    width: 60px;
+    background-color: #333;
+cursor:pointer;
+@media (min-width: 1025px) {
+    height: 80px;
+    width: 80px;
+}
+&:focus {
+outline:none;
+}
+}
+svg {
+    fill: #FFFEF2;
+    height: 15px;
+    width: 15px;
+}
+}
+.swiper-button-prev {
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    left: 0;
+&:hover {
+.navBtn {
+transform: translateX(0);
+}
+}
+& .navBtn {
+    transform: translateX(-80px);
+svg {
+    transform: rotate(90deg);
+}
+}
+}
+.swiper-button-next {
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    right: 0;
+&:hover {
+.navBtn {
+transform: translateX(0);
+}
+}
+& .navBtn {
+    transform: translateX(80px);
+svg {
+    transform: rotate(-90deg);
+}
+}
+}
+
+.collection-row {
+
+animation: fade-in 1000ms;
+
+    background-color: #FFFEF2;
+    max-width: 100%;
+    opacity: 1;
+    overflow: hidden;
+    transition: all 1000ms;
+@media (min-width: 640px) {
+display: -ms-flexbox;
+display: flex;
+}
+}
+
+.intro {
+
+
+animation-delay: 500ms;
+    animation-duration: 2000ms;
+    animation-fill-mode: forwards;
+    animation-name: fade-in;
+    opacity: 0;
+
+
+    padding: 20px;
+@media (min-width: 640px) {
+display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 40px 17px 40px 34px;
+    -ms-flex-preferred-size: auto;
+    flex-basis: auto;
+    width: calc(100% * 2 / 7);
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    height: 370px;
+}
+@media (min-width: 1025px) {
+    padding: 40px 20px 71px 40px;
+    flex-basis: auto;
+    width: calc(100% * 2 / 9);
+    height: 530px;
+}
+}
+
+.description {
+color: #252525;
+@media (min-width: 1025px) {
+    padding: 0 0 50px;
+}
+@media (min-width: 640px) {
+margin-top: auto;
+padding: 0 0 25px;
+}
+h2 {
+    font-weight: normal;
+}
+}
+
+.cta, .cta2 {
+    width: 100%;
+   svg {
+       width: 15px;
+    height: auto;
+    vertical-align: middle;
+    margin-left: 15px;
+    path {
+        fill: #252525;
+    }
+   }
+  a {
+   font-weight:normal;
+  }
+}
+.cta {
+@media (max-width: 639px) {
+display:none;
+}
+}
+.cta2 {
+display:none;
+@media (max-width: 639px) {
+    display:block;
+    padding: 30px 20px;
+}
+}
+
+
+
+
+.collection-scroll {
+-ms-flex-order: 2;
+    order: 2;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+
+li.product {
+
+
+
+margin-bottom:0px;
+    display: flex;
+    align-items: flex-end;
+    height: 270px;
+transition: background-color 300ms cubic-bezier(0.215, 0.61, 0.355, 1), opacity 1000ms cubic-bezier(0.215, 0.61, 0.355, 1), width 1000ms cubic-bezier(0.645, 0.045, 0.355, 1) 800ms, height 1000ms cubic-bezier(0.645, 0.045, 0.355, 1) 800ms;
+@media (min-width: 640px) {
+   animation-duration: 2000ms;
+    animation-fill-mode: forwards;
+    animation-name: fade-in;
+    opacity: 0;
+    height: 370px;
+}
+@media (min-width: 1025px) {
+    height: 530px;
+-ms-flex-preferred-size: auto;
+    flex-basis: auto;
+    width: calc(100% * 2 / 7);
+} 
+ @media (max-width: 639px) {
+    flex-basis: 50%;
+}
+& > div {
+    width: 100%;
+@media (min-width: 640px) {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+}
+      picture {
+       object-fit: contain;
+       min-height: unset;   
+@media (min-width: 640px) {
+    -ms-flex-align: end;
+    align-items: flex-end;
+    display: -ms-flexbox;
+    display: flex;
+    height: 280px;
+        }
+       @media (min-width: 1025px) {
+        height: 440px;     
+        }
+@media (max-width: 639px) {
+    display: block;
+    padding-top: 50px;
+}
+    height: auto;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    & img {
+
+@media (min-width: 640px) {
+    height: auto;
+    max-height: none;
+    width: 180px;
+}
+@media (min-width: 1025px) {
+    width: 330px;
+}
+display: block;
+    margin: 0 auto;
+    max-height: 220px;
+    max-width: 100%;
+    opacity: 1;
+    transition: opacity 700ms cubic-bezier(0.645, 0.045, 0.355, 1);
+     }
+      }
+
+.h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+h3 {
+    font-size: 16px;
+font-weight: bold;
+}
+}
+
+.collection-wrap {
+&:nth-of-type(even) {
+.collection-row {
+  background-color: #EBEADE;
+}
+.swiper-slide {
+&:hover {
+  background-color: #00000008;
+}
+}
+}
+.collection-row {
+    background-color: #F6F5E8;
+}
+.swiper-slide {
+&:hover {
+       background-color: #00000005;
+}
+}
+}
+
+
+
+
+
+}
+
+
+{% endstylesheet %}      
+
+{% javascript %}
+{% endjavascript %}                                                                                                     

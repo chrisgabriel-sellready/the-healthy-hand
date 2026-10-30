@@ -1,0 +1,779 @@
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font_title.family | append: section.settings.font_title.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font_title | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font_title.family | append: section.settings.font_title.weight | append: section.settings.font_title.style | append: '|' %}
+
+{% assign familyandweight = section.settings.article_title.family | append: section.settings.article_title.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.article_title | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.article_title.family | append: section.settings.article_title.weight | append: section.settings.article_title.style | append: '|' %}
+
+
+
+
+  #shopify-section-{{ section.id }}  .page-header h2 {
+    font-family: {{ section.settings.font_title.family }}; 
+    font-weight:{{ section.settings.font_title.weight }}; 
+    font-style:{{ section.settings.font_title.style }};
+    font-size:{{ section.settings.fontsize_title }}px;
+    color:{{ section.settings.color_title }};
+    line-height:1;
+  }
+
+ #shopify-section-{{ section.id }}  .searchwrap .form button {
+  color:{{ section.settings.searchbuttoncolor }};
+  background:{{ section.settings.searchbuttonbackground }};
+  }
+
+
+#shopify-section-{{ section.id }}  .articles-wrap .article-wrap .article-inner .bottom-content {
+    font-family: {{ section.settings.article_title.family }}; 
+    font-weight:{{ section.settings.article_title.weight }}; 
+    font-style:{{ section.settings.article_title.style }};
+    font-size:{{ section.settings.fontsize_article }}px;
+}
+
+
+{% if section.settings.border %}
+#shopify-section-{{ section.id }}  .articles-wrap .article-wrap .article-inner {
+     border: 1px solid #ddd; 
+}
+{% endif %}
+
+{% if section.settings.article_alignment == 'horizontal' %}
+#shopify-section-{{ section.id }} .articles-wrap .article-wrap .article-inner {
+    display: flex;
+}
+#shopify-section-{{ section.id }} .articles-wrap .article-wrap .article-inner .top-image {
+    width: 100%;
+    padding-bottom: 31.7%;
+}
+#shopify-section-{{ section.id }} .articles-wrap .article-wrap .article-inner .bottom-content .bottom-inner {
+    text-align: left;
+}
+@media (max-width: 600px) {
+#shopify-section-{{ section.id }} .articles-wrap .article-wrap .article-inner {
+    flex-direction: column;
+}
+#shopify-section-{{ section.id }} .articles-wrap .article-wrap .article-inner .top-image {
+padding-bottom: 57.7%;
+}
+}
+{% endif %}
+
+
+
+ {% case section.settings.learnmore_button %}
+    {% when 'hide' %}
+#shopify-section-{{ section.id }} .bottom-inner .btn  {
+color:{{ section.settings.learnmore_color}};
+     display:none;
+}
+    {% when 'button' %}
+#shopify-section-{{ section.id }} .bottom-inner .btn  {
+color:{{ section.settings.learnmore_color}};
+     background:{{ section.settings.learnmore_background }};
+     border-radius: 48px;
+     padding: 11px 35px;
+     display: inline-block;
+     margin: 20px 0 0 0; 
+}
+
+    {% endcase %}
+
+
+
+ {% case section.settings.showmore_button %}
+    {% when 'hide' %}
+#shopify-section-{{ section.id }} .showmore   {
+     display:none;
+}
+    {% when 'button' %}
+#shopify-section-{{ section.id }} .showmore a   {
+color:{{ section.settings.showmore_color}};
+     background:{{ section.settings.showmore_background }};
+     border-radius: 48px;
+     padding: 11px 35px;
+     display: inline-block;
+     margin: 20px 0 0 0; 
+}
+     @media (max-width: 600px) {
+#shopify-section-{{ section.id }} .showmore a  {
+       padding:0px;
+}
+     }
+{% when 'link' %}
+#shopify-section-{{ section.id }} .showmore a   {
+     display: inline-block;
+     margin: 11px 0 0 0;
+     padding:0px;
+}
+#shopify-section-{{ section.id }} .showmore svg  {
+vertical-align: middle;
+    margin-left: 5px;
+}
+#shopify-section-{{ section.id }} .showmore svg path  {
+    fill: inherit;
+}
+    {% endcase %}
+
+
+
+
+
+
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+
+{% endstyle %}
+{% if section.settings.blog != nil %}
+{% assign theblog = section.settings.blog %}
+{% else %}
+{% assign theblog = 'news' %}
+{% endif %}
+{% assign blogs_per = section.settings.blogs_per | plus: 0 %}  
+{% case blogs_per %}
+  {% when 4 %}
+ {% assign sizes = 'large-3 medium-6' %}
+   {% when 3 %}
+  {% assign sizes = 'large-4 medium-4' %}
+  {% when 2 %}
+  {% assign sizes = 'large-6 medium-6' %}
+    {% when 1 %}
+  {% assign sizes = 'large-10 medium-12' %}
+{% endcase %}
+
+
+
+<div class="shopify-section-Blog-featured">
+{% unless section.settings.title == nil %} 
+<div class="page-header">
+  <div class="row align-middle align-justify">
+  <div class="large-12 columns text-center">
+    <h2><span>{{ section.settings.title}}</span></h2>
+   {% if section.settings.subtitle %}<p>{{ section.settings.subtitle}}</p>{% endif %}
+  </div>
+  </div>
+</div>  
+{% endunless %}
+{% unless blogs[theblog].articles.size == 0 %}
+<div class="articles-wrap"> 
+<div class="row align-stretch align-center">
+{% assign blog = blogs[theblog] %} 
+
+  {% assign i = 0 %}
+{% for article in blog.articles limit: blogs_per %}
+            
+             <a href="{{ article.url }}" class="{{ sizes }} small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="{{ article.image.src | img_url: 'large' }}" alt="{{ article.title }}" />
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>{{ article.title }}</title>
+                       {% if section.settings.excerpt %}
+                      <div class="excerpt">
+                       {{ article.excerpt_or_content | truncate: 300, ", ..." }}
+                      </div>    
+                      {% endif %}
+                      <tags>
+                      {% for tag in article.tags %}
+                        <span>{{ tag }}</span>
+                      {% endfor %}
+                      </tags>
+                      <span class="btn">{{ section.settings.learnmore_text }}</span>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  {% assign i = i | plus: 1 %}
+{% endfor %}
+</div>
+  <div class="showmore">
+    <a href="{{ blog.url }}">{{ section.settings.showmore_text }}
+    {% if section.settings.showmore_button == 'link' %}
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1.35em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1728 1280"><g transform="translate(1728 0) scale(-1 1)"><path d="M1728 544v192q0 14-9 23t-23 9H448v224q0 21-19 29t-35-5L10 666Q0 656 0 643q0-14 10-24l384-354q16-14 35-6q19 9 19 29v224h1248q14 0 23 9t9 23z" fill="#626262"/></g></svg>
+    {% endif %}
+    </a>
+  </div>
+</div>
+{% else %}
+
+
+<div class="articles-wrap"> 
+<div class="row align-stretch align-center">
+  
+
+             {% unless blogs_per < 1 %}
+             <a href="#" class="{{ sizes }} small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/70937413-3b9f0980-2012-11ea-80fe-392812a43114.jpg" alt="How to Tell the Difference Between Mr. Right and Mr. Right Now">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>Everything you need to know about  {{ shop.name }} and why we're the best</title>
+                      {% if section.settings.excerpt %}
+                      <div class="excerpt">
+                      It’s pretty simple, we’re the best in the industry because we care about quality. When you have standards it’s pretty easy to make a name for yourself .
+                      </div>    
+                      {% endif %}
+                      <tags>
+                      
+                      </tags>
+                      <span class="btn">{{ section.settings.learnmore_text }}</span>
+                    </div>
+                  </div>
+                </div>
+             </a>
+   {% endunless %}
+
+             {% unless blogs_per < 2 %}
+             <a href="#" class="{{ sizes }} small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/70937499-638e6d00-2012-11ea-803d-6f4533184943.jpg" alt="3 REASONS WHY A MAN SHOULDN’T CHASE AFTER A WOMAN">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>3 Reasons why you should choose {{ shop.name }}</title>
+                      {% if section.settings.excerpt %}
+                      <div class="excerpt">
+                      It’s pretty simple, we’re the best in the industry because we care about quality. When you have standards it’s pretty easy to make a name for yourself .
+                      </div>    
+                      {% endif %}
+                      <tags>
+                      
+                      </tags>
+                      <span class="btn">{{ section.settings.learnmore_text }}</span>
+                    </div>
+                  </div>
+                </div>
+             </a>
+   {% endunless %}
+
+            {% unless blogs_per < 3 %}
+             <a href="#" class="{{ sizes }} small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/70937522-6be6a800-2012-11ea-96c6-b318659075bf.jpg" alt="It’s Cuffing Season 3 Signs He’s Only With You Because He’s Lonely">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>The difference between {{ shop.name }} and the alternatives. </title>
+                     {% if section.settings.excerpt %}
+                      <div class="excerpt">
+                      It’s pretty simple, we’re the best in the industry because we care about quality. When you have standards it’s pretty easy to make a name for yourself .
+                      </div>    
+                      {% endif %}
+                      <tags>
+                      
+                      </tags>
+                      <span class="btn">{{ section.settings.learnmore_text }}</span>
+                    </div>
+                  </div>
+                </div>
+             </a>
+            {% endunless %}
+  
+            {% unless blogs_per <= 3 %}
+             <a href="#" class="{{ sizes }} small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/70937556-7608a680-2012-11ea-82a4-9037da4cfdb0.jpg" alt="It’s Cuffing Season 3 Signs He’s Only With You Because He’s Lonely">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <title>No one else will tell you about this helpful tip but we will </title>
+                      {% if section.settings.excerpt %}
+                      <div class="excerpt">
+                      It’s pretty simple, we’re the best in the industry because we care about quality. When you have standards it’s pretty easy to make a name for yourself .
+                      </div>    
+                      {% endif %}
+                      <tags>
+                      
+                      </tags>
+                      <span class="btn">{{ section.settings.learnmore_text }}</span>
+                    </div>
+                  </div>
+                </div>
+             </a>
+             {% endunless %}
+
+</div>
+  <div class="showmore">
+    <a href="{{ blogs[theblog].url }}">{{ section.settings.showmore_text }}</a>
+  </div>
+</div>
+{% endunless %}
+</div>
+
+
+{% schema %}
+
+  {
+    "name": "Blog Featured",
+    "settings": [
+{
+   "type": "blog",
+   "id": "blog",
+   "label": "Blog"
+},
+{
+   "type": "select",
+   "id": "blogs_per",
+   "options": [
+      { "value": "1", "label": "1 Articles"},
+      { "value": "2", "label": "2 Articles"},
+      { "value": "3", "label": "3 Articles"},
+      { "value": "4", "label": "4 Articles"}
+   ],
+   "default": "3",
+   "label": "Show how many at a time?"
+},
+{
+        "id": "title",
+        "type": "text",
+        "label": "Title (Optional)"
+},
+{
+    "type": "font_picker",
+     "id": "font_title",
+     "label": "Title Font",
+     "default": "work_sans_n6"
+},
+{
+    "type":   "range",
+    "id":     "fontsize_title",
+    "min":       30,
+    "max":       75,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Title Font Size",
+    "default":   40
+},
+{
+   "type":      "radio",
+   "id":        "alignment_title",
+   "label":     "Title Alignment",
+   "options": [
+     { "value": "center", "label": "Center" },
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "center"
+},
+{
+       "id": "color_title",
+       "type": "color",
+       "label": "Title Color",
+       "default": "#000000"
+},
+{
+"type": "checkbox",
+"id": "fullwidth",
+"label": "Full Width",
+"default": false
+},
+{
+ "type": "header",
+ "content": "Article Display Style"
+},
+{
+   "type":      "radio",
+   "id":        "article_alignment",
+   "label":     "Article Alignment",
+   "options": [
+     { "value": "vertical", "label": "vertical" },
+     { "value": "horizontal", "label": "horizontal" }
+   ],
+   "default":   "vertical"
+},
+{
+"type": "checkbox",
+"id": "border",
+"label": "Border",
+"default": true
+},
+{
+    "type": "font_picker",
+     "id": "article_title",
+     "label": "Article Font",
+     "default": "work_sans_n6"
+},
+{
+    "type":   "range",
+    "id":     "fontsize_article",
+    "min":       14,
+    "max":       75,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Article Font Size",
+    "default":   20
+},
+{
+"type": "checkbox",
+"id": "excerpt",
+"label": "Show Article Intro",
+"default": false
+},
+{
+        "type": "radio",
+        "id": "learnmore_button",
+        "label": "Learn More Button",
+        "options": [
+          {
+            "value": "hide",
+            "label": "Do not display"
+          },
+          {
+            "value": "button",
+            "label": "Display as button"
+          }
+        ],
+        "default": "button"
+      },
+{
+       "id": "learnmore_text",
+       "type": "text",
+       "label": "Button Text",
+       "default": "Learn More"
+},
+{
+       "id": "learnmore_background",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#000000"
+},
+{
+       "id": "learnmore_color",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#FFFFFF"
+},
+{
+ "type": "header",
+ "content": "Show More Articles Button"
+},
+{
+        "type": "radio",
+        "id": "showmore_button",
+        "label": "Learn More Button",
+        "options": [
+          {
+            "value": "hide",
+            "label": "Do not display"
+          },
+          {
+            "value": "link",
+            "label": "Display as link"
+          },
+          {
+            "value": "button",
+            "label": "Display as button"
+          }
+        ],
+        "default": "button"
+      },
+{
+       "id": "showmore_text",
+       "type": "text",
+       "label": "Show More Text",
+       "default": "See More Articles"
+},
+{
+       "id": "showmore_background",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#000000"
+},
+{
+       "id": "showmore_color",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#FFFFFF"
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}
+],
+  "presets": [
+    {
+      "name": "Featured Blog",
+      "category": "Blog"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+// responsive sizes
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+
+.shopify-section-Blog-featured {
+      margin-top: 30px;
+    @include bp(phablet) {
+  margin-top:0px;
+ }
+
+& .searchwrap {
+    padding-top: 20px;
+    padding-bottom: 60px;
+@include bp(tablet) {
+    padding-top: 15px;
+    padding-bottom: 35px;
+}
+@include bp(phablet) {
+    position: fixed;
+    z-index: 9;
+    padding: 5px 10px 5px;
+    background: #fff;
+    border-bottom: 1px solid #00000014;
+    box-shadow: 1px 1px 11px #00000014;
+    width: 100%;
+}
+ & .form {
+    display: flex;
+    width: 100%;
+    -ms-flex: 0 0 55.33333%;
+    flex: 0 0 55.33333%;
+    max-width: 55.33333%;
+    margin: 0 auto;
+   @include bp(phablet) {
+   -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    align-items: center;
+   }
+  & .search-input-wrap {
+    margin-right: 25px;
+    width: 100%;
+     & input {
+    margin-bottom: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border-bottom: 1px rgba(0,0,0,0.16) solid;
+    font-size: 26px;
+    font-family: 'Open Sans', sans-serif;
+    padding-bottom: 10px;
+    min-height: 50px;
+       @include bp(tablet) {
+           font-size: 21px;
+      }
+       @include bp(phablet) {
+            font-size: 18px;
+          border-bottom: none;
+    min-height: 42px;
+      }
+     } 
+	}
+    & button {
+    font-weight: bold;
+    text-transform: capitalize;
+    display: inline-block;
+    color: #fff;
+    padding: 13px 46px;
+    font-size: 21px;
+    border-radius: 25px;
+     @include bp(tablet) {
+     padding: 10px 40px;
+     font-size: 16px;
+      }
+     @include bp(phablet) {
+            padding: 10px 35px;
+    font-size: 15px;
+     }
+    }
+ }
+}
+& .page-header {
+    margin-bottom: 20px;
+ & h2 {
+    display: inline-block;
+  & span {
+   @include bp(mobile) {
+    font-size: 80%;
+   }
+  }
+ }
+  @include bp(phablet) {
+ padding-top: 25px;
+}
+}
+& .articles-wrap {
+& .article-wrap {
+    margin-bottom: 30px;
+   @include bp(phablet) {
+
+  }
+  & .article-inner {
+    min-height: 100%;
+    position:relative;
+    border-radius: 5px;
+   @include bp(phablet) {
+    border:none;
+   }
+    & .top-image {
+     padding-bottom: 58.7%;
+     margin: 0;
+     overflow: hidden;
+     background: #F7F8FA;
+     position: relative;
+     height: 0;
+      & img {
+     	width: auto;
+   	    height: auto;
+        min-width: 100%;
+        min-height: 100%;
+        position: absolute;
+        object-fit: cover;
+      }
+    }
+    & .bottom-content {
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+       width: 100%;
+      & .bottom-inner {
+          width: 100%;
+text-align: center;
+        & title {
+
+            color: #000;
+    		display: block;
+  		    font-size: 100%;
+            margin-bottom: 10px;
+           @include bp(mobile) {
+                 font-size: 80%;
+           }
+        }
+& .excerpt {
+    font-size: 55%;
+margin-top: 15px;
+    line-height: 1.4;
+   @include bp(mobile) {
+    font-size: 48%;
+  }
+}
+& tags {
+display: block;
+font-size: 80%;
+    opacity: 0.5;
+}
+& .btn {
+font-family: 'Open Sans', sans-serif;
+font-size: 16px;
+    border-radius: 6px;
+}
+      }
+    }
+  }
+  &.article-big {
+    @include bp(phabletup) {
+    & .article-inner {
+     display:flex;
+      & .top-image {
+        padding-bottom: 32%;
+        width: 55%;
+      }
+      & .bottom-content {
+      width: 45%;
+  	  text-align: center;
+      padding: 30px 30px;
+        & title {
+            font-size: 30px;
+        }
+      }
+    }
+    }
+  }
+ }
+& .showmore {
+ text-align:center;
+padding:0px 20px 25px;
+margin:0 auto;
+}
+}
+& .pagination {
+text-align: center;
+    display: none;
+    justify-content: center;
+& .current {
+background: #efefef;
+    color: #000000;
+}
+}
+}
+
+{% endstylesheet %}
+
+{% javascript %}          
+{% endjavascript %}                                                                    

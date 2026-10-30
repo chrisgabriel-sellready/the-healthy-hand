@@ -1,0 +1,290 @@
+{% style %}
+
+#shopify-section-{{ section.id }} .overlay {
+ {% if section.settings.background_color_2 contains 'transparent' or section.settings.background_color_2 contains 'rgba(0,0,0,0)' %}
+      background-color:{{ section.settings.background_color }};                            
+  {% else %}     
+    background: -moz-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: -webkit-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: linear-gradient(to right, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);                            
+  {% endif %}
+}
+
+
+
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+
+{{ block.settings.html }}
+<div class="full-width-video-wrap">
+<div class="blocks">
+{% for block in section.blocks %}
+  {% case block.type %}
+     {% when 'HTML' %}  
+   <div id="block-{{ block.id }}">
+   {{ block.settings.html }}
+</div>
+  
+  
+   {% when 'Text' %}  
+{% style %}
+#block-{{ block.id }} {
+     color:{{ block.settings.color }};
+     width: 100%;
+     text-align:center;
+  }
+{% endstyle %}
+ <div id="block-{{ block.id }}">
+   {{ block.settings.text }}
+</div>
+   {% when 'PlayButton' %}
+{% style %}
+#block-{{ block.id }} .triangle, #block-{{ block.id }} .circle {
+stroke:{{ block.settings.color }};
+}
+{% endstyle %}
+<div id="block-{{ block.id }}" class="play">
+<a data-fancybox href="{{ block.settings.url }}" class="hvr-shrink">
+   <svg version="1.1"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+            x="0px" y="0px" width="213.7px" height="213.7px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7"
+            xml:space="preserve">
+            <polygon class='triangle' id="XMLID_18_" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+               73.5,62.5 148.5,105.8 73.5,149.1 "/>
+            <circle class='circle' id="XMLID_17_" fill="none"  stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3"/>
+   </svg>
+</a>
+</div>
+   {% endcase %}
+{% endfor %}
+  
+
+  
+  
+  </div>
+   <div class="overlay"></div>
+   <video id="videopreview" playsinline="" autoplay="" preload="auto" muted="muted" onclick="event.preventDefault();">
+      <source src="{{ section.settings.mp4_url }}" type="video/mp4">
+   </video>  
+</div>
+
+
+<script>
+
+  var callbacksection{{ section.id }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.jQuery.fancybox) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/{{ settings.fancybox3version }}/jquery.fancybox.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);  
+    setTimeout(function() {
+ 
+    })
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/{{ settings.fancybox3version }}/jquery.fancybox.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style); 
+  }
+ };   
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbacksection{{ section.id }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callbacksection{{ section.id }});
+}
+  video = document.querySelector('#shopify-section-{{ section.id }} video');
+    video.addEventListener('ended', () => {
+      video.currentTime = 0.50;
+      video.play();
+    });     
+</script>
+
+{% schema %}
+  {
+    "name": "Full Width Video",
+    "settings": [{ "type":"header",
+"content": "Video"
+},
+{
+       "id": "mp4_url",
+       "type": "url",
+       "label": "mp4 preview"
+},
+{
+       "id": "background_color",
+       "type": "color",
+       "label": "Overlay Color",
+       "default": "transparent"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Overlay Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+{
+       "id": "css",
+       "type": "html",
+       "label": "Custom CSS"
+}],
+"blocks": [
+{
+"type": "Text",
+     "name": "Text",
+     "settings" : [
+{
+   "id": "text",
+   "type": "text",
+   "label": "Text"
+},
+      {
+        "id": "color",
+        "type": "color",
+        "label": "Font Color",
+        "default": "#fff"
+      }
+]
+},
+{
+"type": "PlayButton",
+     "name": "Play Button",
+     "settings" : [
+{
+   "id": "url",
+   "type": "url",
+   "label": "URL Link"
+},
+      {
+        "id": "color",
+        "type": "color",
+        "label": "Font Color",
+        "default": "#fff"
+      }
+]
+},
+{
+"type": "HTML",
+     "name": "HTML",
+     "settings" : [
+{
+       "id": "html",
+       "type": "html",
+       "label": "HTML"
+}
+]
+}
+],
+  "presets": [
+    {
+      "name": "Full Width Video",
+      "category": "Videos"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1281px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+}
+
+
+.full-width-video-wrap {
+text-align: center;
+ position:relative;
+    display: flex;
+    flex-flow: column;
+@include bp(phablet) {
+    height: 0;
+    padding-bottom: 75%;
+    overflow: hidden;
+}
+ .overlay {
+   position:absolute; 
+   width:100%;
+   height:100%;
+opacity: 0.7;
+   z-index:2;
+ }
+ .blocks {
+    padding: 20px 20px;
+   position:absolute; 
+   width:100%;
+   height:100%;
+   z-index:3;
+display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+ }
+ video {
+@include bp(phablet) {
+position: absolute;
+height:100%;
+}
+    z-index: 1;
+    align-self: center;
+    min-height: 100%;
+    justify-self: stretch;
+    min-width: 100%;
+ }
+.play {
+    svg {
+    .triangle {
+-webkit-transition: all 0.7s ease-in-out;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 480;
+    stroke: #fff;
+    transform: translateY(0);
+} 
+     }  
+}
+}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}                    

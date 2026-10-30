@@ -1,0 +1,96 @@
+{% capture cssColors %}AliceBlue,AntiqueWhite,Aqua,Aquamarine,Azure,Beige,Bisque,Black,BlanchedAlmond,Blue,BlueViolet,Brown,BurlyWood,CadetBlue,Chartreuse,Chocolate,Coral,CornflowerBlue,Cornsilk,Crimson,Cyan,DarkBlue,DarkCyan,DarkGoldenRod,DarkGray,DarkGrey,DarkGreen,DarkKhaki,DarkMagenta,DarkOliveGreen,DarkOrange,DarkOrchid,DarkRed,DarkSalmon,DarkSeaGreen,DarkSlateBlue,DarkSlateGray,DarkSlateGrey,DarkTurquoise,DarkViolet,DeepPink,DeepSkyBlue,DimGray,DimGrey,DodgerBlue,FireBrick,FloralWhite,ForestGreen,Fuchsia,Gainsboro,GhostWhite,Gold,GoldenRod,Gray,Grey,Green,GreenYellow,HoneyDew,HotPink,IndianRed,Indigo,Ivory,Khaki,Lavender,LavenderBlush,LawnGreen,LemonChiffon,LightBlue,LightCoral,LightCyan,LightGoldenRodYellow,LightGray,LightGrey,LightGreen,LightPink,LightSalmon,LightSeaGreen,LightSkyBlue,LightSlateGray,LightSlateGrey,LightSteelBlue,LightYellow,Lime,LimeGreen,Linen,Magenta,Maroon,MediumAquaMarine,MediumBlue,MediumOrchid,MediumPurple,MediumSeaGreen,MediumSlateBlue,MediumSpringGreen,MediumTurquoise,MediumVioletRed,MidnightBlue,MintCream,MistyRose,Moccasin,NavajoWhite,Navy,OldLace,Olive,OliveDrab,Orange,OrangeRed,Orchid,PaleGoldenRod,PaleGreen,PaleTurquoise,PaleVioletRed,PapayaWhip,PeachPuff,Peru,Pink,Plum,PowderBlue,Purple,RebeccaPurple,Red,RosyBrown,RoyalBlue,SaddleBrown,Salmon,SandyBrown,SeaGreen,SeaShell,Sienna,Silver,SkyBlue,SlateBlue,SlateGray,SlateGrey,Snow,SpringGreen,SteelBlue,Tan,Teal,Thistle,Tomato,Turquoise,Violet,Wheat,White,WhiteSmoke,Yellow,YellowGreen{% endcapture %}
+{% assign cssColors = cssColors | downcase | split: ","  %}
+
+
+{% assign file_extension = 'jpg' %}
+
+{% if swatch2 == blank %}
+<div class="swatch error">
+ <p>You must include the snippet swatch.liquid with the name of a product option.</p> 
+  <p>Use: <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+  <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+</div>
+{% else %}
+
+{% assign found_option = false %}
+{% assign is_color = false %}
+{% assign option_index = 0 %}
+
+{% for option in product.options %}
+  {% if option == swatch2%}
+    {% assign found_option = true %}
+    {% assign option_index = forloop.index0 %}
+    <style>
+      #product-{{ product.id }} .selector-wrapper:nth-child({{ option_index | plus: 1 }}), #product-{{ product.id }} #product-select-{{ product.id }}-variant-{{ product.selected_or_first_available_variant.id }}  {
+       display:none;
+      }
+    </style>
+    {% assign downcased_option = swatch2 | downcase %}
+    {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+      {% assign is_color = true %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+<div class="variant-select__wrap {{option | handleize }} 
+ {% assign num = 0 %}            
+ {% assign values = '' %}
+  {% for variant in product.variants %}
+    {% assign value = variant.options[option_index] %}
+    {% unless values contains value %}
+      {% assign values = values | join: ',' %}
+      {% assign values = values | append: ',' | append: value %} 
+      {% assign values = values | split: ',' %}
+        {% assign num = num | plus: 1 %}      
+    {% endunless %}
+  {% endfor %}     
+  {% if num > 1 %}show-list{% endif %}"      
+  id="sos-SingleOptionSelector-{{ option_index }}">
+
+<div class="variant-select__selected">
+   {% if is_color %}
+   {% assign currentColor = product.selected_or_first_available_variant.options[option_index] | handle %}
+    {% if cssColors contains currentColor %}{% assign is_cssColor = true %}{% else %}{% assign is_cssColor = false %}{% endif %} 
+    <div class="color-select__image colorList-{{ currentColor }}"  {% if is_cssColor %}style="background-color:{{ currentColor }};" {% endif %}></div>
+  {% endif %}
+  <div class="variant-select__option-label" data-value="{{ product.selected_or_first_available_variant.options[option_index] }}">{{ product.selected_or_first_available_variant.options[option_index] }}</div>
+</div>
+
+ {% unless found_option %}
+<div class="swatch error">
+  <p>You included the snippet swatch.liquid with the name of a product option — <code>'{{ swatch }}'</code> — that does not belong to your product.</p>
+  <p>Use <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+  <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+  <p><strong>This is case-sensitive!</strong> Do not put in <code>'color'</code> if your product option name is <code>'Color'</code>.</p>
+</div>
+{% else %}
+<div class="variant-select__list">
+  {% assign values = '' %}
+  {% for variant in product.variants %}
+    {% assign value = variant.options[option_index] %}
+    {% unless values contains value %}
+      {% assign values = values | join: ',' %}
+      {% assign values = values | append: ',' | append: value %} 
+      {% assign values = values | split: ',' %}
+      {% if forloop.first %}
+      {% assign valHandle = value | handle %}
+      {% assign productUrlWithoutColor = product.url | replace: valHandle,  "" %}
+      {% endif %}
+  <div class="variant-select__option {% if is_color %}color-swatch {% if product.selected_or_first_available_variant.options[option_index] == value %}active{% endif %}{% endif %}" data-option-index="{{ option_index }}">
+  {% if is_color %}<a href="#" data-variant-url="{{ variant.url }}" data-product-url="{{ productUrlWithoutColor }}{{ value | handle }}">{% endif %}
+  {% if is_color %}
+   {% assign currentColor = value | handle %}
+   {% if cssColors contains currentColor %}{% assign is_cssColor = true %}{% else %}{% assign is_cssColor = false %}{% endif %} 
+   <div class="color-select__image colorList-{{ currentColor }}" {% if is_cssColor %}style="background-color:{{ currentColor }};"  {% endif %}></div>
+  {% endif %}
+    
+  <div class="variant-select__option-label" data-value="{{ value | escape }}">{{ value }}</div>
+    {% if is_color %}</a>{% endif %}
+  </div>
+    {% endunless %}
+  {% endfor %}
+</div>
+
+{% endunless %}
+</div>
+{% endif %}

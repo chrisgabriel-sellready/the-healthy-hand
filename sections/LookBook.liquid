@@ -1,0 +1,409 @@
+{% assign min = 0 %}
+{% assign max = 100000 %}
+{% assign diff = max | minus: min %}
+{% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
+{% style %}
+#lookbook-{{ randomNumber }} .title {
+    background: -moz-linear-gradient(left, {{ section.settings.background }}, rgba(0,0,0,0));
+    background: -webkit-linear-gradient(left, {{ section.settings.background }}, rgba(0,0,0,0));
+    background: linear-gradient(to right, {{ section.settings.background }}, rgba(0,0,0,0));
+    color:{{ section.settings.color }};
+}
+
+#lookbook-{{ randomNumber }}-wrapper { 
+ {% if section.settings.background_color_2 contains 'transparent' or section.settings.background_color_2 contains 'rgba(0,0,0,0)' %}
+      background-color:{{ section.settings.background_color }};                            
+  {% else %}     
+    background: -moz-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+    background: -webkit-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+    background: radial-gradient(ellipse at center, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);                            
+  {% endif %}
+    
+}
+
+.fancybox-caption a.lookbook-button{{ randomNumber }}, .fancybox-caption a.current-lookbook-button { 
+background:{{ section.settings.button_background }};
+color:{{ section.settings.button_color }};
+}
+
+{% endstyle %}
+
+<div id="lookbook-{{ randomNumber }}-wrapper">
+
+<div id="lookbook-{{ randomNumber }}" class="lookbook-wrap">
+    <div class="grid-sizer"></div>
+  {% for block in section.blocks %}
+     {% case block.type %}
+      {% when 'Image' %}
+       
+  <div class="grid-item">
+    <a onClick="$.fancybox.close();" class="hvr-grow lookbook-link" href="{{ block.settings.image | img_url: '1024x1024' }}" data-fancybox="lookbook-{{ randomNumber }}" data-caption="{{ block.settings.textarea }} {% unless block.settings.url == nil %}%%{{ block.settings.url }}%%{% endunless %}">
+      <img src="{{ block.settings.image | img_url: 'grande' }}" />
+      {% unless block.settings.title == nil %}
+      <div class="title">
+        {{ block.settings.title }}
+      </div>
+      {% endunless %}
+    </a>
+  </div>
+  
+    {% endcase %}
+  {% endfor %} 
+  </div> 
+</div>
+<script>
+  
+
+  
+var callbackLookBook = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.Masonry) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://unpkg.com/masonry-layout@{{ settings.masonryversion }}/dist/masonry.pkgd.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+    if(!window.jQuery.fancybox) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/{{ settings.fancybox3version }}/jquery.fancybox.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);  
+
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/{{ settings.fancybox3version }}/jquery.fancybox.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style); 
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackLookBook();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackLookBook);
+}  
+
+  
+  
+function deferLookBook(methodLookBook) {
+    if (window.Masonry && window.jQuery.fancybox) {
+        methodLookBook();
+    } else {
+        setTimeout(function() { deferLookBook(methodLookBook) }, 200);
+    }
+}
+deferLookBook(function () {
+  
+  
+  
+  
+
+loadmsnry();
+var elem = document.querySelector('#lookbook-{{ randomNumber }}');  
+
+if(window.$.mobile) {
+   jQuery(document).on('pagecontainershow', loadmsnry);
+}
+  
+  
+function loadmsnry() {
+var elem = document.querySelector('#lookbook-{{ randomNumber }}');
+var msnry = new Masonry( elem, {
+  // options
+  columnWidth: '.grid-sizer',
+  itemSelector: '.grid-item',
+  percentPosition: true
+});  
+}  
+  
+    
+$( '#lookbook-{{ randomNumber }} [data-fancybox]' ).fancybox({
+    mobile: {
+      preventCaptionOverlap: true
+  },
+    caption : function( instance, item  ) {
+        var caption = item.opts.caption;
+        if(caption.includes('%%')) {
+
+          var regex = /\%%(.*?)\%%/;
+var url = regex.exec(caption)[1];
+         var currentnumber = item.opts.fancybox.replace('lookbook-','');
+          var buttonDiv = document.createElement( 'div' );
+          buttonDiv.innerHTML = '<a class="lookbook-button lookbook-button'+ currentnumber +'" href="'+url+'">' + urldecode('{{ section.settings.button_text | url_encode }}') + '</a>';
+          caption = caption.replace(regex.exec(caption)[0], buttonDiv.outerHTML);
+        }
+        return caption;
+    }
+});      
+    
+
+
+  
+  
+    
+$(document).on("shopify:section:select", elem.closest('.shopify-section'),function(e){
+if( typeof msnry !== 'undefined') {
+console.log(msnry);  
+msnry.destroy();
+}
+var elem = this.querySelector('.lookbook-wrap');
+var msnry = new Masonry( elem, {
+  // options
+  columnWidth: '.grid-sizer',
+  itemSelector: '.grid-item',
+  percentPosition: true
+});  
+  
+$(this).find('.lookbook-link').fancybox({
+    mobile: {
+      preventCaptionOverlap: true
+  },
+    caption : function( instance, item  ) {
+        var caption = item.opts.caption;
+        if(caption.includes('%%')) {
+          var regex = /\%%(.*?)\%%/;
+var url = regex.exec(caption)[1];
+       var currentnumber = item.opts.fancybox.replace('lookbook-','');
+          var buttonDiv = document.createElement( 'div' );
+          buttonDiv.innerHTML = '<a class="lookbook-button current-lookbook-button lookbook-button'+ currentnumber +'" href="'+url+'">' + urldecode('{{ section.settings.button_text | url_encode }}') + '</a>';
+        caption = caption.replace(regex.exec(caption)[0], buttonDiv.outerHTML);
+        }
+        return caption;
+    }
+});    
+  
+  
+});      
+    
+    
+
+  
+   
+function urldecode(str) {
+   return decodeURIComponent((str+'').replace(/\+/g, '%20'));
+}    
+  
+  
+  
+});
+</script>
+
+{% schema %}
+  {
+    "name": "LookBook",
+    "settings": [
+{
+   "type":      "header",
+   "content":   "Background Style"
+},{
+       "id": "background_color",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#ffffff"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Background Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+{
+        "type": "header",
+        "content": "Image Title Style"
+},
+{
+       "id": "color",
+       "type": "color",
+       "label": "Image Title Color",
+       "default": "#FFFFFF"
+},
+{
+       "id": "background",
+       "type": "color",
+       "label": "Image Title Background Color",
+       "default": "#000000"
+},
+{
+        "type": "header",
+        "content": "Button Style"
+},
+{
+       "id": "button_color",
+       "type": "color",
+       "label": "Button Font Color",
+       "default": "#FFFFFF"
+},
+{
+       "id": "button_background",
+       "type": "color",
+       "label": "Button Background Color",
+       "default": "#000000"
+},{
+       "id": "button_text",
+       "type": "text",
+       "label": "Button Text",
+       "default": "Shop This Look"
+}
+],"blocks": [
+    {
+     "type": "Image",
+     "name": "Image",
+     "settings" : [
+{
+       "id": "image",
+       "type": "image_picker",
+       "label": "Image"
+},
+{
+       "id": "title",
+       "type": "text",
+       "label": "Title"
+},
+{
+       "id": "textarea",
+       "type": "textarea",
+       "label": "Summary (optional)"
+},
+{
+        "id": "url",
+        "type": "url",
+        "label": "Link to (optional)"
+}]
+}]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+// responsive sizes
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1281px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+}
+
+
+//color transition
+@mixin transition($attribute, $duration: null) {
+  
+      @if ($duration) {
+       
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+    } @else {
+        
+    -webkit-transition: $attribute;
+    -moz-transition: $attribute;
+    transition: $attribute;
+    }
+
+}
+
+#shopify-section-LookBook {
+padding-top:0px;
+}
+
+.lookbook-wrap {
+max-width: 72rem;
+margin: 0 auto;
+ & .grid-item, & .grid-sizer {
+   width: 33%; padding:15px 15px;
+   @include bp(phablet) {
+    width: 50%; padding:10px 10px;
+   } 
+   @include bp(mobile) {
+
+   }
+   & a {
+    display:block;
+    position:relative;
+    & img {
+     width:100%;
+    }
+    & .title {
+      position:absolute;
+      bottom:0px;
+      width:100%;
+      padding:8px 10px;
+    letter-spacing: 2px;
+    z-index: 1;
+    @include bp(phablet) {
+    font-size: 13px;
+    }
+    }
+   }
+ }
+}
+body .fancybox-caption {
+font-size: 23px;
+@include bp(phablet) {
+    font-size: 18px;
+}
+}
+
+.fancybox-caption__body {
+ display: inline-block;
+ & div {
+ @include bp(phablet) {
+    display:block;
+   }
+ }
+}
+
+.lookbook-button {
+display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 7px;
+    font-weight: bold;
+    margin: 10px 10px 0;
+}
+
+{% endstylesheet %}
+
+{% javascript %}
+
+
+ 
+
+{% endjavascript %}      

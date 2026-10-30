@@ -1,0 +1,49 @@
+  {% unless section.settings.headline_1.size == 0 and  section.settings.description_1.size == 0 and section.settings.headline_2.size == 0 and section.settings.headline_2.size == 0 %}
+  <div class="Additional-details-wrap">
+      <div class="row align-justify">
+        
+        <div class="large-5 small-12 columns">
+          <h2>{{ section.settings.headline_1 }}</h2>
+          {{ section.settings.description_1 }}
+        </div>
+       
+ 
+        <div class="large-5 small-12 columns">
+          <h2>{{ section.settings.headline_2 }}</h2>
+          {{ section.settings.description_2 }}
+        </div>
+      </div>  
+    </div>
+{% endunless %}
+{% schema %}
+  {
+    "name": "Product Info",
+    "settings": [{
+       "id": "headline_1",
+       "type": "text",
+       "label": "Headline 1"
+      },
+      {
+        "id": "description_1",
+        "type": "textarea",
+        "label": "Description 1"
+      },
+      {
+       "id": "headline_2",
+       "type": "text",
+       "label": "Headline 2"
+      },
+      {
+        "id": "description_2",
+        "type": "textarea",
+        "label": "Description 2"
+      }
+]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

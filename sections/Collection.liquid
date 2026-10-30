@@ -1,0 +1,521 @@
+{% assign buynowtext = settings.buynowtext %}
+{% style %}
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+
+{% assign min = 0 %}
+{% assign max = 100000 %}
+{% assign diff = max | minus: min %}
+{% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
+
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font_title.family | append: section.settings.font_title.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font_title | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font_title.family | append: section.settings.font_title.weight | append: section.settings.font_title.style | append: '|' %}
+
+.collection-{{ randomNumber }} > * {
+max-width: 100.5rem;
+}
+
+  .collection-page .collection-title h1 {
+    font-family: {{ section.settings.font_title.family }}; 
+    font-weight:{{ section.settings.font_title.weight }}; 
+    font-style:{{ section.settings.font_title.style }};
+    font-size:{{ section.settings.fontsize_title }}px;
+    {% if section.settings.uppercase %}
+      text-transform:uppercase;
+    {% endif %}
+  }
+
+{% endstyle %}
+
+{% paginate collection.products by 12 %}
+
+
+
+
+<div class="collection-{{ randomNumber }}">
+<div class="row align-justify align-middle collection-title">
+  <div class="columns large-12 text-center">
+  <h1>{{ collection.title }}</h1>
+  </div>
+  
+
+
+</div>
+
+  {% comment %}
+    Listing all tags within the current collection.
+    Shopify uses product tags to manage subcategories inside collections.
+    See 'How do I create subcategories of products?' at 
+    http://bit.ly/1j1Dti4 for details.
+  {% endcomment %}
+
+
+
+  {% if collection.description.size > 0 %}
+  <div class="row">
+    <div class="column">
+    {{ collection.description }}
+    </div>
+   </div>
+  {% endif %}
+  
+  
+<ul class="row align-center align-bottom collection-container">
+{% assign products_per = section.settings.products_per | plus: 0 %}  
+{% if products_per == 2 %}
+  {% assign sizes = 'large-6 medium-6' %}
+  {% elsif products_per == 3 %}
+  {% assign sizes = 'large-4 medium-4' %}
+  {% elsif products_per == 4 %}
+  {% assign sizes = 'large-3 medium-6' %}
+{% endif %}  
+  {% for product in collection.products %}
+  
+{% assign hasVideo = false %}
+ {% for media in product.media %}
+  {% case media.media_type %}
+    {% when 'video' %}
+     {% capture videoTag %}{{ media | video_tag: controls:false,autoplay:false,muted:true,loop:true }}{% endcapture %}
+     {% assign hasVideo = true %}
+  {% endcase %}
+ {% endfor %}
+
+ {% for media in product.media %}
+  {% case media.media_type %}
+    {% when 'image' %}
+
+  {% endcase %}
+ {% endfor %}  
+  
+  
+{% if product.type == "OPTIONS_HIDDEN_PRODUCT" %}{% continue %}{% endif %}
+{% comment %}Is this product on sale?{% endcomment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+  
+  
+  
+<li itemscope itemtype="http://schema.org/Product" data-id="{{ product.id }}" class="text-center columns {{ sizes }} small-6 product {% if product.type contains 'book' %}book{% endif %} {% unless product.available %} sold-out{% endunless %}{% if on_sale %} on-sale{% endif %}">
+   
+  
+  <div itemscope itemtype="http://schema.org/Product" data-video="{{ hasVideo }}" class="text-center {% if on_sale %} on-sale{% endif %}">
+ <a href="{{ product.url | within: collection }}" {% if settings.disableproductajax or settings.boldsubscriptions %}rel="external"{% endif %}>     
+   {% if hasVideo %}
+   <div class="video-preloader">
+     <svg width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-rolling" style="background: none;"><circle cx="50" cy="50" fill="none" ng-attr-stroke="" ng-attr-stroke-width="" ng-attr-r="" ng-attr-stroke-dasharray="" stroke="#000000" stroke-width="10" r="25" stroke-dasharray="117.80972450961724 41.269908169872416" transform="rotate(41.2639 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg>
+   </div> 
+   {% endif %}
+   <div class="image {% if settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product.media.size > 1  %} {% if hasVideo %} hasVideo {% endif %}  imgswitch {% case settings.product_image_hover %}{% when 'fade' %}fade{% when 'scroll' %}{% if hasVideo %} fade {% else %} scroll {% endif %}{% endcase %}{% endif %}">
+     <div class="inner">
+       {% if product.featured_image %}<img class="{% unless settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product.images.size > 1  %}hvr-grow{% endunless %} lazyload" data-sizes="auto" data-src="{{ product.featured_image | img_url: '1024x1024' }}" />{% endif %} 
+     </div>
+     
+     {% unless hasVideo %}
+     {% if settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product.images.size > 1  %}
+     <div class="inner">
+       <img class="lazyload" data-sizes="auto" data-src="{{ product.images[1] | product_img_url: 'large' }}" />
+     </div>
+     {% endif %}
+     {% else %}
+     <div class="inner">
+       {{ videoTag }}
+     </div> 
+     {% endunless %}
+   </div>
+ </a>
+    
+   <h3><span>{{ product.title }}</span></h3>
+       
+        <div class="h1 medium-down--left">
+          {% if product.price_max > product.price %}
+           <span class="currPrice">{% include 'price' with product.price_min %}</span> {% if on_sale %}<span class="oldPrice"> {{ product.compare_at_price | money }} </span>{% endif %}
+        {% else %}
+           <span class="currPrice">{% include 'price' with product.price %}</span>   {% if on_sale %}<span class="oldPrice"> {{ product.compare_at_price | money }}</span> {% endif %}
+        {% endif %}
+        {% if on_sale %}
+          <div class="salew">
+            <span class="sale-tag medium-down--right{% if settings.product_reviews_enable %} has-reviews{% endif %}">
+              {% assign compare_price = product.compare_at_price %}
+              {% assign product_price = product.price %}
+              {% include 'price-sale' %}
+            </span>
+         </div>
+        {% endif %}  
+        {% unless product.available %}
+          <span class="product-price__sold-out">{{ 'products.product.sold_out' | t }}</span>
+        {% endunless %} 
+       </div>
+    
+        {% if settings.affirm != blank %}   
+       <p class="affirm-as-low-as" data-page-type="product" data-amount="{{product.price_min}}"></p>
+       {% endif %}     
+    
+         
+        {% if section.settings.desc %}
+         <div class="desc">
+           {{ product.description | strip_html | truncate: 300, ", ..." }}
+         </div>
+         {% endif %}
+       </a> 
+        <a href="{{ product.url }}" class="buynow" {% if settings.disableproductajax or settings.boldsubscriptions %}rel="external"{% endif %}>{{ buynowtext }}</a>     
+</div>  
+  
+  
+  
+  
+  
+  
+  
+  
+  </li>
+   
+  
+  
+  
+  {% else %}
+    <p>There are no products in this view.</p>
+  {% endfor %}
+ </ul>
+  {% if paginate.pages > 1 %}
+<div class="pagination">
+    {{ paginate | default_pagination }}
+</div>
+  {% endif %}
+</div>  
+  
+
+
+
+
+
+<script> 
+  
+  
+
+
+var videoWraps = document.querySelectorAll('.collection-{{ randomNumber }}   .hasVideo');
+ [].forEach.call(videoWraps, function(videoWrap) {
+  // do whatever
+ 
+  var video = videoWrap.querySelector('video');
+   if(video) {
+  var videoLi = videoWrap.closest('li');
+  
+  video.oncanplay = (event) => {
+   videoLi.classList.add('video_loaded');
+  };
+  videoLi.addEventListener("mouseover",  (event) => {
+    if(video.readyState >= 3) {
+    videoLi.classList.add('video_loaded');
+    }
+     video.play();
+     
+   });
+  videoLi.addEventListener("mouseout",  (event) => {
+     video.pause();
+   });    
+     
+  }
+});    
+  
+ 
+  
+  
+var callbackCollection{{ collection.id }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.InfiniteScroll) {
+   // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);   
+  }
+  if(!Shopify.queryParams) {
+       // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = '{{ 'shopify_common.js'  | asset_url }}';
+    document.getElementsByTagName("head")[0].appendChild(script);   
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackCollection{{ collection.id }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackCollection{{ collection.id }});
+}
+  
+function deferCollection{{ collection.id }}(methodCollection{{ collection.id }}) {
+    if (window.InfiniteScroll && Shopify.queryParams) {
+        methodCollection{{ collection.id }}();
+    } else {
+        setTimeout(function() { deferCollection{{ collection.id }}(methodCollection{{ collection.id }}) }, 50);
+    }
+}
+deferCollection{{ collection.id }}(function() {  
+
+/*
+we dont sort....yet!
+jQuery('.sort-by')
+  .val('{{ collection.sort_by | default: collection.default_sort_by }}')
+  .on('change', function() {
+    Shopify.queryParams.sort_by = jQuery(this).val();
+    location.search = jQuery.param(Shopify.queryParams).replace(/\+/g, '%20');
+  });  
+*/    
+loadCollection{{randomNumber}}();
+  
+   var currentPage = document.querySelector('.collection-{{ randomNumber }}').closest('[data-role="page"]');
+
+
+ // if jquery mobile
+  if(window.$.mobile) {
+   setTimeout(function() { 
+   jQuery(document).on('pagecontainerbeforehide', loadCollectionDestroy{{randomNumber}});
+   jQuery(document).on('pagecontainershow', loadCollectionTrigger{{randomNumber}});
+   jQuery(document).on('pageremove', currentPage, removeEvents{{randomNumber}});
+   },900);
+   }
+  
+
+  
+  
+});  
+   
+  
+  
+function loadCollectionDestroy{{randomNumber}} (event, ui) {
+  var collection = document.querySelector('.collection-{{ randomNumber }}');                                
+  if(collection) {   
+  var page = collection.closest('[data-role="page"]');
+     if(ui.prevPage[0].id == page.id) {
+      var page = ui.prevPage[0];
+      if (typeof page.infScroll !== 'undefined') {
+      page.infScroll.destroy();
+      }
+      //  console.log('destroyed' + page.id); 
+
+  } 
+  }
+}  
+  
+function loadCollectionTrigger{{randomNumber}} (event, ui) {
+   var collection = document.querySelector('.collection-{{ randomNumber }}');
+   if(collection) { 
+   var page = document.querySelector('.collection-{{ randomNumber }}').closest('[data-role="page"]');
+    if(ui.toPage[0].id == page.id) {
+       loadCollection{{randomNumber}}();
+    }
+   }
+}  
+  
+function removeEvents{{randomNumber}}(event)  {
+
+   var collection = document.querySelector('.collection-{{ randomNumber }}');
+   if(collection) { 
+   var page = document.querySelector('.collection-{{ randomNumber }}').closest('[data-role="page"]');  
+  if(event.target.id ==  page.id) {
+   // console.log('remove events ' + page.id); 
+   jQuery(document).off('pagecontainerhide', loadCollectionDestroy{{randomNumber}});
+   jQuery(document).off('pagecontainershow', loadCollectionTrigger{{randomNumber}});
+   }
+  }
+}
+  
+  
+function loadCollection{{randomNumber}}() {
+
+  var page = document.querySelector('.collection-{{ randomNumber }}').closest('[data-role="page"]');
+                                    if(document.querySelector('#' + page.id + ' .next a')) {                        
+  var container = page.querySelector('.collection-container');
+  page.infScroll = new InfiniteScroll( container, {
+  path: '#' + page.id + ' .next a',
+  append: '.product',
+  history: false,
+  status: '.ui-loader',
+  });
+
+   page.infScroll.on( 'last', function() {
+       $.mobile.loading().hide();
+   });
+    //console.log('loaded' + page.id);
+  }
+}  
+  
+  
+</script>
+{% endpaginate %}
+
+{% comment %}
+  JavaScript for collection sorting.
+{% endcomment %}
+
+
+{% schema %}
+  {
+    "name": "Collection",
+    "settings": [
+{ "type": "header",
+"content": "Title Style"
+},
+{
+    "type": "font_picker",
+     "id": "font_title",
+     "label": "Title Font",
+     "default": "work_sans_n6"
+},
+{
+    "type":   "range",
+    "id":     "fontsize_title",
+    "min":       20,
+    "max":       75,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Title Font Size",
+    "default":   25
+},
+{
+"type": "checkbox",
+"id": "uppercase",
+"label": "Uppercase",
+"default": true
+},
+{ "type": "header",
+"content": "Collection Layout Options"
+},
+{
+   "type": "select",
+   "id": "products_per",
+   "options": [
+      { "value": "2", "label": "2 Products per row"},
+      { "value": "3", "label": "3 Products per row"},
+      { "value": "4", "label": "4 Products per row"}
+   ],
+   "default": "4",
+   "label": "Show how many per row"
+},
+{
+"type": "checkbox",
+"id": "desc",
+"label": "Show Shortened Product Description",
+"default": false
+},
+{
+"type": "checkbox",
+"id": "showrating",
+"label": "Show Product Rating if Review Enabled",
+"default": true
+}, 
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+.collection-page {
+
+
+& .collection-container {
+max-width: 100.5rem;
+padding: 0;
+}
+      & .stamped-product-reviews-badge {
+        font-weight:normal;
+@include bp(mobile) {
+    font-size: 13px;
+}
+
+& .fa-star-half-o:before, & .fa-star-o:before, & .fa-star:before, & .stamped-fa-star-half-o:before, & .stamped-fa-star-o:before, & .stamped-fa-star:before {
+@include bp(mobile) {   
+font-size: 16px;
+}
+      }
+
+
+      }
+ & .desc {
+margin-top: 10px;
+}
+   & .pagination {
+text-align: center;
+    display: none;
+    justify-content: center;
+& .current {
+background: #efefef;
+    color: #000000;
+}
+}
+}
+
+{% endstylesheet %} 
+
+{% javascript %}
+{% endjavascript %}              

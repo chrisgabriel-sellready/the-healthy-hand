@@ -1,0 +1,300 @@
+{% style %}
+#shopify-section-{{ section.id }} .header-notification-timer {
+{% if section.settings.background_color_2 contains 'transparent' %}
+      background-color:{{ section.settings.background_color }};                            
+  {% else %}     
+    background: -moz-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: -webkit-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: linear-gradient(to right, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);                            
+  {% endif %}                                        
+color:{{ section.settings.text_color }};
+}
+#shopify-section-{{ section.id }} a {
+color:{{ section.settings.text_color }};
+}
+#shopify-section-{{ section.id }} .swiper-button-next:after, #shopify-section-{{ section.id }} .swiper-button-prev:after {
+color:{{ section.settings.text_color }};
+}
+#shopify-section-{{ section.id }} .header-notification-timer .swiper-pagination .swiper-pagination-bullet:before {
+background:{{ section.settings.text_color }};
+}
+#shopify-section-{{ section.id }} .header-notification-timer .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active:before {
+border: 2px solid {{ section.settings.text_color }};
+  background: transparent;
+}
+
+{% endstyle %}
+
+<div class="header-notification-timer">  
+<div class="swiper-container">
+<div class="swiper-pagination"></div>    
+<div class="swiper-button-next"></div>     
+<div class="swiper-button-prev"></div>     
+ <div class="swiper-wrapper">
+   {% for block in section.blocks %}
+     {% case block.type %}
+      {% when 'Notification' %}
+       <div class="swiper-slide">
+         {% if block.settings.url %}
+         <a href="{{ block.settings.url }}">
+          {% endif %}
+           <p class="text-center">{{ block.settings.notification }}</p>
+          {% if block.settings.url %}
+         </a>
+         {% endif %}
+       </div>
+     {% endcase %}
+   {% endfor %}
+  </div>
+</div>
+</div>
+
+ 
+
+<script>
+  var callback{{ section.id | replace: '-','_' }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.Swiper) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/js/swiper.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/css/swiper.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callback{{ section.id | replace: '-','_' }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callback{{ section.id | replace: '-','_' }});
+}
+    
+function defer{{ section.id | replace: '-','_' }}(method{{ section.id | replace: '-','_' }}) {
+    if (window.jQuery && window.Swiper) {
+        method{{ section.id | replace: '-','_' }}();
+    } else {
+        setTimeout(function() { defer{{ section.id | replace: '-','_' }}(method{{ section.id | replace: '-','_' }}) }, 50);
+    }
+}
+defer{{ section.id | replace: '-','_' }}(function () {  
+  
+  
+Slider{{ section.id | replace: '-','_' }}();  
+  
+function Slider{{ section.id | replace: '-','_' }}() {
+  
+      var section = document.querySelector('#shopify-section-{{ section.id | replace: '-','_' }}');
+      var container = document.getElementById('shopify-section-{{ section.id | replace: '-','_' }}').querySelector('.swiper-container');
+      var swiper = new Swiper((container), {         
+      effect: 'slide',  
+      speed: 200,
+      autoplay: {
+        delay: 5000,
+      },
+      slidesPerView: 1,  
+        slidesPerGroup: 1,
+      loop: true,
+      direction: 'horizontal',
+      navigation: {
+        nextEl: section.querySelector('.swiper-button-next'),
+        prevEl: section.querySelector('.swiper-button-prev'),
+      },  
+      pagination: {
+      el: section.querySelector('.swiper-pagination'),
+      type: 'bullets',
+        clickable: true
+    },  
+  breakpoints: {
+    1022: {
+      spaceBetween: 15,
+    },
+    720: {
+      spaceBetween: 2,
+    },
+    480: {
+        speed: 300,                                  
+      spaceBetween: 2,
+    },
+    320: {
+       speed: 300,
+      spaceBetween: 2,
+    },
+  }
+      });   
+} 
+    
+  
+});    
+</script>
+
+
+
+
+{% schema %}
+  {
+    "name": "Notification Bar Timer",
+    "settings": [ {
+        "id": "background_color",
+        "type": "color",
+        "label": "Background Color",
+        "default": "#000000"
+      },{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Background Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+ {
+        "id": "text_color",
+        "type": "color",
+        "label": "Notification Color",
+        "default": "#FFFFFF"
+      }],
+"blocks": [
+    {
+     "type": "Notification",
+     "name": "Notification",
+     "settings" : [
+ {
+        "id": "notification",
+        "type": "text",
+        "label": "Notification"
+      },
+ {
+        "id": "url",
+        "type": "url",
+        "label": "Link to"
+      }
+]
+  }
+ ],
+ "presets": [
+    {
+      "name": "Notification Bar with Timer",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+@mixin bp($point) {
+
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+}  
+@else if $point == laptop {
+  @media #{$bp-laptop} { @content; }
+}
+@else if $point == tablet {
+  @media #{$bp-tablet} { @content; }
+}
+@else if $point == tabletup {
+  @media #{$bp-tabletup} { @content; }
+}
+@else if $point == phablet {
+  @media #{$bp-phablet} { @content; }
+}
+@else if $point == phabletup {
+  @media #{$bp-phabletup} { @content; }
+}
+@else if $point == mobile {
+  @media #{$bp-mobile}  { @content; }
+}
+@else if $point == mobileup {
+  @media #{$bp-mobileup} { @content; }
+}
+@else if $point == small {
+  @media #{$bp-small}  { @content; }
+}
+
+}
+
+.header-notification-timer {
+font-size: 13px;
+font-family: arial, sans-serif;
+letter-spacing: 1px;
+@include bp(mobile) {
+font-size: 12px;
+}
+p {
+    margin: 1.1em auto;
+    padding: 0 45px;
+@include bp(mobile) {
+margin: 1.6em auto;
+}
+}
+& .swiper-wrapper {
+align-items: center;
+}
+& .swiper-button-next:after, & .swiper-button-prev:after {
+    font-size: 14px;
+
+}
+& .swiper-container-horizontal>.swiper-pagination-bullets{
+bottom: 0;
+}
+& .swiper-pagination {
+@include bp(mobileup) {
+display:none;
+}
+ & .swiper-pagination-bullet {
+margin: 0 0px;
+    opacity: 1;
+background: transparent;
+height: 13px;
+width: 13px;
+position:relative;
+&:focus {
+outline:none;
+}
+&:before {
+content:'';
+    border: 2px solid transparent;
+    border-radius: 12px;
+transition: width .4s,height .4s,border-color .4s,border-width .4s,background-color .4s;
+    width: 4px;
+height: 4px;
+display: block;
+position: absolute;
+left:0;
+    right: 0;
+    top: 0;
+bottom:0;
+margin:auto;
+}
+&.swiper-pagination-bullet-active {
+&:before {
+background-color: transparent;
+    border: 2px solid #000;
+    height: 8px;
+    width: 8px;
+}
+}
+}
+}
+}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}                                                   

@@ -1,0 +1,123 @@
+<iframe id="embed-wrap" scrolling="yes" frameborder="0" src="{{ section.settings.url }}">
+</iframe>  
+
+
+<script>
+  
+function deferEmbed(methodEmbed) {
+    if (window.jQuery) {
+        methodEmbed();
+    } else {
+        setTimeout(function() { deferEmbed(methodEmbed) }, 50);
+    }
+}
+deferEmbed(function () {  
+$(document).on("pageshow", "#pagebooking", function (event) {
+  //if($(window).width() <= 600) {
+   var content = SetHeightOfDiv();
+   var target = $(event.target).find(".ui-content");
+   if(target.height() != content)
+     target.css({'min-height' : content, 'height' : content}); 
+ // }
+});
+
+function SetHeightOfDiv() {
+    var screen = $.mobile.getScreenHeight();
+    var header = $("#header") ? $("#header").outerHeight() - 1 : $("#header").outerHeight();
+    var footer = $("#footer") ? $("#footer").outerHeight() : $("#footer").outerHeight();
+  
+    /* content div has padding of 1em = 16px (32px top+bottom). This step
+   can be skipped by subtracting 32px from content var directly. */
+    var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height();
+
+    var content = screen - header;
+   console.log(content);
+    return content;
+
+
+}
+});
+</script>
+
+{% schema %}
+  {
+    "name": "Embed",
+    "settings": [      {
+       "id": "url",
+       "type": "url",
+       "label": "Embed"
+      }]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+// responsive sizes
+@mixin bp($point) {
+
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+}  
+@else if $point == laptop {
+  @media #{$bp-laptop} { @content; }
+}
+@else if $point == tablet {
+  @media #{$bp-tablet} { @content; }
+}
+@else if $point == tabletup {
+  @media #{$bp-tabletup} { @content; }
+}
+@else if $point == phablet {
+  @media #{$bp-phablet} { @content; }
+}
+@else if $point == phabletup {
+  @media #{$bp-phabletup} { @content; }
+}
+@else if $point == mobile {
+  @media #{$bp-mobile}  { @content; }
+}
+@else if $point == mobileup {
+  @media #{$bp-mobileup} { @content; }
+}
+@else if $point == small {
+  @media #{$bp-small}  { @content; }
+}
+
+}
+
+body.pagebooking.ui-mobile-viewport {
+overflow: hidden;
+}
+#pagebooking {
+& #shopify-section-Embed {
+  height:100%; 
+  & #embed-wrap {
+    height: 100%;
+    width: 100%; 
+    overflow:auto;
+    padding: 0px 0;
+    @include bp(mobile) {
+        padding: 0; 
+        min-height: 100%;
+    }
+  }
+ }
+  & .ui-content {
+   padding:0;
+  }
+  & #footer {
+   display:none;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}          
+{% endjavascript %}

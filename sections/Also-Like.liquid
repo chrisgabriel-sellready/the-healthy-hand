@@ -1,0 +1,242 @@
+{% style %}
+{% unless section.settings.enablebuynow %}
+{% assign buynowtext = settings.buynowtext %}
+{% else %}
+{% assign buynowtext = section.settings.buynowtext %}
+
+#shopify-section-{{ section.id }} .collection-featured li.product a.buynow  {
+color:{{ section.settings.buynowcolor}};
+ {% case settings.buy_now_button %}
+    {% when 'hide' %}
+     display:none;
+    {% when 'button' %}
+     background:{{ section.settings.buynowbackground }};
+     border-radius: 48px;
+     padding: 11px 35px;
+     display: inline-block;
+     margin: 20px 0 0 0; 
+     @media (max-width: 600px) {
+       padding: 11px 20px;
+     }
+    {% when 'link' %}
+     display: inline-block;
+     margin: 11px 0 0 0;
+     padding:0px;
+     @media (max-width: 600px) {
+       padding:0px;
+     }
+    {% endcase %}
+}
+{% endunless %}
+
+
+{% if section.settings.fullwidth %}
+   #shopify-section-Also-Like .additional-products > .row {
+   max-width: 100%; 
+   }
+{% endif %}  
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+{% for collection in product.collections %}
+   {% if collection.title != 'All' %}
+    {% assign group = collection.handle %}
+     {% break %}
+   {% endif %}
+{% endfor %}  
+{% if group %}
+
+
+<div class="additional-products">
+
+<div>
+<h2 class="text-center">{{ section.settings.title }}</h2>
+</div>
+
+<ul class="row align-center align-top">
+{% assign count = 0 %}
+  {% assign products_per = section.settings.products_per | plus: 0 %}   
+{% if products_per == 2 %}
+  {% assign sizes = 'large-6 medium-6' %}
+  {% elsif products_per == 3 %}
+  {% assign sizes = 'large-4 medium-4' %}
+  {% elsif products_per == 4 %}
+  {% assign sizes = 'large-3 medium-6' %}
+{% endif %}  
+  {% for product2 in collections[group].products %}
+  
+  {% if product2.id != product.id %}
+{% if product2.type == "OPTIONS_HIDDEN_PRODUCT" %}{% continue %}{% endif %}
+{% comment %}Is this product on sale?{% endcomment %}
+{% assign product2_on_sale = false %}
+{% if product2.compare_at_price > product2.price %}
+{% assign product2_on_sale = true %}
+{% endif %}
+<li itemscope itemtype="http://schema.org/Product" data-id="{{ product2.id }}" class="text-center columns {{ sizes }} small-6 product {% unless product2.available %} sold-out{% endunless %}{% if on_sale %} on-sale{% endif %}">
+   <a href="{{ product2.url | within: collection }}" {% if settings.disableproductajax %}rel="external"{% endif %}>
+       
+     
+     
+     
+
+     
+        <div class="image {% if settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product2.media.size > 1  %} imgswitch {% case settings.product_image_hover %}{% when 'fade' %}fade{% when 'scroll' %}scroll{% endcase %}{% endif %}">
+         <div class="inner">
+         {% if product2.featured_image %}<img class="{% unless settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product2.images.size > 1  %}hvr-grow{% endunless %} lazyload" data-sizes="auto" data-src="{{ product2.featured_image | img_url: '1024x1024' }}" />{% endif %}
+         </div>
+         {% if settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product2.images.size > 1  %}
+         <div class="inner">
+            <img class="lazyload" data-sizes="auto" data-src="{{ product2.images[1] | product_img_url: 'large' }}" />
+         </div>
+         {% endif %}
+       </div>
+     
+     
+     
+      <h3>{{ product2.title }}</h3>
+       <p class="h1 medium-down--left">
+          {% if product2.price_max > product2.price %}
+           <span class="currPrice">{% include 'price' with product2.price_min %}</span> {% if on_sale %}<span class="oldPrice"> {{ product2.compare_at_price | money }} </span>{% endif %}
+        {% else %}
+           <span class="currPrice">{% include 'price' with product2.price %}</span>   {% if on_sale %}<span class="oldPrice"> {{ product2.compare_at_price | money }}</span> {% endif %}
+        {% endif %}
+         {% unless product2.available %}
+          <span class="product-price__sold-out">{{ 'products.product.sold_out' | t }}</span>
+        {% endunless %} 
+      </p>
+      {% if on_sale %}
+      <div class="salew">
+         <span class="sale-tag medium-down--right">
+         {% assign compare_price = product2.compare_at_price %}
+         {% assign product_price = product2.price %}
+         {% include 'price-sale' %}
+         </span>
+      </div>
+      {% endif %}
+   </a>
+  
+         {% if settings.affirm != blank %}   
+       <p class="affirm-as-low-as" data-page-type="product" data-amount="{{product.price_min}}"></p>
+       {% endif %}  
+  
+  
+   <a href="{{ product2.url }}" class="buynow add-product" {% if settings.disableproductajax %}rel="external"{% endif %}>{{ section.settings.buynowtext }}</a>
+</li>
+  {% assign count = count | plus: 1 %}
+    {% if count == products_per %}
+      {% break %}
+    {% endif %}
+   {% endif %}
+  
+     {% endfor %}
+ 
+  
+</ul>  
+</div>
+
+
+
+
+
+
+
+
+
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Also Like",
+    "settings": [
+{
+       "id": "title",
+       "type": "text",
+       "label": "Title",
+       "default": "You may also like"
+},
+{
+"type": "checkbox",
+"id": "fullwidth",
+"label": "Full Width",
+"default": false
+},
+{
+   "type": "select",
+   "id": "products_per",
+   "options": [
+      { "value": "2", "label": "2 Products per row"},
+      { "value": "3", "label": "3 Products per row"},
+      { "value": "4", "label": "4 Products per row"}
+   ],
+   "default": "4",
+   "label": "Show how many per row"
+},
+{
+ "type": "paragraph",
+ "content": "Making changes here will override Styles set in the settings area"
+},
+      {
+        "id": "enablebuynow",
+        "default": false,
+        "label": "Enable Buy Now Button Settings",
+        "info": "This Replaces Existing Buy Now Button Styles from the Settings page with the new settings below",
+        "type": "checkbox"
+      },
+{
+        "type": "radio",
+        "id": "buynowbutton",
+        "label": "Buy Now Button",
+        "options": [
+          {
+            "value": "hide",
+            "label": "Do not display"
+          },
+          {
+            "value": "button",
+            "label": "Display as button"
+          },
+          {
+            "value": "link",
+            "label": "Display as link"
+          }
+        ],
+        "default": "button"
+      },
+{
+       "id": "buynowtext",
+       "type": "text",
+       "label": "Button Text",
+       "default": "Buy Now"
+},
+{
+       "id": "buynowbackground",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#000000"
+},
+{
+       "id": "buynowcolor",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#FFFFFF"
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

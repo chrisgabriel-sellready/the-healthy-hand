@@ -1,0 +1,268 @@
+{% style %}
+  
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font.family | append: section.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font.family | append: section.settings.font.weight | append: section.settings.font.style | append: '|' %}
+
+  
+ #shopify-section-Events .pageHeader h2 {
+    font-family: {{ section.settings.font.family }}; 
+    font-weight:{{ section.settings.font.weight }}; 
+    font-style:{{ section.settings.font.style }};    
+      font-size:{{ section.settings.fontsize }}px;   
+ }
+  
+  
+  .eventsWrap .event a {
+    background-color:{{ section.settings.button_background_color }};
+    color:{{ section.settings.button_text_color }};
+  }
+{% endstyle %}
+
+
+<div class="eventsWrap">
+  <div class="row">
+    <div class="column">
+  <div class="pageHeader">
+   
+    <h2><span>{{ section.settings.title}}</span></h2>
+   {% if section.settings.subtitle %}<p>{{ section.settings.subtitle}}</p>{% endif %}
+  </div>
+  
+  
+         {% if section.settings.video_url != '' %}   
+          <div class="flex-video widescreen youtube">
+            {% if section.settings.video_url.type == 'youtube' %}   
+           <iframe src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>     
+           {% endif %}
+           {% if section.settings.video_url.type == 'vimeo' %}  
+            <iframe src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?title=0&byline=0&portrait=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+           {% endif %}
+           </div>
+        {% endif %}    
+  
+  <div class="events">
+    {% for block in section.blocks %}
+   {% case block.type %}
+    {% when 'Event' %}
+    <div class="event">
+      <div>{{ block.settings.title }}</div>
+      <div>{{ block.settings.location }}</div>
+      <div><a href="{{ block.settings.title }}">{{ section.settings.button_text }}</a></div>
+    </div>
+         {% endcase %}
+  {% endfor %} 
+  </div>
+  </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Events",
+    "settings": [{
+       "id": "title",
+       "type": "text",
+       "label": "Title"
+},
+{
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "work_sans_n6"
+},
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       30,
+    "max":       70,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Font Size",
+    "default":   40
+     },
+{
+       "id": "subtitle",
+       "type": "text",
+       "label": "Sub Title"
+},
+   { "type": "header",
+ "content": "Intro Video"
+},
+{
+   "id": "video_url",
+   "type": "video_url",
+   "label": "Youtube or Vimeo URL",
+   "accept": ["youtube","vimeo"]
+}, 
+   { "type": "header",
+ "content": "Button Style"
+},
+{
+       "id": "button_text",
+       "type": "text",
+       "label": "Button Text",
+       "default": "Purchase Tickets"
+},      
+{
+        "type": "color",
+        "id": "button_text_color",
+        "label": "Button Text Color",
+        "default": "#FFF"    
+},     
+{
+        "type": "color",
+        "id": "button_background_color",
+        "label": "Button Background Color",
+        "default": "#000"
+      }],"blocks": [
+    {
+     "type": "Event",
+     "name": "Event",
+     "settings" : [      {
+        "id": "title",
+        "type": "text",
+        "label": "Date",
+        "placeholder": "January 1st 2020"
+      },
+      {
+        "id": "location",
+        "type": "text",
+        "label": "Location",
+        "placeholder": "Los Angeles,CA"
+      },
+      {
+        "id": "link",
+        "type": "url",
+        "label": "Link to Purchase"
+      }]
+}
+]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+.eventsWrap {
+margin-top: 30px;
+    margin-bottom: 60px;
+  @include bp(phablet) {
+  margin-top:0px;
+  }
+& > .row {
+@include bp(laptop) {
+max-width: 61.5rem;
+}
+& .pageHeader {
+   text-align:center;
+    margin-bottom: 20px;
+@include bp(mobile) {
+    margin-bottom: 15px;
+}
+ & h2 {
+  & span {
+   @include bp(mobile) {
+    font-size: 75%;
+   }
+  }
+ }
+}
+  & .flex-video {
+   margin-bottom:40px;
+  }
+  & .events {
+   & .event {
+    display: flex;
+    padding: 25px 0;
+    align-items: center;  
+    border-top: 1px solid #0000002b;  
+     @include bp(phablet) {
+      flex-wrap:wrap;
+     }
+     &:last-child {
+         border-bottom: 1px solid #0000002b;
+     }
+    & > div {
+    font-size: 25px;   
+    flex: 1 1 33%;
+    font-weight: bold;    
+    text-align: center;  
+      @include bp(phablet) {
+       flex: 1 1 100%;
+          margin-bottom: 7px;
+        font-size: 21px;
+      }
+    }
+    & > div:nth-child(1) {
+    
+    }
+    & > div:nth-child(2) {
+    
+    }
+    & > div:nth-child(3) {
+      & a {
+    font-size: 20px;
+    padding: 15px 20px;
+    display: inline-block;
+    border-radius: 7px;
+      }
+    }
+  }
+  }
+ }
+}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}        

@@ -1,0 +1,31 @@
+{% section 'Video-Reviews' %}
+
+{% if settings.yotpoappkey != blank %}
+<div class="row">
+  <div class="column large-12">
+    <div class="yotpo yotpo-main-widget"  data-url="{{ shop.url }}{{ product.url }}"></div>
+  </div>
+</div>  
+<script>
+  function deferVideoReviewYotpo(methodVideoReviewYotpo) {
+    if (window.yotpo) {
+        methodVideoReviewYotpo();
+    } else {
+        setTimeout(function() { deferVideoReviewYotpo(methodVideoReviewYotpo) }, 4);
+    }
+}
+deferVideoReviewYotpo(function () {
+  setTimeout(function() {
+   var api = new Yotpo.API(yotpo);
+   api.refreshWidgets();
+  },4);
+});    
+</script>
+{% endif %}
+{% if settings.loox %}  
+<div class="row">
+  <div class="column large-12">
+<div id="looxReviews" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>  
+      </div>
+</div>  
+{% endif %}

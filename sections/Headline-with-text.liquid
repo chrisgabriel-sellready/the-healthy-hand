@@ -1,0 +1,105 @@
+{% style %}
+   {% assign loadedfonts = '' %}    
+
+
+   {% assign familyandweight = section.settings.title_font.family | append: section.settings.title_font.weight %}
+   {% if loadedfonts contains familyandweight %}
+   {% else %}
+   {{ section.settings.title_font | font_face }}  
+   {% endif %} 
+   {% assign loadedfonts = loadedfonts | append: section.settings.title_font.family | append: section.settings.title_font.weight | append: section.settings.title_font.style | append: '|' %}  
+
+
+
+#shopify-section-{{ section.id }} {
+text-align:{{ section.settings.alignment }};
+padding: 30px 0px;
+}
+#shopify-section-{{ section.id }} h1 {
+color:{{ section.settings.title_color }};
+font-family: {{ section.settings.title_font.family }}; 
+font-weight:{{ section.settings.title_font.weight }}; 
+font-style:{{ section.settings.title_font.style }};  
+}
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+<div class="row">
+<div class="column">
+<h1>{{ section.settings.title }}</h1>
+<div class="text">
+{{ section.settings.text }}  
+</div>
+</div>
+</div>
+{% schema %}
+  {
+    "name": "Headline with Text",
+    "settings": [{
+       "id": "title",
+       "type": "text",
+       "label": "Title"
+},
+ {
+     "type": "font_picker",
+     "id": "title_font",
+     "label": "Title Font",
+     "default": "work_sans_n6"
+   },
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       20,
+    "max":       75,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Title Font Size",
+    "default":   40
+     },
+  {
+"id": "title_color",
+"type": "color",
+"label": "Title Color",
+"default": "#000000"
+},
+{
+       "id": "text",
+       "type": "richtext",
+       "label": "Text"
+},
+{
+   "type":      "radio",
+   "id":        "alignment",
+   "label":     "Alignment",
+   "options": [
+     { "value": "center", "label": "Center" },
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "center"
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}],
+  "presets": [
+    {
+      "name": "Headline With Text",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}  
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

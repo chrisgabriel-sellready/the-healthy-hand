@@ -1,0 +1,1193 @@
+<style>
+  .mailinglist-popupwrap.ui-popup {
+  {% capture backgroundimage %}{{ section.settings.background_image | img_url: '1024x1024' }}{% endcapture %}                                   
+{% if backgroundimage contains 'no-image' %}
+  {% if section.settings.background_color_2 contains 'transparent' %}
+      background-color:{{ section.settings.background_color }};                            
+  {% else %}     
+    background: -moz-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: -webkit-linear-gradient(left, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);
+    background: linear-gradient(to right, {{ section.settings.background_color }} 0%, {{ section.settings.background_color_2 }} 100%);                            
+  {% endif %}
+{% else %}
+background-image:url({{ section.settings.background_image | img_url: '1024x1024' }}); background-color:{{ section.settings.background_color }};
+{% endif %}     
+  }
+  
+  {% if section.settings.screen_background_color contains 'transparent' %}
+  
+  {% else %}
+  #mailPopup-screen {
+    background:{{ section.settings.screen_background_color }};
+  }
+  {% endif %}
+  
+  
+  
+  
+  {% if section.settings.darkenbackground %}
+   .mailinglist-popupwrap.ui-popup .overlay {
+     background-color: #0000004d;
+   }
+  {% endif %}  
+  
+    .mailinglist-popupwrap.ui-popup.ui-body-inherit .inner {
+    min-height: {{section.settings.popupminheight }}px;
+  }
+  
+  
+{% for block in section.blocks %}
+     {% case block.type %}
+      {% when 'Headline' %}  
+        #headline-{{ block.id }} {
+          margin: {{ block.settings.headlinetopposition }}px 0px {{ block.settings.headlinebottomposition }}px; 
+          font-size:{{ block.settings.headlinefontsize }}px;
+          text-align:{{ block.settings.headlinealign | remove: "text-" }};
+        }
+        #headline-{{ block.id }} .column {
+          color:{{ block.settings.headlinecolor }}; 
+          font-family: {{ block.settings.headline_font.family }}; 
+          font-weight:{{ block.settings.headline_font.weight }}; 
+          font-style:{{ block.settings.headline_font.style }};
+        }
+        #headline-{{ block.id }} .headline-inner {
+        {% if block.settings.underline %}text-decoration:underline;{% endif %}
+        }
+      {% endcase %}
+  {% endfor %}    
+</style>
+
+  <a class="close" href="#" data-rel="back">
+  <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-times fa-w-10 fa-3x"><path fill="currentColor" d="M207.6 256l107.72-107.72c6.23-6.23 6.23-16.34 0-22.58l-25.03-25.03c-6.23-6.23-16.34-6.23-22.58 0L160 208.4 52.28 100.68c-6.23-6.23-16.34-6.23-22.58 0L4.68 125.7c-6.23 6.23-6.23 16.34 0 22.58L112.4 256 4.68 363.72c-6.23 6.23-6.23 16.34 0 22.58l25.03 25.03c6.23 6.23 16.34 6.23 22.58 0L160 303.6l107.72 107.72c6.23 6.23 16.34 6.23 22.58 0l25.03-25.03c6.23-6.23 6.23-16.34 0-22.58L207.6 256z" class=""></path></svg>
+  </a>
+ 
+  
+  <div class="inner">
+
+{% assign loadedfonts = '' %}  
+{% for block in section.blocks %}
+     {% case block.type %}
+      {% when 'Headline' %}
+    
+ {% assign familyandweight = block.settings.headline_font.family | append: block.settings.headline_font.weight %}
+  {% if loadedfonts contains familyandweight %}
+  {% else %}
+  <style>
+  {{ block.settings.headline_font | font_face }}
+  </style>
+  {% endif %}
+  {% assign loadedfonts = loadedfonts | append: block.settings.headline_font.family | append: block.settings.headline_font.weight | append: block.settings.headline_font.style | append: '|' %}
+         <div id="headline-{{ block.id }}" class="headline-wrap {{ block.settings.headlinealign }}" >
+           <div class="column"><div class="headline-inner">{{ block.settings.headline }}</div></div>
+         </div>
+      
+    
+    
+
+    
+  {% when 'Klaviyo' %}
+    
+
+    
+    
+       <div class="mailing-list-wrap" style="margin: {{ block.settings.klaviyotopposition }}px 0px {{ block.settings.klaviyobottomposition }}px ;">
+       <div class="mailing-list-inner">
+
+     {% if block.settings.mailchimp_url %}
+              {% assign mailchimpform = block.settings.mailchimp_url | split: 'u=' %}
+              {% assign mailchimpform = mailchimpform[1] %}
+              {% assign mailchimpformids = mailchimpform | split: '&amp;id=' %}
+             <!-- Begin Mailchimp Signup Form -->
+
+          
+     <div id="mc_embed_signup">    
+     <form id="mc-embedded-subscribe-form-Popup" name="mc-embedded-subscribe-form" class="validate" action="{{ block.settings.mailchimp_url }}"  method="post" target="_blank" novalidate>
+      <input class="email" type="email" value="" name="EMAIL" id="mce-EMAIL" placeholder="Your@email.com">
+      <div style="position: absolute; left: -5000px;" aria-hidden="true">
+          <input type="text" name="b_{{ mailchimpformids[0] }}_{{ mailchimpformids[1] }}" tabindex="-1" value="">
+      </div>
+       
+       
+      <button name="subscribe" id="mc-embedded-subscribe" style="background:{{ block.settings.button_color }};color:{{ block.settings.button_font_color }};" type="submit" class="mc-button">{{ block.settings.button_text }}</button>
+
+     </form>  
+
+		<div class="response" id="mce-error-response" style="display:none;"></div>
+     </div>  
+<!--End mc_embed_signup-->
+       {% else %}     
+     <form id="klaviyoPopup" class="klaviyoform" action="//manage.kmail-lists.com/subscriptions/subscribe" data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe" method="GET" target="_blank" novalidate="novalidate">
+      <input type="hidden" name="g" value="{{ block.settings.klaviyo_list }}">
+      <input type="email" value="" name="email" id="k_id_email" placeholder="Your@email.com">
+      <button style="background:{{ block.settings.button_color }};color:{{ block.settings.button_font_color }};" type="submit" class="klaviyo_submit_button">{{ block.settings.button_text }}</button>
+     </form>
+      {% endif %}
+       </div>
+     </div>
+    
+    
+    {% assign ajax = block.settings.ajax %}
+    {% assign discountPopup = block.settings.discount %}
+  {% when 'Button' %}
+         <div class="button-wrap {{ block.settings.align }}" style="margin: {{ block.settings.topposition }}px 0px {{ block.settings.bottomposition }}px; font-size:{{ block.settings.fontsize }}px;width:100%;">
+           <div class="column"> 
+             <a href="{{ block.settings.url }}" class="{% if block.settings.rounded == true %} rounded{% endif %}" style="background:{{ block.settings.backgroundcolor }}; color:{{ block.settings.color }}; max-width:{{ block.settings.width }}%;">
+               {{ block.settings.text }}
+             </a>
+           </div>
+         </div>
+    
+    
+     {% when 'Youtube-Embed' %}
+       <div class="youtube-wrap" style="margin: {{ block.settings.youtubetopposition }}px 0px {{ block.settings.youtubebottomposition }}px ; width:100%;">
+      <div class="flex-video widescreen youtube">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ block.settings.youtube_url.id }}?modestbranding=1&amp;controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+         </div>
+         </div>
+    
+    
+    
+    
+    
+    
+      {% endcase %}
+  {% endfor %} 
+  </div>
+<div id="PopupCountWrap">Closing in <span id="PopupCount"></span> seconds</div>
+  <div class="overlay"></div>
+<script>
+{% unless mailchimpform %}
+var callbackPopup = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.KlaviyoSubscribe) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://www.klaviyo.com/media/js/public/klaviyo_subscribe.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackPopup();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackPopup);
+}  
+{% endunless %}  
+  
+function defer(method) {
+    if (window.jQuery && $.mobile) {
+        method();
+    } else {
+        setTimeout(function() { defer(method) }, 50);
+    }
+}
+defer(function () {
+  
+  
+  // remove previous cart page when refreshed in the dom
+$(document).on("pageshow", "#cart[data-role='page']", function(event, data) {  
+     if (localStorage.getItem('storedDiscount')){  
+      var discountStored = localStorage.getItem('storedDiscount');   
+      $('input[name="discount"]').val(localStorage.getItem('storedDiscount'));  
+    }  
+    $('form[action="/cart"]').on('submit', function(){ 
+      var $discountCode = $('input[name="discount"]').val(); 
+      localStorage.setItem('storedDiscount', $discountCode);  
+    });   
+});
+  
+  
+  $('#shopify-section-Popup').wrap( "<div id='mailing-list-popup'><div class='mailinglist-popupwrap' data-history='false' data-shadow='false' data-corners='false'  id='mailPopup'></div></div>" );            
+  
+  
+  var callback = {
+             extra_properties: {
+                $source: 'Popup'
+            },
+            success: function() {
+                var form = $('#klaviyoPopup');
+                form.children('#k_id_email').hide('fast');
+              {% if discountPopup.size > 1 %}
+                localStorage.setItem('storedDiscount', '{{ discountPopup }}');  
+                $('#PopupCountWrap').addClass('show').children('#PopupCount').text('10');
+                window.PopupCount = setInterval(function(){ countdown(); },1000);
+              form.children('.klaviyo_submit_button').attr("disabled", true).html('Discount Code <b>"{{ discountPopup }}"</b> will be applied at checkout');
+                setTimeout(function() {
+                  $( "#mailPopup" ).popup("close");
+                }, 10000);             
+              {% else %}
+                $('#PopupCountWrap').addClass('show').children('#PopupCount').text('3');
+                window.PopupCount = setInterval(function(){ countdown(); },1000);
+                form.children('.klaviyo_submit_button').attr("disabled", true).text('Thank You');
+                setTimeout(function() {
+                  $( "#mailPopup" ).popup("close");
+                }, 3000);
+              {% endif %}
+            } 
+  }  
+  
+  
+  
+ {% if ajax %}  
+   {% if mailchimpform %}
+    $.ajaxChimp = {
+        responses: {
+            "We have sent you a confirmation email": 0,
+            "Please enter a value": 1,
+            "An email address must contain a single @": 2,
+            "The domain portion of the email address is invalid (the portion after the @: )": 3,
+            "The username portion of the email address is invalid (the portion before the @: )": 4,
+            "This email address looks fake or invalid. Please enter a real email address": 5
+        },
+        translations: {
+            en: null
+        },
+        init: function(selector, options) {
+            $(selector).ajaxChimp(options)
+        }
+    };
+    $.fn.ajaxChimp = function(options) {
+        $(this).each(function(i, elem) {
+            var form = $(elem);
+            var email = form.find("input[type=email]");
+            var errorrsp = form.siblings('#mce-error-response');
+			var button = form.find("[type='submit']");
+			var buttontext = button.text();
+            var settings = $.extend({
+                url: form.attr("action"),
+                language: "en"
+            }, options);
+            var url = settings.url.replace("/post?", "/post-json?").concat("&c=?");
+            form.attr("novalidate", "true");
+            email.attr("name", "EMAIL");
+            form.submit(function() {
+                var msg;
+                errorrsp.hide();
+                function successCallback(resp) {
+                    if (resp.result === "success") {
+						button.html(buttontext);
+						// success functions
+						email.hide('fast');
+						 {% if discountPopup.size > 1 %}
+				$('#PopupCountWrap').addClass('show').children('#PopupCount').text('10');
+				 window.PopupCount = setInterval(function(){ countdown(); },1000);		
+				 button.attr("disabled", true).html('Discount Code <b>"{{ discountPopup }}"</b> will be applied at checkout');		
+				   setTimeout(function() {
+                  $( "#mailPopup" ).popup("close");
+                }, 10000);             		
+					    {% else %}	
+	  $('#PopupCountWrap').addClass('show').children('#PopupCount').text('3');
+                window.PopupCount = setInterval(function(){ countdown(); },1000);
+				button.attr("disabled", true).text('Thank You');		
+				setTimeout(function() {
+                  $( "#mailPopup" ).popup("close");
+                }, 3000);		 
+			   {% endif %}		 
+                    } else {
+                        var index = -1;
+                        try {
+                            var parts = resp.msg.split(" - ", 2);
+                            if (parts[1] === undefined) {
+                                msg = resp.msg
+                            } else {
+                                var i = parseInt(parts[0], 10);
+                                if (i.toString() === parts[0]) {
+                                    index = parts[0];
+                                    msg = parts[1]
+                                } else {
+                                    index = -1;
+                                    msg = resp.msg
+                                }
+                            }
+                        } catch (e) {
+                            index = -1;
+                            msg = resp.msg
+                        }
+						
+					errorrsp.html(msg);
+                    errorrsp.show('fast');
+				    button.html(buttontext);
+                    }
+                    if (settings.language !== "en" && $.ajaxChimp.responses[msg] !== undefined && $.ajaxChimp.translations && $.ajaxChimp.translations[settings.language] && $.ajaxChimp.translations[settings.language][$.ajaxChimp.responses[msg]]) {
+                        msg = $.ajaxChimp.translations[settings.language][$.ajaxChimp.responses[msg]]  
+	
+                    }
+                  
+					
+                    if (settings.callback) {
+                        settings.callback(resp)
+                    }
+                }
+                var data = {};
+                var dataArray = form.serializeArray();
+                $.each(dataArray, function(index, item) {
+                    data[item.name] = item.value
+                });
+                $.ajax({
+                    url: url,
+                    data: data,
+                    success: successCallback,
+                    dataType: "jsonp",
+                    error: function(resp, text) {
+                        console.log("mailchimp ajax submit error: " + text)
+                    }
+                });
+                var submitMsg = "Submitting...";
+                if (settings.language !== "en" && $.ajaxChimp.translations && $.ajaxChimp.translations[settings.language] && $.ajaxChimp.translations[settings.language]["submit"]) {
+                    submitMsg = $.ajaxChimp.translations[settings.language]["submit"]
+                }
+                button.html(submitMsg).show(2e3);
+                return false
+            })
+        });
+        return this
+    }
+    $('#mc-embedded-subscribe-form-Popup').ajaxChimp();
+   {% else %}
+    KlaviyoSubscribe.attachToForms('#klaviyoPopup', callback);
+   {% endif %}
+ {% endif %}
+  
+  
+  
+  
+  
+  
+  
+ {% if section.settings.often == 'always' or section.settings.often == 'never'  %}
+    
+     runpopup();
+   
+ {% elsif section.settings.often == 'once' %} 
+   if(!readCookieP('{{ shop.name }}Popup')) {      
+     runpopup()        
+      }else{
+      $( "#mailPopup" ).enhanceWithin().popup();
+      }
+            
+ {% endif %}
+  
+  
+
+  
+  
+function runpopup() {
+ $( "#mailPopup" ).enhanceWithin().popup();
+  setTimeout(function() {
+    
+  {% if section.settings.often != 'never' %}
+    {% if section.settings.when == 'instantly' %}
+       runpopupinner();
+    {% elsif section.settings.when == 'scrolled' %}
+   $(window).one('scroll', runpopupdelay); 
+    {% endif %}   
+    {% endif %}  
+    }, 1000);
+  
+     
+    
+if(!readCookieP('{{ shop.name }}Popup')) {    
+// Build the expiration date string:
+var expiration_date = new Date();
+var cookie_string = '';
+expiration_date.setDate(expiration_date.getDate() + 1 * 7);   
+// Build the set-cookie string:
+cookie_string = "{{ shop.name }}Popup=true; path=/; expires=" + expiration_date.toGMTString();
+// Create/update the cookie:
+document.cookie = cookie_string;  
+}
+}  
+ 
+function countdown() {
+    var i = document.getElementById('PopupCount');
+    i.innerHTML = parseInt(i.innerHTML)-1;
+    if (parseInt(i.innerHTML)==0) {
+       clearInterval(window.PopupCount);
+    }
+}
+
+
+function runpopupinner() {
+    
+    $( "#mailPopup" ).popup( "open", {
+       transition: "slideupfade",
+        y: 100,
+    });
+     
+}      
+  
+function runpopupdelay() {
+  setTimeout(function() {
+    $( "#mailPopup" ).popup( "open", {
+       transition: "slideupfade",
+        y: 100,
+    });
+      }, 3000);  
+}    
+      
+      
+function createCookieP(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+
+
+function readCookieP(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookieP(name) {
+    createCookie(name,"",-1);
+}
+       
+  
+  
+});
+</script> 
+
+{% schema %}
+  {
+    "name": "Popup",
+    "settings": [
+{
+   "type":      "paragraph",
+   "content":   "Setup Instructions [Watch This Video](https://www.youtube.com/watch?v=f_SIwMfNb-M)"
+},
+{
+   "type":      "header",
+   "content":   "Visibility"
+},
+{
+   "type": "radio",
+   "id": "often",
+   "options": [
+      { "value": "never", "label": "Do Not Show"},
+      { "value": "always", "label": "Every Visit"},
+      { "value": "once", "label": "Once"}
+   ],
+   "label": "How often to show?",
+   "default": "always"
+},
+{
+   "type": "radio",
+   "id": "when",
+   "options": [
+      { "value": "instantly", "label": "Instantly"},
+      { "value": "scrolled", "label": "When scrolled"}
+   ],
+   "label": "When to show?",
+   "default": "instantly"
+},
+{
+   "type":      "header",
+   "content":   "Background Style"
+},
+{
+       "id": "screen_background_color",
+       "type": "color",
+       "label": "Screen Background Color",
+       "default": "transparent"
+},{
+       "id": "background_color",
+       "type": "color",
+       "label": "Popup Background Color",
+       "default": "#ffffff"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Popup Background Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+{
+       "id": "background_image",
+       "type": "image_picker",
+       "label": "Background Image (Optional)"
+},
+  {
+  "type": "checkbox",
+  "id": "darkenbackground",
+  "label": "Darken Background",
+  "default": false
+},{
+    "type":   "range",
+    "id":     "popupminheight",
+    "min":       100,
+    "max":       500,
+    "step":     50,
+    "unit":      "px",
+    "label":     "Height",
+    "default":   450
+     }],
+  "blocks": [
+  {
+"type": "Headline",
+     "name": "Headline",
+     "settings" : [
+{
+   "id": "headline",
+   "type": "richtext",
+   "label": "Text"
+},
+      {
+        "id": "headlinecolor",
+        "type": "color",
+        "label": "Font Color",
+        "default": "#000"
+      },
+ {
+     "type": "font_picker",
+     "id": "headline_font",
+     "label": "Font",
+     "default": "work_sans_n6"
+   },
+{
+  "type": "checkbox",
+  "id": "underline",
+  "label": "Underline",
+  "default": false
+},
+      {
+    "type":   "range",
+    "id":     "headlinefontsize",
+    "min":       12,
+    "max":       100,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Font Size",
+    "default":   20
+     },
+{
+   "type":      "radio",
+   "id":        "headlinealign",
+   "label":     "Text Alignment",
+   "options": [
+     { "value": "text-left", "label": "Left" },
+     { "value": "text-center", "label": "Center" },
+     { "value": "text-right", "label": "Right" }
+   ],
+   "default":   "text-center"
+},
+      {
+    "type":   "range",
+    "id":     "headlinetopposition",
+    "min":       0,
+    "max":       100,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Top",
+    "default":   0
+     },
+     {
+    "type":   "range",
+    "id":     "headlinebottomposition",
+    "min":       0,
+    "max":       100,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Bottom",
+    "default":   15
+     }
+]
+},
+{
+"type": "Klaviyo",
+     "name": "Mailing List",
+     "limit": 1,
+     "settings" : [
+         {
+        "type": "header",
+        "content": "A Klaviyo or Mailchimp Account is Required"
+      },
+      {
+        "type": "paragraph",
+"content": "Sign Up for your FREE Klaviyo Account [Click Here](https://www.klaviyo.com/partner/signup?utm_source=001d0000024G2vY&utm_medium=partner). After you sign up watch this video on how to get your List ID [Watch Tutorial Video](Watch This Video](https://www.youtube.com/watch?v=f_SIwMfNb-M)"
+      },
+         {
+        "type": "header",
+        "content": "Klaviyo Settings"
+      },
+         {
+        "id": "klaviyo_list",
+        "type": "text",
+        "label": "Klaviyo List Id (ex: m4stTTd)"
+      },
+         {
+        "type": "header",
+        "content": "Mailchimp Settings"
+      },
+      {
+        "id": "mailchimp_url",
+        "type": "url",
+        "label": "Form action URL (ex: https://dbz.us3.list-manage.com/subscribe/...)"
+      },
+       {
+        "type": "header",
+        "content": "Style & Colors"
+      },
+
+      {
+        "id": "button_text",
+        "type": "text",
+        "label": "Button Text",
+        "default": "Sign Up"
+      },
+      {
+        "id": "button_color",
+        "type": "color",
+        "label": "Button Background Color",
+        "default": "#000"
+      },
+      {
+        "id": "button_font_color",
+        "type": "color",
+        "label": "Button Font Color",
+        "default": "#fff"
+      },
+      {
+    "type":   "range",
+    "id":     "klaviyotopposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Top",
+    "default":   0
+     },
+     {
+    "type":   "range",
+    "id":     "klaviyobottomposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Bottom",
+    "default":   40
+     },
+{
+   "type":      "header",
+   "content":   "Advanced (Expert Only!)"
+},
+{
+  "type": "checkbox",
+  "id": "ajax",
+  "label": "Single Opt In",
+  "default": false
+},
+{
+   "id": "discount",
+   "type": "text",
+   "label": "Discount Code (optional)"
+}
+]
+},
+ {
+"type": "Button",
+     "name": "Button",
+     "settings" : [
+{
+   "id": "text",
+   "type": "text",
+   "label": "Text"
+},
+{
+   "id": "url",
+   "type": "url",
+   "label": "URL Link"
+},
+      {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       12,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Font Size",
+    "default":   20
+     },
+      {
+        "id": "color",
+        "type": "color",
+        "label": "Text Color",
+        "default": "#FFF"
+      },
+      {
+        "id": "backgroundcolor",
+        "type": "color",
+        "label": "Background Color",
+        "default": "#000"
+      },
+{
+   "type":      "radio",
+   "id":        "align",
+   "label":     "Button Alignment",
+   "options": [
+     { "value": "text-left", "label": "Left" },
+     { "value": "text-center", "label": "Center" },
+     { "value": "text-right", "label": "Right" }
+   ],
+   "default":   "text-center"
+},
+{
+  "type": "checkbox",
+  "id": "rounded",
+  "label": "Rounded Corners",
+  "default": false
+},
+      {
+    "type":   "range",
+    "id":     "width",
+    "min":       0,
+    "max":       100,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Width",
+    "default":   50
+     },
+      {
+    "type":   "range",
+    "id":     "topposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Top",
+    "default":   0
+     },
+     {
+    "type":   "range",
+    "id":     "bottomposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Bottom",
+    "default":   15
+     }
+]
+},
+{
+"type": "Youtube-Embed",
+     "name": "Youtube Embed",
+     "settings" : [
+{
+   "id": "youtube_url",
+   "type": "video_url",
+   "label": "Youtube URL",
+   "accept": ["youtube"],
+   "placeholder": "https://www.youtube.com/watch?v=6L_k74BOLag"
+},
+      {
+    "type":   "range",
+    "id":     "youtubetopposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Top",
+    "default":   0
+     },
+     {
+    "type":   "range",
+    "id":     "youtubebottomposition",
+    "min":       0,
+    "max":       60,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Position from Bottom",
+    "default":   20
+     }
+]
+}
+   ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+// responsive sizes
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+#shopify-section-Popup {
+    width: 100%;
+}
+
+/* Mail Popup */
+.editpopup [data-role=page] {
+    overflow: hidden !important;
+    height: 100% !important;
+}
+
+.ui-popup-container.slideupfade, .ui-popup-container.slideupfade .ui-popup.mailinglist-popupwrap {
+  width: 450px;
+  @include bp(mobile) {
+  width:100%;
+  }
+}
+#mailPopup-popup {
+    position: fixed;
+  background: none;
+ @include bp(phabletup) {
+ top:0px !important;
+}
+  @include bp(phablet) {
+  top:30px !important;
+  width:96% !important;
+  max-width:100% !important;
+  }
+}
+#mailPopup-screen {
+    -webkit-transition: opacity 0.3s linear 0.1s;
+    -moz-transition: opacity 0.3s linear 0.1s;
+    transition: opacity 0.3s linear 0.1s;
+}
+
+.mailinglist-popupwrap.ui-popup.ui-body-inherit {
+  background-size: cover;
+  display:flex;
+  border-width:0px;
+  position:relative;
+  @include bp(phabletup) {
+      transform: translateY(50px);
+  }
+  &.ui-body-inherit {
+  text-shadow:inherit;
+  }
+  & .close {  
+    z-index:3;
+color: #fff;
+    position: absolute;
+top: 8px;
+    right: 8px;
+    font-size: 19px;
+    line-height: 1.2;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+    -moz-box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+    -webkit-box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+    -moz-transition: box-shadow 0.3s ease;
+    -o-transition: box-shadow 0.3s ease;
+    -ms-transition: box-shadow 0.3s ease;
+    -webkit-transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    & svg {
+    width: 10px;
+    height: auto;
+    position: relative;
+    }
+    &:hover {
+    -moz-transition: box-shadow 0.3s ease;
+    -o-transition: box-shadow 0.3s ease;
+    -ms-transition: box-shadow 0.3s ease;
+    -webkit-transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.8);
+    -moz-box-shadow: 0 0 0 2px rgba(255,255,255,0.8);
+    -webkit-box-shadow: 0 0 0 2px rgba(255,255,255,0.8);
+    }
+}
+  & .inner {
+    padding: 20px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    position:relative;
+    z-index:2;
+    @include bp(phablet) {
+        padding: 15px 15px;
+    }
+    & > div {
+    width: 100%;
+      & .headline-inner {
+        & p {
+    line-height: 1;
+    margin: 0;
+    display: inline-block;
+        }
+      }
+      & #mce-error-response {
+ color: #ff4040;
+    margin: 15px 0 0 0;
+    font-size: 13px;
+    text-align: center;
+      }
+      & button[type=submit] {
+      width: 100%;
+    padding: 10px 20px;
+        &[disabled] {
+         opacity:1;
+          filter: Alpha(Opacity=100);
+        }
+      }
+   & .button-wrap a {
+    text-align: center;
+    padding: 10px 25px;
+    display: inline-block;
+    width: 100%;
+   }
+    }
+    & .column {
+     padding:0;
+      @include bp(tablet) {
+  font-size: 82%;
+}
+      @include bp(phablet) {
+    font-size: 82%;
+      }
+    }
+  }
+  & #PopupCountWrap {
+    position: absolute;
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    bottom: -25px;
+    font-size: 14px;
+    opacity:0;
+    @include transition(opacity,0.3s);
+    &.show {
+     opacity:1;
+    }
+  }
+   & .overlay {
+   -webkit-transform: translate3d(0, 0, 0);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    top: 0px;
+    }
+}
+
+
+.slideupfade.in {
+    -webkit-transform: translateY(0);
+    -webkit-animation-name: slideinfadefrombottom;
+    -webkit-animation-duration: 250ms;
+    -moz-transform: translateY(0);
+    -moz-animation-name: slideinfadefrombottom;
+    -moz-animation-duration: 250ms;
+    transform: translateY(0);
+    animation-name: slideinfadefrombottom;
+    animation-duration: 250ms;
+}
+
+.slideupfade.out {
+	-webkit-animation-name: slideoutfadeout;
+	-webkit-animation-duration: 100ms;
+	-moz-animation-name: slideoutfadeout;
+	-moz-animation-duration: 100ms;
+	animation-name: slideoutfadeout;
+	animation-duration: 100ms;
+}
+.slideupfade.in.reverse {
+	-webkit-animation-name: slideinfadein;
+	-webkit-animation-duration: 150ms;
+	-moz-animation-name: slideinfadein;
+	-moz-animation-duration: 150ms;
+	animation-name: slideinfadein;
+	animation-duration: 150ms;
+}
+
+.slideupfade.out.reverse {
+	-webkit-transform: translateY(100%);
+	-webkit-animation-name: slideoutfadetobottom;
+	-webkit-animation-duration: 200ms;
+	-moz-transform: translateY(100%);
+	-moz-animation-name: slideoutfadetobottom;
+	-moz-animation-duration: 200ms;
+	transform: translateY(100%);
+	animation-name: slideoutfadetobottom;
+	animation-duration: 200ms;
+}
+@-webkit-keyframes slideinfadefrombottom {
+	from { -webkit-transform: translateY(100%);
+      opacity:0;
+	}
+	to { -webkit-transform: translateY(0);
+       opacity:1;
+	}
+}
+@-moz-keyframes slideinfadefrombottom {
+	from { -moz-transform: translateY(100%);
+       opacity:0;
+	}
+	to { -moz-transform: translateY(0);
+      opacity:1;
+	}
+}
+@keyframes slideinfadefrombottom {
+	from { transform: translateY(100%);
+       opacity:0;
+	}
+	to { transform: translateY(0);
+       opacity:1;
+	}
+}
+
+@-webkit-keyframes slideoutfadetobottom {
+	from { -webkit-transform: translateY(0);
+       opacity:1;
+	}
+	to { -webkit-transform: translateY(100%);
+       opacity:0;
+	}
+}
+@-moz-keyframes slideoutfadetobottom {
+	from { -moz-transform: translateY(0);
+       opacity:1;
+	}
+	to { -moz-transform: translateY(100%);
+       opacity:0;
+	}
+}
+@keyframes slideoutfadetobottom {
+	from { transform: translateY(0);
+       opacity:1;
+	}
+	to { transform: translateY(100%);
+       opacity:0;
+	}
+}
+
+
+@-webkit-keyframes slideinfadein {
+	from { opacity: 0;
+	}
+	to { opacity: 1;
+	}
+}
+@-moz-keyframes slideinfadein {
+	from { opacity: 0;
+	}
+	to { opacity: 1;
+	}
+}
+@keyframes slideinfadein {
+	from { opacity: 0;
+	}
+	to { opacity: 1;
+	}
+}
+
+@-webkit-keyframes slideoutfadeout {
+	from { opacity: 1;
+	}
+	to { opacity: 0;
+	}
+}
+@-moz-keyframes slideoutfadeout {
+	from { opacity: 1;
+	}
+	to { opacity: 0;
+	}
+}
+@keyframes slideoutfadeout {
+	from { opacity: 1;
+	}
+	to { opacity: 0;
+	}
+}
+
+/* End Mail Popup */
+
+{% endstylesheet %}
+
+{% javascript %}
+ $(document).on("shopify:section:select",'#shopify-section-Popup',function(e){
+$([document.documentElement, document.body]).animate({ scrollTop: 0 }); 
+ popupedit();
+ $('body').addClass('editing editpopup');
+
+   
+
+
+
+
+     $(document).on("shopify:section:deselect",'#shopify-section-Popup',function(e){
+        $('body').removeClass('editpopup');
+        $( "#mailPopup" ).popup( "close");
+     });   
+}); 
+
+  
+
+  
+function popupedit() {
+     console.log('test5');
+      $( "#mailPopup" ).popup( "open", {
+       transition: "slideupfade",
+        y: 100,
+      }); 
+}                                                                  
+{% endjavascript %}

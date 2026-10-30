@@ -1,0 +1,136 @@
+{% if section.settings.activate %}
+{% style %}
+  form[action="/cart/add"] button:not(.stripe), form[action="/cart/add"] .shopify-payment-button {
+  display:none;
+}
+{% endstyle %}
+<button id="stripe-{{ product.id }}" type="submit" name="add" aria-label="Buy It Now" class="btn product-form__cart-submit btn--secondary-accent stripe">
+  <span>
+    Buy It Now
+   </span>
+</button>
+
+
+
+<script>
+ var callbackStripe = function(){
+   if(!window.StripeCheckout) {
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://checkout.stripe.com/checkout.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+   }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackStripe();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackStripe);
+}  
+  
+  
+
+  
+  
+  
+  var form =  document.querySelector('#stripe-{{ product.id }}').closest('form');
+                                     
+  form.removeEventListener('submit', stripeCheckout);
+  form.addEventListener('submit', stripeCheckout);
+  
+  function stripeCheckout(event) {
+   event.preventDefault();
+   event.stopImmediatePropagation();
+    
+// get variantJson
+var variantId = this.querySelector('[name="id"]').value; 
+var productJson = {{ product | json }};
+var variantJson = productJson.variants.find(variant => variant.id = variantId);  
+
+// set product variables
+var amount = variantJson.price;
+var name = variantJson.name;
+var desc = productJson.description.replace(/<(.|\n)*?>/g, '');
+var icon = productJson.featured_image;  
+    
+    
+var handler = StripeCheckout.configure({
+  key: '{{ section.settings.key }}',
+			image: icon,
+			locale: 'auto',
+			token: function (token) {
+				console.log(token);
+  fetch('{{ section.settings.endpoint }}', {
+					method: 'POST',
+					headers: { 'Accept': 'application/json', 'Content-Type': 'application/json'},
+					body: JSON.stringify({
+						token: {
+							id:token.id,
+						},
+						charge: {
+							amount: amount,
+							currency: 'usd'
+						},
+						stripeEmail: token.email,
+					})
+				}).then( (response) => {
+                    console.log(response);
+                  if(response.status == 200) {
+                    $( "body" ).trigger('paymentreceived'); 
+                  }
+        });
+	}
+});   
+    
+
+
+handler.open({
+	name: name,
+	description: desc,
+	zipCode: true,
+    billingAddress: true,
+    shippingAddress: true,
+	currency: 'usd',
+	amount: amount
+});         
+}
+
+</script>
+{% endif %}
+{% schema %}
+{
+    "name": "Stripe",
+    "settings": [{
+   "type":      "checkbox",
+   "id":        "activate",
+   "label":     "Activate Stripe Checkout",
+   "default":   false
+},
+{
+   "type":      "text",
+   "id":        "key",
+   "label":     "Stripe Key",
+   "placeholder": "pk_live_XXXXXXXXXXXXXXXXXXXXX"
+},
+{
+   "type":      "url",
+   "id":        "endpoint",
+   "label":     "AWS Endpoint URL"
+}
+]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+#shopify-section-Stripe {
+    width: 100%;
+}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

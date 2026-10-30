@@ -1,0 +1,559 @@
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font.family | append: section.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font.family | append: section.settings.font.weight | append: section.settings.font.style | append: '|' %}
+
+{% assign familyandweight = section.settings.font2.family | append: section.settings.font2.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font2 | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font2.family | append: section.settings.font2.weight | append: section.settings.font2.style | append: '|' %}
+
+
+
+  #shopify-section-{{ section.id }} .photo-albums-page .articles-wrap .article-wrap .article-inner .bottom-content .bottom-inner h3 {
+    font-family: {{ section.settings.font2.family }}; 
+    font-weight:{{ section.settings.font2.weight }}; 
+    font-style:{{ section.settings.font2.style }};
+    font-size:{{ section.settings.fontsize2 }}px;
+    text-align: {{ section.settings.alignment }};
+    color:{{ section.settings.fontcolor2 }};
+    line-height:1;
+  }
+
+
+  #shopify-section-{{ section.id }} .page-header h2 {
+    font-family: {{ section.settings.font.family }}; 
+    font-weight:{{ section.settings.font.weight }}; 
+    font-style:{{ section.settings.font.style }};
+    font-size:{{ section.settings.fontsize }}px;
+    color:{{ section.settings.fontcolor }};
+    line-height:1;
+  }
+
+
+  .albums-{{ blog.id }} { 
+ {% if section.settings.background_color_2 contains 'transparent' %}
+      background-color:{{ section.settings.background_color }};                            
+  {% else %}     
+    background: -moz-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+    background: -webkit-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+    background: radial-gradient(ellipse at center, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);                            
+  {% endif %}
+ }
+ 
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+{% if section.settings.blog != nil %}
+{% assign theblog = section.settings.blog %}
+{% else %}
+{% assign theblog = 'albums' %}
+{% endif %}
+
+
+<div id="albums-{{ blog.id }}" class="photo-albums-page">
+
+<div class="page-header">
+  <div class="row align-middle align-justify">
+  <div class="large-12 columns text-center">
+    <h2><span>{{ section.settings.title}}</span></h2>
+   {% if section.settings.subtitle %}<p>{{ section.settings.subtitle}}</p>{% endif %}
+  </div>
+  </div>
+</div>
+{% unless blogs[theblog].articles.size == 0 %}
+<div class="articles-wrap"> 
+<div class="row align-stretch align-left">
+{% assign blog = blogs[theblog] %} 
+{% paginate blog.articles by section.settings.blogs_per %}
+  {% assign i = 0 %}
+{% for article in blog.articles %}
+            
+             <a href="{{ article.url }}" class="large-6 medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="{{ article.image.src | img_url: 'large' }}" alt="{{ article.title }}" />
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <h3>
+                        <span>{{ article.title }}</span>
+                      </h3>
+                      <tags>
+                      {% for tag in article.tags %}
+                        <span>{{ tag }}</span>
+                      {% endfor %}
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  {% assign i = i | plus: 1 %}
+{% endfor %}
+</div>
+</div>
+
+  
+{% if paginate.pages > 1 %}
+<div class="pagination">
+{{ paginate | default_pagination | replace: 'Previous', 'Newer articles' | replace: 'Next', 'Older articles' }}
+</div>
+{% endif %}  
+</div>
+
+
+
+{% endpaginate %}
+{% else %}
+
+
+<div class="articles-wrap"> 
+<div class="row align-stretch align-left">
+  
+
+            
+             <a href="#" class="large-6 medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/79781663-cf0f8080-830b-11ea-8857-29c8b67a9444.jpg" alt="Glamour Photos">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <h3><span>Glamour Photos</span></h3>
+                      <tags>
+                      
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  
+
+            
+             <a href="#" class="large-6 medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/79781666-cfa81700-830b-11ea-8dec-5e113b404cfb.jpg" alt="High fashion photos">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <h3><span>High Fashion Photos</span></h3>
+                      <tags>
+                      
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  
+
+            
+             <a href="#" class="large-6 medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/79781667-cfa81700-830b-11ea-9b02-2164e1f8649d.jpg" alt="Wedding photos">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <h3><span>Wedding Photos</span></h3>
+                      <tags>
+                      
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  
+  
+              
+             <a href="#" class="large-6 medium-6 small-12 columns article-wrap">
+                <div class="article-inner">
+                  <div class="top-image flex-content">
+                    <img src="//user-images.githubusercontent.com/8041502/79781665-cfa81700-830b-11ea-8162-f2f838cda98e.jpg" alt="Prom photos">
+                  </div>
+                  <div class="bottom-content">
+                    <div class="bottom-inner">
+                      <h3><span>Prom Photos</span></h3>
+                      <tags>
+                      
+                      </tags>
+                    </div>
+                  </div>
+                </div>
+             </a>
+  
+
+</div>
+
+</div>
+{% endunless %}
+
+</div>
+
+<script>
+ var album = document.querySelector('#albums-{{ blog.id }}');
+ var page = album.closest('.ui-page');      
+  page.classList.add('albums-{{ blog.id }}');
+</script>
+{% schema %}
+  {
+    "name": "Albums",
+    "settings": [
+{
+   "type": "blog",
+   "id": "blog",
+   "label": "Album Blog"
+},
+{
+   "type": "select",
+   "id": "blogs_per",
+   "options": [
+      { "value": "4", "label": "3 Articles"},
+      { "value": "7", "label": "6 Articles"},
+      { "value": "13", "label": "12 Articles"}
+   ],
+   "default": "7",
+   "label": "Show how many at a time?"
+},
+{
+"type": "header",
+"content": "Page Title Settings"
+},
+{
+       "id": "title",
+       "type": "text",
+       "label": "Title",
+       "default": "Albums"
+},
+{
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "work_sans_n6"
+},
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       30,
+    "max":       70,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Font Size",
+    "default":   40
+     },
+{
+       "id": "subtitle",
+       "type": "text",
+       "label": "Sub Title"
+},
+{
+       "id": "fontcolor",
+       "type": "color",
+       "label": "Title Color",
+       "default": "#000000"
+},
+{
+"type": "header",
+"content": "Background Settings"
+},
+{
+       "id": "background_color",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#ffffff"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Background Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+{
+"type": "header",
+"content": "Album Title Settings"
+},
+{
+     "type": "font_picker",
+     "id": "font2",
+     "label": "Font",
+     "default": "work_sans_n6"
+},
+  {
+    "type":   "range",
+    "id":     "fontsize2",
+    "min":       20,
+    "max":       70,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Font Size",
+    "default":   20
+     },
+{
+       "id": "fontcolor2",
+       "type": "color",
+       "label": "Album Title Color",
+       "default": "#000000"
+},
+{
+   "type":      "radio",
+   "id":        "alignment",
+   "label":     "Alignment",
+   "options": [
+     { "value": "center", "label": "Center" },
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "center"
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}
+]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+// responsive sizes
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+
+
+.photo-albums-page {
+      padding-top: 30px;
+    @include bp(phablet) {
+ padding-top:0px;
+ }
+
+& .searchwrap {
+    padding-top: 20px;
+    padding-bottom: 60px;
+@include bp(tablet) {
+    padding-top: 15px;
+    padding-bottom: 35px;
+}
+@include bp(phablet) {
+    position: fixed;
+    z-index: 9;
+    padding: 5px 10px 5px;
+    background: #fff;
+    border-bottom: 1px solid #00000014;
+    box-shadow: 1px 1px 11px #00000014;
+    width: 100%;
+}
+ & .form {
+    display: flex;
+    width: 100%;
+    -ms-flex: 0 0 55.33333%;
+    flex: 0 0 55.33333%;
+    max-width: 55.33333%;
+    margin: 0 auto;
+   @include bp(phablet) {
+   -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    align-items: center;
+   }
+  & .search-input-wrap {
+    margin-right: 25px;
+    width: 100%;
+     & input {
+    margin-bottom: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border-bottom: 1px rgba(0,0,0,0.16) solid;
+    font-size: 26px;
+    font-family: 'Open Sans', sans-serif;
+    padding-bottom: 10px;
+    min-height: 50px;
+       @include bp(tablet) {
+           font-size: 21px;
+      }
+       @include bp(phablet) {
+            font-size: 18px;
+          border-bottom: none;
+    min-height: 42px;
+      }
+     } 
+	}
+    & button {
+    font-weight: bold;
+    text-transform: capitalize;
+    display: inline-block;
+    color: #fff;
+    padding: 13px 46px;
+    font-size: 21px;
+    border-radius: 25px;
+     @include bp(tablet) {
+     padding: 10px 40px;
+     font-size: 16px;
+      }
+     @include bp(phablet) {
+            padding: 10px 35px;
+    font-size: 15px;
+     }
+    }
+ }
+}
+& .page-header {
+ & h2 {
+  & span {
+   @include bp(mobile) {
+    font-size: 70%;
+   }
+  }
+ }
+  @include bp(phablet) {
+padding-top: 15px;
+}
+}
+& .articles-wrap {
+& .article-wrap {
+    margin-bottom: 30px;
+   @include bp(phablet) {
+   padding:0;
+margin-bottom:0;
+  }
+  & .article-inner {
+    min-height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+   @include bp(phablet) {
+    border:none;
+   }
+    & .top-image {
+     padding-bottom: 58.7%;
+     margin: 0;
+     overflow: hidden;
+     background: #F7F8FA;
+     position: relative;
+     height: 0;
+      & img {
+     	width: auto;
+   	    height: auto;
+        min-width: 100%;
+        min-height: 100%;
+        position: absolute;
+        object-fit: cover;
+      }
+    }
+    & .bottom-content {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+      & .bottom-inner {
+          width: 100%;
+        & h3 {
+    		display: block;
+  		    font-size: 18px;
+            margin-bottom: 10px;
+        }
+      }
+    }
+  }
+  &.article-big {
+    @include bp(phabletup) {
+    & .article-inner {
+     display:flex;
+      & .top-image {
+        padding-bottom: 32%;
+        width: 55%;
+      }
+      & .bottom-content {
+      width: 45%;
+  	  text-align: center;
+      padding: 30px 30px;
+        & h3 {
+            font-size: 30px;
+        }
+      }
+    }
+    }
+  }
+ }
+}
+& .pagination {
+text-align: center;
+    display: none;
+    justify-content: center;
+& .current {
+background: #efefef;
+    color: #000000;
+}
+}
+}
+
+
+
+
+{% endstylesheet %}
+
+{% javascript %}  
+{% endjavascript %}              

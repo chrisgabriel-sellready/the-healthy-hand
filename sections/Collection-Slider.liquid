@@ -1,0 +1,886 @@
+{% capture cssColors %}AliceBlue,AntiqueWhite,Aqua,Aquamarine,Azure,Beige,Bisque,Black,BlanchedAlmond,Blue,BlueViolet,Brown,BurlyWood,CadetBlue,Chartreuse,Chocolate,Coral,CornflowerBlue,Cornsilk,Crimson,Cyan,DarkBlue,DarkCyan,DarkGoldenRod,DarkGray,DarkGrey,DarkGreen,DarkKhaki,DarkMagenta,DarkOliveGreen,DarkOrange,DarkOrchid,DarkRed,DarkSalmon,DarkSeaGreen,DarkSlateBlue,DarkSlateGray,DarkSlateGrey,DarkTurquoise,DarkViolet,DeepPink,DeepSkyBlue,DimGray,DimGrey,DodgerBlue,FireBrick,FloralWhite,ForestGreen,Fuchsia,Gainsboro,GhostWhite,Gold,GoldenRod,Gray,Grey,Green,GreenYellow,HoneyDew,HotPink,IndianRed,Indigo,Ivory,Khaki,Lavender,LavenderBlush,LawnGreen,LemonChiffon,LightBlue,LightCoral,LightCyan,LightGoldenRodYellow,LightGray,LightGrey,LightGreen,LightPink,LightSalmon,LightSeaGreen,LightSkyBlue,LightSlateGray,LightSlateGrey,LightSteelBlue,LightYellow,Lime,LimeGreen,Linen,Magenta,Maroon,MediumAquaMarine,MediumBlue,MediumOrchid,MediumPurple,MediumSeaGreen,MediumSlateBlue,MediumSpringGreen,MediumTurquoise,MediumVioletRed,MidnightBlue,MintCream,MistyRose,Moccasin,NavajoWhite,Navy,OldLace,Olive,OliveDrab,Orange,OrangeRed,Orchid,PaleGoldenRod,PaleGreen,PaleTurquoise,PaleVioletRed,PapayaWhip,PeachPuff,Peru,Pink,Plum,PowderBlue,Purple,RebeccaPurple,Red,RosyBrown,RoyalBlue,SaddleBrown,Salmon,SandyBrown,SeaGreen,SeaShell,Sienna,Silver,SkyBlue,SlateBlue,SlateGray,SlateGrey,Snow,SpringGreen,SteelBlue,Tan,Teal,Thistle,Tomato,Turquoise,Violet,Wheat,White,WhiteSmoke,Yellow,YellowGreen{% endcapture %}
+{% assign cssColors = cssColors | downcase | split: ","  %}
+
+
+{% unless section.settings.enablebuynow %}
+{% assign buynowtext = settings.buynowtext %}
+{% else %}
+{% assign buynowtext = section.settings.buynowtext %}
+{% style %}
+#shopify-section-{{ section.id }} .collection-featured li.product a.buynow  {
+color:{{ section.settings.buynowcolor}};
+ {% case settings.buy_now_button %}
+    {% when 'hide' %}
+     display:none;
+    {% when 'button' %}
+     background:{{ section.settings.buynowbackground }};
+     border-radius: 48px;
+     padding: 11px 35px;
+     display: inline-block;
+     margin: 20px 0 0 0; 
+     @media (max-width: 600px) {
+       padding: 11px 20px;
+     }
+    {% when 'link' %}
+     display: inline-block;
+     margin: 11px 0 0 0;
+     padding:0px;
+     @media (max-width: 600px) {
+       padding:0px;
+     }
+    {% endcase %}
+}
+
+
+
+{% endstyle %}
+{% endunless %}
+
+
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font.family | append: section.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font.family | append: section.settings.font.weight | append: section.settings.font.style | append: '|' %}
+
+
+ #shopify-section-{{ section.id }} .collection-slider > .row.title h2 {
+    font-family: {{ section.settings.font.family }}, -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",Arial,sans-serif; 
+    font-weight:{{ section.settings.font.weight }}; 
+    font-style:{{ section.settings.font.style }};    
+      font-size:{{ section.settings.fontsize }}px;   
+     color:{{ section.settings.title_color }};
+        line-height: 1;
+ }
+{% if section.settings.fullwidth %}
+   #shopify-section-{{ section.id }} .collection-slider > .row {
+   max-width: 100%; 
+   }
+{% endif %}  
+    
+   #shopify-section-{{ section.id }} .collection-slider > .row.title {
+     text-align: {{ section.settings.alignment }}; 
+   }
+  
+{% if section.settings.linethrough %}
+
+   #shopify-section-{{ section.id }} .collection-slider .title h2 span {
+    background: #fff;
+   }
+
+   #shopify-section-{{ section.id }} .collection-slider > .row.title h2:before {  
+    position: absolute;
+    content: "";
+    height: 1px;
+    background-color: #e0e0e0;
+    top: -moz-calc(50% - 0.5px);
+    top: -webkit-calc(50% - 0.5px);
+    top: -ms-calc(50% - 0.5px);
+    top: calc(50% - 0.5px);
+    left: 0;
+    right: 0;
+    width: 100%;
+   }
+{% endif %}
+
+
+#shopify-section-{{ section.id }} .collection-slider .carousel {
+{% unless section.settings.fullwidth %}max-width: 78.5rem;{% endunless %}
+}  
+
+
+
+:root{--swiper-theme-color:#7d7d7d}
+
+
+
+
+
+
+
+#shopify-section-{{ section.id }} .collection-slider .show-more a  {
+background:{{ section.settings.showmorebackground }};
+color:{{ section.settings.showmorecolor}};
+}
+ 
+  
+
+    
+#shopify-section-{{ section.id }}:nth-child(2) {
+padding-top:50px;
+}
+@media (max-width: 1022px) { 
+#shopify-section-{{ section.id }}:nth-child(2) {
+padding-top:25px;
+}
+}  
+
+
+{% if section.settings.css != nil %}
+{{ section.settings.css | replace: '&gt;', '>' }}
+{% endif %}
+{% endstyle %}
+
+
+
+<div class="collection-slider">
+<div class="row title">
+  <div class="column">
+    <h2><span>{{ section.settings.title }}</span></h2>
+  {% if section.settings.subtitle %}
+  <p>{{ section.settings.subtitle }}</p>
+  {% endif %}
+  </div>
+</div>
+
+
+ 
+<div class="carousel">  
+<div class="swiper-button-prev"></div>   
+  
+<div class="swiper-container-wrapper">  
+<div class="swiper-pagination"></div>    
+<div class="swiper-container">
+
+<ul class=" swiper-wrapper">
+  
+{% assign products_per = section.settings.products_per | plus: 0 %}    
+{% assign mobile_per = section.settings.mobile_per | plus: 0 %}  
+{% if section.settings.collection != nil %}
+{% assign thecollection = section.settings.collection %}
+{% else %}
+{% assign thecollection = false %}
+{% endif %}  
+ 
+{% if thecollection.size > 0 %}
+{% assign products_limit = products_per | times: 2 %} 
+{% for product in collections[thecollection].products limit: products_limit %}  
+  
+  
+  
+{% assign hasVideo = false %}
+ {% for media in product.media %}
+  {% case media.media_type %}
+    {% when 'video' %}
+     {% capture videoTag %}{{ media | video_tag: controls:false,autoplay:false,muted:true,loop:true }}{% endcapture %}
+     {% assign hasVideo = true %}
+  {% endcase %}
+ {% endfor %}
+
+ {% for media in product.media %}
+  {% case media.media_type %}
+    {% when 'image' %}
+
+  {% endcase %}
+ {% endfor %}
+  
+
+<li data-id="{{ product.id }}" class="product swiper-slide">
+  <div itemscope itemtype="http://schema.org/Product" data-video="{{ hasVideo }}" class="text-center {% if on_sale %} on-sale{% endif %}">
+ <a href="{{ product.url | within: collection }}" {% if settings.disableproductajax %}rel="external"{% endif %}>     
+   {% if hasVideo %}
+   <div class="video-preloader">
+     <svg width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-rolling" style="background: none;"><circle cx="50" cy="50" fill="none" ng-attr-stroke="" ng-attr-stroke-width="" ng-attr-r="" ng-attr-stroke-dasharray="" stroke="#000000" stroke-width="10" r="25" stroke-dasharray="117.80972450961724 41.269908169872416" transform="rotate(41.2639 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg>
+   </div> 
+   {% endif %}
+   <div class="image {% if settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product.media.size > 1  %} {% if hasVideo %} hasVideo {% endif %}  imgswitch {% case settings.product_image_hover %}{% when 'fade' %}fade{% when 'scroll' %}{% if hasVideo %} fade {% else %} scroll {% endif %}{% endcase %}{% endif %}">
+     <div class="inner">
+       {% if product.featured_image %}<img class="{% unless settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product.images.size > 1  %}hvr-grow{% endunless %} lazyload" data-sizes="auto" data-src="{{ product.featured_image | img_url: '1024x1024' }}" />{% endif %} 
+     </div>
+     
+     {% unless hasVideo %}
+     {% if settings.product_image_hover != 'none' and settings.product_image_size != 'none' and product.images.size > 1  %}
+     <div class="inner">
+       <img class="lazyload" data-sizes="auto" data-src="{{ product.images[1] | product_img_url: 'large' }}" />
+     </div>
+     {% endif %}
+     {% else %}
+     <div class="inner">
+       {{ videoTag }}
+     </div> 
+     {% endunless %}
+   </div>
+ </a> 
+   
+{% for product_option in product.options_with_values %}
+    {% assign downcased_option = product_option.name | downcase %}
+    {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+      <div class="colors-wrap">
+      {% for value in product_option.values %}
+      {% assign current_color_handle = value | handleize %}
+        {% if cssColors contains current_color_handle %}{% assign is_cssColor = true %}{% else %}{% assign is_cssColor = false %}{% endif %} 
+        <span class="color-bubble colorList-{{ current_color_handle  }}" {% if is_cssColor %}style="background-color:{{ current_color_handle }};"  {% endif %}></span>
+      {% endfor %}
+    </div>
+    {% endif %}
+{% endfor %}    
+    
+    
+   <h3><span>{{ product.title }}</span></h3>
+       
+        <div class="h1 medium-down--left">
+          {% if product.price_max > product.price %}
+           <span class="currPrice">{% include 'price' with product.price_min %}</span> {% if on_sale %}<span class="oldPrice"> {{ product.compare_at_price | money }} </span>{% endif %}
+        {% else %}
+           <span class="currPrice">{% include 'price' with product.price %}</span>   {% if on_sale %}<span class="oldPrice"> {{ product.compare_at_price | money }}</span> {% endif %}
+        {% endif %}
+        {% if on_sale %}
+          <div class="salew">
+            <span class="sale-tag medium-down--right{% if settings.product_reviews_enable %} has-reviews{% endif %}">
+              {% assign compare_price = product.compare_at_price %}
+              {% assign product_price = product.price %}
+              {% include 'price-sale' %}
+            </span>
+         </div>
+        {% endif %}  
+        {% unless product.available %}
+          <span class="product-price__sold-out">{{ 'products.product.sold_out' | t }}</span>
+        {% endunless %} 
+       </div>
+    
+       {% if settings.affirm != blank %}   
+       <p class="affirm-as-low-as" data-page-type="product" data-amount="{{product.price_min}}"></p>
+       {% endif %}  
+    
+        {% if section.settings.desc %}
+         <div class="desc">
+           {{ product.description | strip_html | truncate: 300, ", ..." }}
+         </div>
+         {% endif %}
+       </a> 
+        <a href="{{ product.url }}" class="buynow" {% if settings.disableproductajax %}rel="external"{% endif %}>{{ buynowtext }}</a>     
+</div>
+</li>     
+
+
+  
+  
+{% endfor %}
+  
+{% else %}
+
+
+
+  <li class=" swiper-slide  text-center product demo">
+   <a href="#">
+      <div class="image">
+        <div class="inner">
+         <img class="hvr-grow lazyload" data-sizes="auto" data-src="//user-images.githubusercontent.com/8041502/70945752-e10ea900-2023-11ea-8d7d-cddf9bbeefb9.jpg" />
+      </div>
+     </div>
+    </a>
+     <h3><span>Demo Product</span></h3>
+      <p class="h1 medium-down--left">
+        <small>$80.00</small>
+      </p>
+   
+   <a href="#" class="buynow">{{ buynowtext }}</a>
+</li>
+
+  
+
+<li class=" swiper-slide  text-center  product demo">
+   <a href="#">
+      <div class="image">
+        <div class="inner">
+         <img class="hvr-grow lazyload" data-sizes="auto" data-src="//user-images.githubusercontent.com/8041502/70945753-e10ea900-2023-11ea-9793-a9ab9f015597.jpg" />
+      </div>
+     </div>   
+  </a>
+     <h3><span>Demo Product</span></h3>
+      <p class="h1 medium-down--left">
+        <small>$90.00</small>
+      </p>
+
+   <a href="#" class="buynow">{{ buynowtext }}</a>
+</li>
+
+  
+
+  <li class=" swiper-slide  text-center product demo">
+   <a href="#">
+      <div class="image">
+        <div class="inner">
+         <img class="hvr-grow lazyload" data-sizes="auto" data-src="//user-images.githubusercontent.com/8041502/70945754-e10ea900-2023-11ea-8bc1-09820ac16e95.jpg" />
+      </div>
+     </div> 
+    </a>
+     <h3><span>Demo Product</span></h3>
+      <p class="h1 medium-down--left">
+        <small>$100.00</small>
+      </p>
+  
+   <a href="#" class="buynow">{{ buynowtext }}</a>
+</li>
+
+
+    <li class=" swiper-slide  text-center product demo">
+   <a href="#">
+      <div class="image">
+        <div class="inner">
+         <img class="hvr-grow lazyload" data-sizes="auto" data-src="//user-images.githubusercontent.com/8041502/70945755-e10ea900-2023-11ea-9f47-cb9e9a6e8339.jpg" />
+      </div>
+     </div>
+      </a>  
+     <h3><span>Demo Product</span></h3>
+      <p class="h1 medium-down--left">
+        <small>$110.00</small>
+      </p>
+   
+   <a href="#" class="buynow">{{ buynowtext }}</a>
+</li>
+
+  
+  
+  
+ {% endif %}  
+</ul>  
+  
+</div> 
+  </div>  
+<div class="swiper-button-next"></div> 
+</div>   
+ 
+  {% unless section.settings.showmore == false %}  
+  <div class="row show-more">
+    <div class="column text-center">
+       <a href="{{ collections['all'].url }}">Show More </a>   
+    </div>
+  </div>
+  {% endunless %}
+
+</div>
+
+
+
+  
+<script>
+  
+
+  
+  
+  
+  var callbacksection{{ section.id }} = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.Swiper) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/js/swiper.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/css/swiper.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbacksection{{ section.id }}();
+} else {
+  document.addEventListener("DOMContentLoaded", callbacksection{{ section.id }});
+}
+    
+function defersection{{ section.id }}(methodsection{{ section.id }}) {
+    if (window.Swiper) {
+        methodsection{{ section.id }}();
+    } else {
+        setTimeout(function() { defersection{{ section.id }}(methodsection{{ section.id }}) }, 4);
+    }
+}
+defersection{{ section.id }}(function () {   
+
+  var section = document.querySelector('#shopify-section-{{ section.id }}');
+  var container = document.querySelector('#shopify-section-{{ section.id }} .swiper-container');
+
+
+var swiper = new Swiper((container), { 
+    spaceBetween: 10,
+    slidesPerView: '4',
+    loop: true,
+    loopedSlides: 0,
+    direction: 'horizontal',
+    
+    navigation: {
+        nextEl: section.querySelector('.swiper-button-next'),
+        prevEl: section.querySelector('.swiper-button-prev'),
+    },
+   pagination: {
+      el: section.querySelector('.swiper-pagination'),
+      type: 'bullets',
+        clickable: true
+    },  
+     on: {
+        init: function(){
+           var el = this.el;
+          setTimeout(function() {
+           checkVideo(el) 
+          });
+        }
+     },
+    breakpoints: {
+        0: {
+            slidesPerView: '{{ mobile_per }}',
+              slidesPerGroup: '{{ mobile_per }}',
+            spaceBetween: 10,
+            speed: 500,
+        },    
+        1270: {
+            slidesPerView: '3',
+        },          
+        1368: {
+          slidesPerView: '{{ products_per }}',
+          slidesPerGroup: '{{ products_per }}',
+        }
+    }
+});  
+      
+function checkVideo(swiper) {
+var videoWraps = swiper.querySelectorAll('.hasVideo');
+ [].forEach.call(videoWraps, function(videoWrap) {
+  // do whatever
+ 
+  var video = videoWrap.querySelector('video');
+   if(video) {
+  var videoLi = videoWrap.closest('li');
+  
+  video.oncanplay = (event) => {
+   videoLi.classList.add('video_loaded');
+  };
+  videoLi.addEventListener("mouseover",  (event) => {
+    if(video.readyState >= 3) {
+    videoLi.classList.add('video_loaded');
+    }
+     video.play();
+     
+   });
+  videoLi.addEventListener("mouseout",  (event) => {
+     video.pause();
+   });    
+     
+  }
+});    
+  
+}  
+      
+});
+</script>
+{% schema %}
+  {
+    "name": "Collection Slider",
+    "settings": [
+{
+       "id": "title",
+       "type": "text",
+       "label": "Title"
+},
+ {
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "work_sans_n6"
+   },
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       20,
+    "max":       75,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Title Font Size",
+    "default":   40
+     },
+{
+       "id": "title_color",
+       "type": "color",
+       "label": "Title Font Color",
+       "default": "#000000"
+},
+{
+"type": "checkbox",
+"id": "linethrough",
+"label": "Line Through",
+"default": false
+}, 
+{
+   "type":      "radio",
+   "id":        "alignment",
+   "label":     "Alignment",
+   "options": [
+     { "value": "center", "label": "Center" },
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "center"
+},
+{
+       "id": "collection",
+       "type": "collection",
+       "label": "Collection"
+},
+{
+"type": "checkbox",
+"id": "fullwidth",
+"label": "Full Width",
+"default": true
+}, 
+{
+   "type": "select",
+   "id": "products_per",
+   "options": [
+      { "value": "2", "label": "2 Products"},
+      { "value": "3", "label": "3 Products"},
+      { "value": "4", "label": "4 Products"},
+      { "value": "5", "label": "5 Products"}
+   ],
+   "default": "5",
+   "label": "Desktop Products Per View"
+},
+{
+   "type": "select",
+   "id": "mobile_per",
+   "options": [
+      { "value": "1", "label": "1"},
+      { "value": "1.2", "label": "1.2"},
+      { "value": "2.2", "label": "2.2"}
+   ],
+   "default": "2.2",
+   "label": "Mobile Products Per View"
+},
+{
+"type": "checkbox",
+"id": "desc",
+"label": "Show Shortened Product Description",
+"default": false
+}, 
+{
+ "type": "header",
+ "content": "Font Colors"
+},
+{
+ "type": "paragraph",
+ "content": "Making changes here will override Styles set in the settings area"
+},
+      {
+        "id": "enablefontcolors",
+        "default": false,
+        "label": "Enable Font Colors Settings",
+        "info": "This Replaces Existing Buy Now Button Styles from the Settings page with the new settings below",
+        "type": "checkbox"
+      },
+{
+       "id": "producttitlecolor",
+       "type": "color",
+       "label": "Product Title Color",
+       "default": "#000000"
+},
+{
+       "id": "productpricecolor",
+       "type": "color",
+       "label": "Product Price Color",
+       "default": "#000000"
+},
+{
+       "id": "productdesccolor",
+       "type": "color",
+       "label": "Product Description Color",
+       "default": "#000000"
+},
+{
+ "type": "header",
+ "content": "Buy Now Button"
+},
+{
+ "type": "paragraph",
+ "content": "Making changes here will override Styles set in the settings area"
+},
+      {
+        "id": "enablebuynow",
+        "default": false,
+        "label": "Enable Buy Now Button Settings",
+        "info": "This Replaces Existing Buy Now Button Styles from the Settings page with the new settings below",
+        "type": "checkbox"
+      },
+{
+        "type": "radio",
+        "id": "buynowbutton",
+        "label": "Buy Now Button",
+        "options": [
+          {
+            "value": "hide",
+            "label": "Do not display"
+          },
+          {
+            "value": "button",
+            "label": "Display as button"
+          },
+          {
+            "value": "link",
+            "label": "Display as link"
+          }
+        ],
+        "default": "button"
+      },
+{
+       "id": "buynowtext",
+       "type": "text",
+       "label": "Button Text",
+       "default": "Buy Now"
+},
+{
+       "id": "buynowbackground",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#000000"
+},
+{
+       "id": "buynowcolor",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#FFFFFF"
+},
+{
+ "type": "header",
+ "content": "Show More Button"
+},
+{
+"type": "checkbox",
+"id": "showmore",
+"label": "Show More",
+"default": true
+}, 
+{
+       "id": "showmorebackground",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#000000"
+},
+{
+       "id": "showmorecolor",
+       "type": "color",
+       "label": "Font Color",
+       "default": "#FFFFFF"
+},
+{
+ "type": "header",
+ "content": "Additional Custom CSS"
+},
+{
+        "id": "css",
+        "type": "html",
+        "label": "Custom CSS",
+	"info": "Use [Font 2 Web](http://www.font2web.com/) to convert fonts"
+}
+],
+  "presets": [
+    {
+      "name": "Collection Slider",
+      "category": "Collections"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1280px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+
+}
+
+//color transition
+@mixin transition($attribute, $duration) {
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+}
+
+
+
+.shopify-section {
+& .collection-slider {
+    margin-bottom: 30px;
+ & ul {
+   margin:0 auto;
+   padding:0;
+ }
+ & .title {
+  	& h2 {
+     position:relative;
+    & span {
+    z-index: 2;
+    position: relative;
+    padding: 0 20px;
+     font-size:100%;
+    @include bp(mobile) {
+      font-size:80%;
+      padding: 0;
+    }
+     }
+   }
+  }
+
+& .carousel {
+ display:flex;
+    margin: 0 auto;
+align-items: center;
+@include bp(phablet) {
+    margin: 0 auto 0 25px;
+}
+& .swiper-container-wrapper {
+width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+& .swiper-pagination {
+position: relative;
+text-align: right;
+    padding: 5px 5px;
+ & .swiper-pagination-bullet {
+background: transparent;
+height: 30px;
+width: 30px;
+position:relative;
+&:focus {
+outline:none;
+}
+&:before {
+content:'';
+background-color: #959595;
+    border: 2px solid transparent;
+    border-radius: 12px;
+transition: width .4s,height .4s,border-color .4s,border-width .4s,background-color .4s;
+    width: 6px;
+height: 6px;
+display: block;
+position: absolute;
+left:0;
+    right: 0;
+    top: 0;
+bottom:0;
+margin:auto;
+}
+&.swiper-pagination-bullet-active {
+&:before {
+background-color: transparent;
+    border: 2px solid #000;
+    height: 14px;
+    width: 14px;
+}
+}
+}
+}
+& .swiper-container {
+width: 100%;
+   & .swiper-wrapper {
+margin-left:0;
+margin-right:0;
+padding: 0;
+& li.product {
+margin-bottom:0px;
+}
+}
+}
+}
+   & .swiper-button-next {
+    right:auto;
+   }
+   & .swiper-button-prev {
+     left:auto;
+   }
+   & .swiper-button-next, & .swiper-button-prev {
+   color:#000;
+   position: relative;
+   width: auto;
+   @include bp(phablet) {
+        align-self: start;
+    margin-top: 15%;
+    display:none;
+   }
+   }
+   & .swiper-button-next:after, & .swiper-button-prev:after {
+    font-weight: bold;
+    padding: 0 30px;
+    font-size: 20px;
+     @include bp(phablet) {
+  font-size:16px;  
+  padding: 0 10px;
+     }  
+   }
+   & .swiper-button-next:focus, & .swiper-button-prev:focus {
+  outline: none;
+   }
+}
+
+& .show-more {
+margin: 20px auto;
+& a {
+padding: 15px 20px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 300px;
+    width: 100%;
+&.disabled {
+opacity:0.2;
+}
+}
+}
+} 
+}
+
+
+{% endstylesheet %}
+
+
+{% javascript %}       
+ 
+{% endjavascript %}                                            
+
+ 

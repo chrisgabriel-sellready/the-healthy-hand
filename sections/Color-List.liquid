@@ -1,0 +1,100 @@
+{% style %}
+
+
+{% if product.id %}
+{% for product_option in product.options_with_values %}
+    {% assign downcased_option = product_option.name | downcase %}
+    {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+      {% for value in product_option.values %}
+      {% assign current_color_handle = value | handleize %}
+{% for block in section.blocks %}
+   {% case block.type %}
+      {% when 'Color' %}
+   {% assign block_color_handle = block.settings.title | handleize %}
+     {% if block_color_handle == current_color_handle %}
+        .colorList-{{ block.settings.title | handleize }} {
+            {% capture backgroundimage %}{{ block.settings.color_image | img_url: 'thumb' }}{% endcapture %}    
+            {% if backgroundimage contains 'no-image' %}  
+           background-color:{{ block.settings.color }};
+           {% else %}
+           background-color:transparent;
+           background-image:url('{{ block.settings.color_image | img_url: 'thumb'  }}');
+           background-size: cover;
+           {% endif %}
+        }
+     {% endif %}
+    {% endcase %}
+{% endfor %}
+
+      {% endfor %}
+    {% endif %}
+{% endfor %}
+{% else %}
+
+
+{% for block in section.blocks %}
+   {% case block.type %}
+      {% when 'Color' %}
+       {% assign block_color_handle = block.settings.title | handleize %}
+     .colorList-{{ block.settings.title | handleize }} {
+      {% capture backgroundimage %}{{ block.settings.color_image | img_url: 'thumb' }}{% endcapture %}    
+      {% if backgroundimage contains 'no-image' %}  
+           background-color:{{ block.settings.color }};
+           {% else %}
+           background-color:transparent;
+           background-image:url('{{ block.settings.color_image | img_url: 'thumb'  }}');
+           background-size: cover;
+           {% endif %}
+        }
+    {% endcase %}
+{% endfor %}
+
+    
+
+
+
+{% endif %}
+
+
+
+
+{% endstyle %}
+
+{% schema %}
+  {
+    "name": "Color List",
+    "settings": [    {
+   "type":      "paragraph",
+   "content":   "Add a color and match it to the name you listed on your product."
+}],
+ "blocks": [
+    {
+     "type": "Color",
+     "name": "Color",
+     "settings" : [
+      {
+       "id": "title",
+       "type": "text",
+       "label": "Name"
+      },
+     {
+       "id": "color",
+       "type": "color",
+       "label": "Color"
+      },
+     {
+       "id": "color_image",
+       "type": "image_picker",
+       "label": "Color Image (Optional)"
+      }
+     ]
+    }
+   ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

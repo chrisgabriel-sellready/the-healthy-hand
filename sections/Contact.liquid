@@ -1,0 +1,197 @@
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font_title.family | append: section.settings.font_title.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font_title | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font_title.family | append: section.settings.font_title.weight | append: section.settings.font_title.style | append: '|' %}
+
+ #shopify-section-Contact > .contact-wrap > .row > .column h2 {
+    font-family: {{ section.settings.font_title.family }}; 
+    font-weight:{{ section.settings.font_title.weight }}; 
+    font-style:{{ section.settings.font_title.style }};
+    font-size:{{ section.settings.fontsize_title }}px;
+    {% if section.settings.uppercase %}
+      text-transform:uppercase;
+    {% endif %}
+  }
+
+
+
+  #shopify-section-{{ section.id }} { 
+ {% if section.settings.background_color_2 contains 'transparent' %}
+      background-color:{{ section.settings.background_color }};                            
+  {% else %}     
+    background: -moz-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+    background: -webkit-radial-gradient(center, ellipse cover, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);
+    background: radial-gradient(ellipse at center, {{ section.settings.background_color_2 }} 0%, {{ section.settings.background_color }} 100%);                            
+  {% endif %}
+    
+}
+#shopify-section-{{ section.id }} > .contact-wrap > .row > .column h2, #shopify-section-{{ section.id }} > .contact-wrap > .row > .column p {
+  color:{{ section.settings.text_color }};
+}
+
+#shopify-section-{{ section.id }} input[type=submit] {
+  background: {{ section.settings.button_color }};
+  color: {{ section.settings.button_font_color }};
+}
+{% endstyle %}
+
+
+<div class="contact-wrap">
+   <div class="row align-center">
+      <div class="column large-7 text-center">
+         <h2>Contact Us</h2>
+        <p>{{ page.content }}</p>
+      </div>
+   </div>
+   <div class= "page-inner-wrap">
+      {% form 'contact', data-ajax:'false'  %}
+      {% if form.errors %}
+      <div class="errorForm feedback">
+         <p>{{ 'contact.form.post_error' | t }}</p>
+         {% for field in form.errors %}
+         <p>{{ 'contact.form.post_field_error_html' | t: field: field, error: form.errors.messages[field] }}</p>
+         {% endfor %}
+      </div>
+      {% endif %}      
+      <div class="row align-center contact-wrap">
+         <div class="column large-7">
+            {% if form.posted_successfully? %}
+            <div class="successForm feedback row">
+               <div class="large-12 text-center column">
+                  <p>{{ 'contact.form.post_success' | t }}</p>
+               </div>
+            </div>
+            {% else %} 
+            <div class="row">
+               <p class="large-6 small-12 columns">
+                  <input class="field" type="text" id="contactFormName" name="contact[name]" placeholder="What's your name?" data-role="none" />      
+               </p>
+               <p class="large-6 small-12 columns">
+                  <input class="field" type="email" id="contactFormEmail" name="contact[email]" placeholder="and your email?" data-role="none" />
+               </p>
+            </div>
+            <div class="row">
+               <p class="large-12 columns">
+                  <textarea class="field" rows="4" cols="15" id="contactFormMessage" name="contact[body]" placeholder="Comments, thoughts or questions?" data-role="none"></textarea>
+               </p>
+            </div>
+            <div class="row align-center">
+               <p class="text-center large-12">
+                  <input type="submit" id="contactFormSubmit" value="Send It" class="btn" data-role="none" />
+               </p>
+            </div>
+         </div>
+      </div>
+      {% endif %}
+      {% endform %}
+   </div>
+</div>
+<script>
+  var contact = document.getElementById('shopify-section-{{ section.id }}');
+  var page = contact.closest('[data-role="page"]');
+  page.classList.add('shopify-section-{{ section.id }}-wrap');
+</script>
+
+{% schema %}
+  {
+    "name": "Contact",
+    "settings": [
+{ "type": "header",
+"content": "Title Style"
+},
+{
+    "type": "font_picker",
+     "id": "font_title",
+     "label": "Title Font",
+     "default": "work_sans_n6"
+},
+{
+    "type":   "range",
+    "id":     "fontsize_title",
+    "min":       20,
+    "max":       75,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Title Font Size",
+    "default":   25
+},
+{
+"type": "checkbox",
+"id": "uppercase",
+"label": "Uppercase",
+"default": true
+},
+{
+   "type":      "header",
+   "content":   "Background Style"
+},{
+       "id": "background_color",
+       "type": "color",
+       "label": "Background Color",
+       "default": "#ffffff"
+},{
+       "id": "background_color_2",
+       "type": "color",
+       "label": "Background Color #2 (Optional Gradient)",
+       "default": "transparent"
+},
+{
+       "id": "background_image",
+       "type": "image_picker",
+       "label": "Background Image (Optional)"
+},
+{
+   "type":      "header",
+   "content":   "Text Color"
+},
+      {
+        "id": "text_color",
+        "type": "color",
+        "label": "Text Color",
+        "default": "#000"
+      },
+{
+   "type":      "header",
+   "content":   "Button Style"
+},
+      {
+        "id": "button_color",
+        "type": "color",
+        "label": "Button Background Color",
+        "default": "#000"
+      },
+      {
+        "id": "button_font_color",
+        "type": "color",
+        "label": "Button Font Color",
+        "default": "#fff"
+      }]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+
+#shopify-section-Contact {
+padding-bottom: 20px;
+ & > .contact-wrap > .row > .column h2 {
+  font-weight:bold;
+ }
+ & input[type="submit"] {
+    outline: none;
+    border: none;
+    padding: 20px 40px;
+    font-weight: normal;
+    text-transform: capitalize;
+    font-family: 'Open Sans',sans-serif;
+    border-radius: 6px;
+    font-size: 19px;
+}
+}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}  

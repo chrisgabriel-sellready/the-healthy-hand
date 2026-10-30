@@ -1,0 +1,593 @@
+{% style %}
+{% assign loadedfonts = '' %}    
+{% assign familyandweight = section.settings.font.family | append: section.settings.font.weight %}
+{% if loadedfonts contains familyandweight %}
+{% else %}
+  {{ section.settings.font | font_face }}  
+{% endif %}   
+{% assign loadedfonts = loadedfonts | append: section.settings.font.family | append: section.settings.font.weight | append: section.settings.font.style | append: '|' %}
+
+
+ #shopify-section-{{ section.id }} .google-reviews-wrap > .title h2 {
+    font-family: {{ section.settings.font.family }}; 
+    font-weight:{{ section.settings.font.weight }}; 
+    font-style:{{ section.settings.font.style }};    
+      font-size:{{ section.settings.fontsize }}px;   
+ }
+
+
+
+   #shopify-section-{{ section.id }} .google-reviews-wrap > .title {
+     text-align: {{ section.settings.alignment }}; 
+   }
+  
+{% if section.settings.linethrough %}
+   #shopify-section-{{ section.id }} .google-reviews-wrap > .title h2:before {  
+    position: absolute;
+    content: "";
+    height: 1px;
+    background-color: #e0e0e0;
+    top: -moz-calc(50% - 0.5px);
+    top: -webkit-calc(50% - 0.5px);
+    top: -ms-calc(50% - 0.5px);
+    top: calc(50% - 0.5px);
+    left: 0;
+    right: 0;
+    width: 100%;
+   }
+  
+{% endif %}
+{% endstyle %}
+
+<div class="google-reviews-wrap">
+   
+<div class="title">
+  <div class="column">
+    {% unless section.settings.title == nil %}
+    <h2><span>{{ section.settings.title }}</span></h2>
+    {% endunless %}
+  </div>
+</div>
+  
+  
+   <div>
+      <!-- Slider main container -->
+      <div class="swiper-container google-swiper" id="google-reviews-{{ section.id }}">
+         <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+        
+
+      {% assign i = 0 %}
+       {% for block in section.blocks %}
+          {% case block.type %}
+             {% when 'Review' %}
+      
+      <div class="swiper-slide">
+        <div class="row">
+          
+              {% assign mod = i | modulo: 2 %}
+          
+
+         <div class="google-review">
+           <div>
+             <span>
+              <img src="{{ block.settings.google_pic | img_url: 'small' }}" />
+             </span>
+           </div>
+
+           <div>
+             <h1>{{ block.settings.google_name }}</h1>
+             <h2>{{ block.settings.google_date }}</h2>
+             <div>
+               <span class="wp-google-stars">
+                 <span class="wp-stars">
+                	 <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="1" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#e7711b"></path></svg></span>
+                	 <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="2" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#e7711b"></path></svg></span>
+                     {% assign google_rating = block.settings.google_rating | plus: 0 %}
+                     {% if google_rating < 3 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="3" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="3" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#e7711b"></path></svg></span>
+                     {% endif %}
+                   
+                     {% if google_rating < 4 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="4" style="display:inline-block;vertical-align:middle;;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="4" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#e7711b"></path></svg></span>
+                     {% endif %}
+                   
+                     {% if google_rating < 5 %}
+                     <span class="wp-star" data-origin="star_o" data-color="#ccc" data-star="5" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg></span>
+                     {% else %}
+                     <span class="wp-star" data-origin="star" data-color="#e7711b" data-star="5" style="display:inline-block;vertical-align:middle;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="14" height="14" viewBox="0 0 1792 1792"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#e7711b"></path></svg></span>
+                     {% endif %}
+                 </span>
+               </span>
+              {{ block.settings.google_caption }}</div>
+           </div>
+
+          </div>
+          
+        
+          
+
+        </div>
+      </div>  
+    
+         {% assign i = i | plus: 1 %}
+         {% endcase %}
+      {% endfor %}
+      </div>
+        
+        
+        
+        
+        
+        
+      </div>
+   </div>
+   <div>
+      <svg width="1093pt" height="150pt" viewBox="0 0 1093 150" version="1.1" xmlns="http://www.w3.org/2000/svg">
+         <g id="#4285f4ff">
+            <path fill="#4285f4" opacity="1.00" d=" M 689.71 0.00 L 705.28 0.00 C 711.91 2.00 718.78 3.61 724.84 7.12 C 729.23 9.47 732.99 12.76 736.72 16.03 C 733.19 19.81 729.49 23.41 725.92 27.14 C 718.93 21.18 710.37 16.67 701.09 16.03 C 687.34 14.67 673.04 20.61 664.55 31.56 C 653.10 45.66 652.41 67.36 662.76 82.24 C 669.63 92.57 681.51 99.53 693.95 100.14 C 704.87 100.98 716.38 98.12 724.53 90.51 C 730.93 85.18 733.89 77.06 735.31 69.09 C 722.59 68.85 709.86 69.04 697.13 68.97 C 697.18 63.70 697.18 58.43 697.16 53.17 C 715.03 53.23 732.90 53.16 750.77 53.20 C 752.32 66.58 750.65 80.81 743.43 92.42 C 735.81 104.30 723.10 112.65 709.21 115.09 C 694.20 118.06 678.14 115.03 665.29 106.73 C 652.49 98.59 642.99 85.38 639.57 70.60 C 637.34 58.56 637.94 45.59 643.48 34.49 C 649.64 20.79 661.42 9.91 675.31 4.34 C 680.02 2.61 684.88 1.35 689.71 0.00 Z" />
+            <path fill="#4285f4" opacity="1.00" d=" M 925.92 57.89 C 933.25 46.54 947.41 39.47 960.90 42.04 C 966.53 43.00 971.39 46.23 975.68 49.86 C 975.67 47.87 975.69 45.88 975.73 43.89 C 980.88 43.86 986.03 43.87 991.19 43.85 C 991.29 64.23 991.18 84.62 991.25 105.00 C 991.73 117.89 989.85 132.56 979.55 141.53 C 974.45 146.15 967.63 147.91 961.26 150.00 L 950.71 150.00 C 944.14 147.86 937.29 145.67 932.13 140.85 C 927.87 137.40 925.14 132.58 922.48 127.90 C 927.11 125.75 931.76 123.60 936.62 121.98 C 938.66 125.29 940.80 128.66 943.97 131.02 C 952.23 137.77 966.22 136.08 972.16 127.03 C 975.98 121.45 975.53 114.37 975.71 107.93 C 970.51 111.81 964.78 115.67 958.09 116.04 C 941.31 117.54 925.16 105.03 920.96 88.98 C 918.16 78.55 919.79 66.87 925.92 57.89 M 952.36 56.53 C 941.51 58.68 934.94 70.40 935.85 80.91 C 936.60 87.95 940.14 94.96 946.34 98.68 C 952.46 102.37 960.64 102.67 966.76 98.80 C 980.27 90.36 980.24 67.59 967.00 58.93 C 962.73 56.10 957.29 55.67 952.36 56.53 Z" />
+         </g>
+         <g id="#34a853ff">
+            <path fill="#34a853" opacity="1.00" d=" M 1001.04 4.18 C 1006.34 4.22 1011.65 4.22 1016.96 4.18 C 1017.05 40.78 1016.98 77.38 1016.99 113.97 C 1011.66 114.00 1006.33 114.00 1001.00 113.97 C 1001.01 77.37 1000.94 40.78 1001.04 4.18 Z" />
+         </g>
+         <g id="#848484ff">
+            <path fill="#848484" opacity="1.00" d=" M 433.30 33.08 C 437.77 32.95 442.23 32.95 446.70 33.08 C 446.54 58.69 446.54 84.32 446.70 109.94 C 442.55 110.02 438.41 110.03 434.27 109.94 C 434.04 107.80 433.83 105.65 433.62 103.51 C 430.32 105.86 427.25 108.79 423.39 110.15 C 417.32 111.44 410.39 111.65 404.98 108.15 C 399.02 104.35 394.00 98.45 392.96 91.27 C 391.50 82.14 391.57 71.92 396.97 64.00 C 401.77 56.42 411.26 52.52 420.05 53.65 C 424.98 54.06 429.27 56.74 433.24 59.49 C 433.52 50.69 433.43 41.88 433.30 33.08 M 416.37 65.30 C 412.18 66.28 408.95 69.61 407.25 73.44 C 404.15 80.64 404.80 89.87 410.05 95.93 C 413.14 99.72 418.57 100.27 423.08 99.39 C 427.67 98.61 430.78 94.47 432.38 90.38 C 434.23 84.87 434.11 78.59 431.81 73.23 C 429.34 67.51 422.59 63.24 416.37 65.30 Z" />
+            <path fill="#848484" opacity="1.00" d=" M 489.10 33.12 C 493.31 32.97 497.56 32.63 501.74 33.32 C 503.13 42.26 501.80 51.41 502.38 60.43 C 507.17 56.72 512.66 53.13 519.01 53.48 C 529.32 52.99 538.67 60.70 541.67 70.29 C 543.40 76.02 543.79 82.13 543.05 88.06 C 542.18 96.03 537.74 103.93 530.52 107.74 C 524.51 111.52 516.78 112.01 510.16 109.72 C 507.20 107.91 504.27 105.99 501.71 103.64 C 501.43 105.72 501.15 107.81 500.84 109.88 C 496.92 110.00 493.01 110.03 489.10 109.94 C 488.87 84.33 488.87 58.72 489.10 33.12 M 512.37 65.39 C 505.16 67.30 501.79 75.12 501.71 82.00 C 501.55 88.46 504.34 95.65 510.32 98.76 C 515.15 100.61 521.50 100.21 525.06 96.07 C 531.78 88.87 531.71 76.91 525.70 69.32 C 522.47 65.72 517.06 63.66 512.37 65.39 Z" />
+            <path fill="#848484" opacity="1.00" d=" M 20.55 61.34 C 25.42 57.72 30.62 53.71 36.98 53.57 C 44.49 52.93 52.30 56.22 56.36 62.72 C 62.61 70.91 63.93 81.98 61.53 91.80 C 59.12 100.06 53.28 108.05 44.60 110.28 C 39.75 111.25 34.54 111.51 29.80 109.93 C 26.86 108.05 24.28 105.65 21.44 103.63 C 21.12 112.89 21.39 122.17 21.25 131.44 C 16.83 131.55 12.40 131.54 7.97 131.44 C 7.94 110.62 7.98 89.81 7.96 69.00 C 7.97 64.42 7.67 59.80 8.33 55.25 C 12.16 54.21 16.18 54.80 20.09 54.79 C 20.25 56.97 20.40 59.16 20.55 61.34 M 33.30 64.95 C 30.05 65.60 26.98 67.29 24.84 69.85 C 18.20 78.25 19.61 92.26 28.67 98.38 C 33.39 100.69 39.74 100.27 43.77 96.74 C 50.80 89.43 50.92 77.06 44.76 69.19 C 41.87 66.21 37.50 64.21 33.30 64.95 Z" />
+            <path fill="#848484" opacity="1.00" d=" M 91.43 54.78 C 101.03 52.11 112.25 53.45 120.03 60.00 C 123.73 63.28 127.57 66.85 129.21 71.66 C 131.92 79.53 131.72 88.56 127.88 96.03 C 123.30 103.81 115.13 109.54 106.11 110.69 C 98.42 111.74 90.11 110.79 83.54 106.39 C 71.67 99.44 67.27 83.00 72.83 70.67 C 76.23 62.94 83.20 56.83 91.43 54.78 M 96.36 65.35 C 84.45 68.46 80.30 84.85 88.02 93.93 C 94.16 101.65 107.89 101.83 113.68 93.61 C 117.63 88.94 118.32 82.21 116.66 76.49 C 114.20 68.28 104.64 62.71 96.36 65.35 Z" />
+            <path fill="#848484" opacity="1.00" d=" M 233.95 63.94 C 240.69 56.10 251.76 51.70 262.01 54.06 C 269.04 55.34 275.17 60.35 278.05 66.85 C 280.62 72.43 280.56 78.65 280.63 84.66 C 267.74 84.61 254.85 84.48 241.97 84.73 C 242.39 88.19 242.53 92.13 245.45 94.55 C 249.02 98.81 254.69 100.28 260.06 99.74 C 265.47 100.05 270.39 97.43 274.54 94.22 C 276.28 97.32 278.10 100.37 280.00 103.37 C 272.70 109.19 263.22 112.03 253.91 110.87 C 248.94 110.76 244.24 108.76 240.36 105.73 C 226.80 97.07 224.60 76.44 233.95 63.94 M 246.97 66.97 C 244.28 68.98 243.29 72.24 242.28 75.28 C 250.70 75.56 259.12 75.54 267.53 75.30 C 266.53 72.26 266.01 68.74 263.46 66.53 C 259.03 62.18 251.33 62.86 246.97 66.97 Z" />
+            <path fill="#848484" opacity="1.00" d=" M 315.47 56.30 C 318.38 54.31 322.00 54.20 325.35 53.63 C 325.51 58.11 325.49 62.60 325.41 67.08 C 320.70 67.11 315.59 67.56 312.03 71.03 C 308.31 73.81 306.46 78.36 306.28 82.91 C 305.70 91.90 306.30 100.91 305.90 109.90 C 301.49 110.03 297.07 110.05 292.66 110.03 C 292.53 91.60 292.53 73.17 292.66 54.74 C 296.86 54.73 301.07 54.72 305.28 54.73 C 305.32 58.46 305.35 62.19 305.40 65.92 C 305.87 65.78 306.81 65.51 307.28 65.38 C 309.38 61.86 311.88 58.42 315.47 56.30 Z" />
+            <path fill="#848484" opacity="1.00" d=" M 343.19 58.24 C 353.38 51.71 368.63 51.35 377.21 60.78 C 383.45 67.02 383.99 76.37 383.68 84.68 C 370.73 84.60 357.78 84.43 344.83 84.78 C 345.30 90.92 349.64 96.04 354.84 98.94 C 362.76 101.06 371.49 99.49 378.15 94.65 C 379.96 97.58 381.50 100.66 383.05 103.74 C 378.98 106.14 375.01 108.94 370.33 110.02 C 360.34 112.26 348.73 111.37 340.95 104.05 C 334.06 98.58 331.58 89.49 331.58 81.03 C 331.73 72.20 335.68 63.21 343.19 58.24 M 350.07 67.02 C 347.50 69.08 346.62 72.37 345.41 75.28 C 353.80 75.59 362.20 75.54 370.59 75.31 C 369.72 72.19 369.32 68.55 366.54 66.44 C 362.06 62.09 354.43 62.94 350.07 67.02 Z" />
+            <path fill="#848484" opacity="1.00" d=" M 136.88 54.77 C 141.21 54.78 145.58 54.34 149.89 54.95 C 151.48 56.53 151.75 58.95 152.42 61.00 C 154.88 72.00 158.72 82.65 160.66 93.77 C 161.22 93.78 162.35 93.80 162.92 93.81 C 165.21 83.77 168.97 74.14 171.12 64.07 C 171.94 60.96 172.40 57.65 174.11 54.87 C 177.76 54.46 181.44 54.77 185.11 54.76 C 188.16 62.45 189.72 70.60 192.32 78.43 C 194.15 83.92 194.87 89.72 196.96 95.12 C 198.96 94.41 198.89 91.92 199.49 90.22 C 201.34 80.52 204.64 71.18 206.78 61.55 C 207.47 59.39 207.57 56.78 209.19 55.07 C 213.50 54.27 217.91 54.77 222.26 54.85 C 220.24 63.01 217.09 70.83 214.91 78.95 C 212.48 89.17 208.34 98.89 206.06 109.15 C 201.14 111.12 195.60 109.71 190.44 109.71 C 188.47 101.05 185.27 92.73 183.10 84.13 C 182.13 80.44 180.95 76.80 179.76 73.17 C 177.55 77.67 176.91 82.68 175.27 87.37 C 172.73 94.75 171.04 102.37 168.77 109.83 C 163.68 110.14 158.57 110.10 153.48 109.84 C 151.15 101.68 148.40 93.65 146.25 85.44 C 142.94 75.27 139.63 65.10 136.88 54.77 Z" />
+            <path fill="#848484" opacity="1.00" d=" M 547.74 54.82 C 552.44 54.55 557.15 54.77 561.86 54.85 C 566.85 67.21 571.07 79.87 575.51 92.43 C 575.84 92.49 576.50 92.62 576.83 92.68 C 578.17 88.23 579.39 83.74 581.10 79.41 C 583.83 72.39 585.28 64.94 588.12 57.96 C 588.72 56.97 588.88 55.31 590.22 55.06 C 594.50 54.23 598.90 54.81 603.23 54.80 C 596.43 75.83 587.36 96.04 579.81 116.81 C 576.92 125.95 567.80 133.41 557.96 132.60 C 554.45 132.56 551.42 130.61 548.37 129.12 C 549.66 125.96 550.95 122.79 552.19 119.61 C 555.47 121.22 559.53 122.76 563.02 120.90 C 566.71 117.99 569.48 113.60 570.16 108.93 C 568.84 102.56 565.11 97.07 562.88 91.02 C 560.99 85.88 558.48 81.00 556.14 76.05 C 553.24 69.02 550.51 61.91 547.74 54.82 Z" />
+         </g>
+         <g id="#ea4335ff">
+            <path fill="#ea4335" opacity="1.00" d=" M 785.44 42.68 C 793.68 40.61 802.61 41.17 810.44 44.53 C 819.66 48.29 827.01 56.16 830.45 65.47 C 833.25 73.88 833.28 83.16 830.59 91.60 C 826.86 102.52 817.58 111.20 806.56 114.51 C 791.00 119.61 772.38 113.22 763.64 99.27 C 757.85 90.73 756.67 79.70 758.77 69.76 C 761.56 56.64 772.42 45.78 785.44 42.68 M 788.34 57.20 C 775.22 61.49 770.48 78.55 776.69 90.16 C 780.31 97.65 788.76 102.34 797.03 101.48 C 805.30 100.84 812.65 94.67 815.09 86.80 C 818.40 77.39 815.57 65.56 807.15 59.76 C 801.81 55.87 794.54 55.41 788.34 57.20 Z" />
+            <path fill="#ea4335" opacity="1.00" d=" M 1029.99 57.04 C 1038.75 42.96 1058.50 37.30 1073.36 44.69 C 1083.18 49.41 1089.32 59.20 1092.67 69.24 C 1076.17 76.61 1059.29 83.12 1042.64 90.16 C 1044.88 93.24 1046.83 96.82 1050.32 98.68 C 1056.77 102.41 1065.18 102.30 1071.63 98.63 C 1074.77 96.82 1077.10 93.98 1079.39 91.22 C 1083.64 93.94 1087.88 96.69 1092.02 99.60 C 1087.80 105.57 1082.17 110.61 1075.32 113.32 C 1062.66 118.80 1047.07 116.34 1036.63 107.37 C 1022.23 95.33 1019.89 72.50 1029.99 57.04 M 1043.16 65.15 C 1040.52 68.68 1040.29 73.21 1039.95 77.43 C 1043.75 76.13 1047.64 75.04 1051.28 73.29 C 1058.73 69.76 1066.74 67.46 1073.87 63.24 C 1071.50 60.55 1069.13 57.42 1065.44 56.57 C 1057.11 53.72 1047.85 58.07 1043.16 65.15 Z" />
+         </g>
+         <g id="#fbbc05ff">
+            <path fill="#fbbc05" opacity="1.00" d=" M 867.32 42.36 C 879.09 39.65 892.26 42.54 901.31 50.69 C 913.45 61.20 917.36 79.89 910.45 94.39 C 903.59 110.80 883.82 119.71 866.83 115.16 C 856.36 112.58 847.07 105.34 842.39 95.59 C 837.22 85.05 837.27 72.09 842.56 61.60 C 847.32 51.86 856.75 44.67 867.32 42.36 M 872.38 56.49 C 862.57 57.88 855.40 67.41 854.90 76.98 C 854.02 86.61 859.68 96.93 869.00 100.20 C 876.69 103.22 886.18 100.87 891.51 94.53 C 900.32 85.09 899.03 68.07 888.65 60.27 C 884.14 56.63 877.99 55.59 872.38 56.49 Z" />
+         </g>
+      </svg>
+   </div>
+</div>
+
+<script>
+var callbackGoogle_Reviews = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.Swiper) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/js/swiper.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+    // add style
+    var style = document.createElement("link");
+    style.type = "text/css";  
+    style.rel = "stylesheet";
+    style.href = 'https://cdn.jsdelivr.net/npm/swiper@{{ settings.swiperjsversion }}/css/swiper.min.css';
+    document.getElementsByTagName("head")[0].appendChild(style);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackGoogle_Reviews();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackGoogle_Reviews);
+}
+    
+  
+  
+  
+  
+function deferGoogle_Reviews(methodGoogle_Reviews) {
+    if (window.jQuery && window.Swiper) {
+        methodGoogle_Reviews();
+    } else {
+        setTimeout(function() { deferGoogle_Reviews(methodGoogle_Reviews) }, 50);
+    }
+}
+deferGoogle_Reviews(function () {  
+  
+  startGoogleSlider();
+  
+  
+function startGoogleSlider() {
+   
+      var container = document.getElementById('google-reviews-{{ section.id }}');
+  
+      var swiper = new Swiper((container), {         
+     	effect: 'slide',
+		parallax: true,
+		loop: true,
+		speed: 600,
+		slidesPerView: 3,
+		slidesPerGroup: 1,
+		autoplay: {
+			delay: 7000,
+			disableOnInteraction: true,
+			observeParents: true,
+		},
+		breakpoints: {
+			// when window width is <= 320px
+          	1022: {
+				// speed: 300,
+                slidesPerView: 3,
+                slidesPerGroup: 1,
+				autoHeight: true,
+			},
+			300: {
+				// speed: 300,
+                slidesPerView: 2,
+                slidesPerGroup: 2,
+				autoHeight: true,
+			}
+		}
+      });   
+} 
+    
+  
+  
+  
+});  
+</script>
+
+{% schema %}
+  {
+    "name": "Google Reviews",
+    "settings": [{
+       "id": "title",
+       "type": "text",
+       "label": "Title",
+       "default": "Google Reviews"
+},
+{
+     "type": "font_picker",
+     "id": "font",
+     "label": "Font",
+     "default": "work_sans_n6"
+   },
+  {
+    "type":   "range",
+    "id":     "fontsize",
+    "min":       18,
+    "max":       50,
+    "step":     1,
+    "unit":      "px",
+    "label":     "Title Font Size",
+    "default":   28
+     },
+{
+"type": "checkbox",
+"id": "linethrough",
+"label": "Line Through",
+"default": false
+}, 
+{
+   "type":      "radio",
+   "id":        "alignment",
+   "label":     "Alignment",
+   "options": [
+     { "value": "center", "label": "Center" },
+     { "value": "left", "label": "Left" },
+     { "value": "right", "label": "Right" }
+   ],
+   "default":   "center"
+}], 
+  "blocks": [
+    {
+     "type": "Review",
+     "name": "Review",
+     "settings" : [
+      {
+       "id": "google_pic",
+       "type": "image_picker",
+       "label": "Image"
+      },
+      {
+        "id": "google_name",
+        "type": "text",
+        "label": "Name"
+      },
+      {
+        "id": "google_caption",
+        "type": "textarea",
+        "label": "Caption"
+      },
+      {
+        "id": "google_date",
+        "type": "text",
+        "label": "how many days\/weeks\/months ago"
+      },
+      {
+        "type": "select",
+        "id": "google_rating",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ],
+        "label": "Rating"
+      }
+     ]
+  }
+ ],
+  "presets": [
+    {
+      "name": "Google Reviews",
+      "category": "Reviews"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1281px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+}
+             
+             
+@mixin transition($attribute, $duration: null) {
+  
+      @if ($duration) {
+       
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+    } @else {
+        
+    -webkit-transition: $attribute;
+    -moz-transition: $attribute;
+    transition: $attribute;
+    }
+
+}
+
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{$animationName} {
+    @content;
+  }
+  @-moz-keyframes #{$animationName} {
+    @content;
+  }
+  @-o-keyframes #{$animationName} {
+    @content;
+  }
+  @keyframes #{$animationName} {
+    @content;
+  }
+}
+@mixin animate($name, $duration, $iteration, $direction) {
+  -webkit-animation-duration: $duration;
+     -moz-animation-duration: $duration;
+       -o-animation-duration: $duration;
+          animation-duration: $duration;
+  -webkit-animation-iteration-count: $iteration;
+     -moz-animation-iteration-count: $iteration;
+       -o-animation-iteration-count: $iteration;
+          animation-iteration-count: $iteration;
+  -webkit-animation-name: $name;
+     -moz-animation-name: $name;
+       -o-animation-name: $name;
+          animation-name: $name;
+  -webkit-animation-direction: $direction;
+     -moz-animation-direction: $direction;
+       -o-animation-direction: $direction;
+          animation-direction: $direction;
+}
+
+
+.google-reviews-wrap {
+       padding: 25px 10px 25px;
+             @include bp(mobile) {
+    padding: 15px 10px 20px;
+}
+ & .title {
+  	& h2 {
+     position:relative;
+margin-bottom: 1rem;
+    & span {
+    background: #fff;
+    z-index: 2;
+    position: relative;
+    padding: 0 20px;
+     font-size:100%;
+    @include bp(mobile) {
+      font-size:80%;
+    }
+     }
+   }
+  }
+    & > h2:nth-child(1) {
+      font-family: 'Open Sans';
+      font-weight:bold;
+      text-transform:uppercase;
+      font-size: 33px;
+      text-align: center; 
+      position:relative;
+      @include bp(mobile) {
+      	font-size:13px;
+        margin-bottom: 12px;
+        display:none;
+      }
+      & > span:nth-child(1) {
+    color: #BD6CEC;
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    padding: 0 35px;
+        @include bp(mobile) {
+            padding: 0 15px;
+        }
+        & span {
+        	color:#000;
+        }
+      }
+      &:before {
+       content:'';
+       display:block;
+       position:absolute;
+       height:1px;
+       background:#B45FE5;
+       top: 50%;
+       width:100%;
+       z-index: 1;
+      }
+    }
+  & .google-review {
+    display:flex;
+       max-width: 400px; 
+     margin: 0 auto;
+    & > div:nth-child(1) {
+        width: 25%;
+        padding: 0 10px 0 0;
+        & span {
+    border-radius: 100%;
+    overflow: hidden;
+    display: block;
+    height: 0;
+    margin-bottom: 0;
+    padding-bottom: 100%; 
+          & img {
+          width: 100%;
+          }
+        }
+    }
+    & > div:nth-child(2) {
+         width: 100%; 
+      & h1 {
+       font-size: 16px;
+            line-height: 15px;
+      color: #5189a9;
+       font-weight: bold;
+     margin-bottom: 4px;
+        @include bp(mobile) {
+            font-size: 14px;
+               margin-bottom: 0px;
+        }
+           & span {
+    font-family: Open Sans;
+    font-size: 80%;
+    line-height: 1;
+    margin: 0 0 0 5px;
+       color: #6A6C77;
+    font-weight: normal;
+        @include bp(phablet) {
+               color: rgba(255, 255, 255, 0.65);
+              display: block;
+              margin: 3px 0 3px 0;
+        }
+      }
+      }
+      & h2 {
+         font-size: 15px;
+       color: #afafaf;
+         margin-bottom: 3px;
+        @include bp(mobile) {
+            font-size: 10px;
+        }
+      }
+      & > div {
+    font-size: 16px;
+        color:#000;
+            margin-top: 5px;
+        @include bp(mobile) {
+          
+        	font-size:10px;
+        }
+        & .wp-google-stars {
+          & .wp-stars {
+                margin-right: 6px;
+            & .wp-star {
+                line-height: 11px;
+                & path {
+              
+                }
+            }
+          }
+        }
+      }
+    }
+  }
+  & > div:nth-child(3) {
+      text-align: center;
+      margin-top: 20px;
+    & svg {
+       max-width: 160px;
+       height: auto;
+       @include bp(mobile) {
+       max-width: 127px;
+     }
+    }
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}  

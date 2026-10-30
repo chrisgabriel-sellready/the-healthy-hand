@@ -1,0 +1,120 @@
+<div class="inner">
+
+    <div class="row align-middle align-center">
+      <div class="large-12 columns text-center">
+        <div class="bubbles">
+        <h1>{{ section.settings.subheader }}</h1>
+        </div>
+      </div>
+    </div>
+
+  
+  <div id="reviewslider" class="swiper-container">       
+     <div class="swiper-wrapper">
+
+     <!-- Slides -->
+      {% assign i = 0 %}
+       {% for block in section.blocks %}
+          {% case block.type %}
+             {% when 'Video' %}
+     
+<div class="swiper-slide">
+<div class="review-wrap row align-middle align-center">
+   <div class="columns large-8 small-12 review-video">
+      <a data-swiper-parallax="-300" data-swiper-parallax-opacity="0"  data-swiper-parallax-duration="1300" data-fancybox href="{{ block.settings.video_url }}" class="md-trigger playBut" title="{{ block.settings.review_name }} reviews {{ shop.name }}"  onclick="ga('send', {hitType: 'event',eventCategory: 'Reviews: preview',eventAction: 'Watched Review',eventLabel: '{{ block.settings.review_name }} reviews {{ shop.name }}'});">
+
+<svg width="1067pt" height="1067pt" viewBox="0 0 1067 1067" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<g id="#e275a1ff">
+<path fill="#e275a1" opacity="1.00" d=" M 512.61 0.00 L 551.39 0.00 C 560.59 1.06 569.87 0.87 579.07 1.99 C 662.99 9.39 745.15 36.69 816.61 81.38 C 875.21 117.96 926.40 166.29 966.51 222.53 C 998.33 267.11 1023.46 316.51 1040.46 368.60 C 1052.33 404.37 1059.90 441.50 1063.89 478.96 C 1065.42 493.12 1065.71 507.39 1067.00 521.58 L 1067.00 548.39 C 1066.26 553.26 1065.78 558.17 1065.70 563.09 C 1060.60 649.00 1034.85 733.72 990.62 807.59 C 952.77 871.08 901.27 926.32 840.78 968.76 C 777.37 1013.37 704.31 1044.47 627.94 1058.11 C 604.16 1062.40 580.10 1065.27 555.95 1066.12 C 552.43 1066.30 548.94 1066.82 545.42 1067.00 L 518.61 1067.00 C 507.07 1065.32 495.35 1065.73 483.79 1064.16 C 378.52 1054.21 276.23 1012.74 194.62 945.36 C 141.18 901.47 96.66 846.90 63.89 786.04 C 27.61 719.00 5.87 644.09 1.00 568.00 C 0.92 563.11 0.47 558.25 0.00 553.40 L 0.00 518.59 C 0.40 513.41 0.80 508.23 0.83 503.03 C 6.90 400.44 42.72 299.58 103.84 216.85 C 145.05 160.75 197.62 113.14 257.19 77.19 C 322.60 37.56 396.54 11.91 472.58 3.36 C 485.86 1.55 499.28 1.30 512.61 0.00 M 500.47 56.62 C 414.45 62.38 330.46 92.53 259.82 141.83 C 200.56 182.98 150.82 237.81 115.92 300.97 C 61.70 398.63 42.50 515.59 64.54 625.23 C 80.60 707.62 119.30 785.32 174.50 848.48 C 216.91 897.05 269.41 936.73 327.69 964.32 C 378.96 988.64 434.54 1003.75 491.02 1009.00 C 540.47 1013.31 590.63 1010.27 639.01 999.07 C 677.86 990.12 715.63 976.40 751.06 958.10 C 820.31 922.64 880.88 870.18 925.24 806.22 C 973.26 737.33 1002.24 655.53 1009.25 571.91 C 1013.54 521.21 1009.52 469.82 997.41 420.40 C 982.82 361.03 956.74 304.54 921.14 254.85 C 878.10 194.44 820.65 144.36 754.82 110.17 C 677.03 69.58 588.04 50.69 500.47 56.62 Z" />
+</g>
+<g id="#ff9dc4ff">
+<path fill="#ff9dc4" opacity="1.00" d=" M 578.29 123.36 C 582.85 122.68 587.50 122.88 592.08 123.27 C 697.62 138.43 796.41 196.03 861.41 280.57 C 869.82 291.55 868.11 308.63 857.63 317.66 C 848.84 325.93 834.48 327.12 824.32 320.70 C 818.51 317.25 815.01 311.30 810.74 306.27 C 754.45 237.59 671.96 190.98 584.05 178.35 C 580.15 177.82 576.16 177.23 572.64 175.36 C 562.82 170.68 556.37 159.80 557.14 148.92 C 557.52 136.96 566.59 125.92 578.29 123.36 Z" />
+</g>
+<g id="#78445fff">
+<path fill="#78445f" opacity="1.00" d=" M 409.43 277.61 C 422.26 275.93 435.60 278.56 446.70 285.24 C 559.80 350.50 672.87 415.82 785.95 481.09 C 804.26 490.24 817.30 509.37 818.00 529.96 C 819.02 545.76 813.23 561.84 802.27 573.27 C 796.04 580.04 787.83 584.39 779.94 588.89 C 668.56 653.18 557.19 717.50 445.80 781.79 C 435.00 787.88 422.27 790.57 409.95 788.90 C 387.82 786.22 367.91 769.85 361.62 748.37 C 358.42 738.90 359.24 728.82 359.16 719.00 C 359.18 590.99 359.12 462.98 359.18 334.96 C 359.02 322.16 363.48 309.47 371.40 299.44 C 380.64 287.63 394.62 279.79 409.43 277.61 M 416.21 332.93 C 414.45 334.02 414.82 336.20 414.67 337.97 C 414.72 468.32 414.69 598.68 414.69 729.04 C 414.79 730.68 414.65 732.77 416.36 733.69 C 419.96 733.18 422.82 730.59 425.97 728.96 C 537.32 664.68 648.66 600.37 760.03 536.10 C 762.74 535.27 763.15 531.65 760.34 530.62 C 646.90 465.09 533.43 399.60 419.98 334.09 C 418.80 333.47 417.54 332.98 416.21 332.93 Z" />
+</g>
+</svg>
+
+      </a>
+      <img src="{{ block.settings.video_thumbnail | img_url: 'master' }}" />
+   </div>
+   <div class="large-4 small-12 columns text-left text-wrap">
+      <div class="quote-wrap">
+         <span class="quote" data-swiper-parallax="-300" data-swiper-parallax-opacity="0"  data-swiper-parallax-duration="1100">
+         {{ block.settings.video_title }}
+         </span>
+      </div>
+     <div class="tag" data-swiper-parallax="-400" data-swiper-parallax-opacity="0"  data-swiper-parallax-duration="1100">
+       {{ block.settings.video_type }}
+     </div>
+   </div>
+</div>
+</div>  
+  
+
+
+
+            {% assign i = i | plus: 1 %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+          <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
+<div class="row align-center text=center">
+    <a class="cta" href="pages/videos">More Videos</a>
+  </div>
+
+</div>       
+       
+       
+{% schema %}
+  {
+    "name": "Our Videos",
+    "settings": [{
+        "id": "subheader",
+        "type": "text",
+        "label": "Title Subheader"
+      }],
+"blocks": [
+    {
+     "type": "Video",
+     "name": "Video",
+     "settings" : [
+      {
+        "type": "header",
+        "content": "Video Info"
+      },
+      {
+       "id": "video_thumbnail",
+       "type": "image_picker",
+       "label": "Video Thumbnail"
+      },
+      {
+        "type": "text",
+        "id": "video_title",
+        "label": "Title"
+      },
+      {
+       "id": "video_url",
+       "type": "video_url",
+       "accept": ["youtube"],
+       "label": "Youtube URL",
+       "default": "https://www.youtube.com/watch?v=xgT4HDqNnyg"
+      },
+      {
+        "type": "text",
+        "id": "video_type",
+        "label": "What type of video? ex: Interview or Tutorial"
+      }
+]
+  }
+ ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

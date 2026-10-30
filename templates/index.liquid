@@ -1,0 +1,17 @@
+{% section 'Stories' %}
+<!--  VIA MOBILE POPUP SCRIPT  -->
+<script>
+    (function (d, w, c) {
+        w.ViaPopupToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0bmFtZSI6InRoZWhlYWx0aHloYW5kLmNvbSIsImxvY2F0aW9uSWQiOiI2MTFkODkxNjY4NDdkYzAwMGFkMmEzOGEiLCJpYXQiOjE2MjkzMjcwNjl9.x9UC_7Cgn8QbsAZK4tgMbRnZDoYrJESh1LhV7QmU3-rZg0D61iPRdLXnRDdK00H3E3JG-K2ArLR016catyg4tHSm_u1AQuiePiASaG3oIkHluovVbm5iWfcEIGaVimiQTD_bx6hTDq5iWveJjr9grifUtOOb8QOC8eKENyipq7Y';
+        w.ViaStoreType = 'shopify';
+        var s = d.createElement('script');
+        w[c] = w[c] || function () {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        s.async = true;
+        s.src = 'https://popup.viacustomer.com/via_popup.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'ViaPopup');
+</script>
+<!--  END VIA MOBILE POPUP SCRIPT  -->
+{{ content_for_index }}

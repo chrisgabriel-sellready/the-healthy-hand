@@ -1,0 +1,300 @@
+
+
+
+{% style %}
+  form[action="/cart/add"] button:not(.stripe):not([type="submit"]), form[action="/cart/add"] .shopify-payment-button {
+  display:none !important;
+}
+.shopify-payment-button__stripe {}
+a.shopify-payment-button__stripe, a.shopify-payment-button__stripe:hover, a.shopify-payment-button__stripe:focus {
+color:#fff !important;
+}
+{% endstyle %}
+
+<script>
+  
+var owner_Id = "acct_1EqLn1JWsQXFb79W";
+var stripe_key = "pk_live_kL5lp70uRIq1mV6SLnRN8dHf002dQQFytX";
+var split = 1000;
+var shippingAmount = 700;
+var shippingName = "U.S Priority (2-3 day) Shipping";
+var successPageHandle = "thank-you";  
+  
+  
+// add script
+ var callbackStripe = function(){
+   if(!window.Stripe) {
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://js.stripe.com/v3';
+    document.getElementsByTagName("head")[0].appendChild(script);
+   }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackStripe();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackStripe);
+}  
+ 
+
+  
+// get form first time  
+if(window.jQuery && window.jQuery.mobile) {
+  $(document).on( "pagecreate", function( event, ui ) {
+   var checkoutForm = (this.querySelector('[action="/cart"]') ? this.querySelector('[action="/cart"]') : this.querySelector('[action="/cart/add"]')); 
+   if(checkoutForm) {
+    replaceWithStripe(checkoutForm);
+   } 
+    
+  });
+}else{
+var checkoutForm = (document.querySelector('[action="/cart"]') ? document.querySelector('[action="/cart"]') : document.querySelector('[action="/cart/add"]'));  
+if(checkoutForm) {
+replaceWithStripe(checkoutForm);
+}
+}
+  
+
+
+function  replaceWithStripe(form) {
+//declare isProductPage
+if(form.action.includes('add')) {
+ var isProductPage = true;  
+}
+
+  
+  if(isProductPage) {
+    if(!form.querySelector('#stripe_' + form.getAttribute('id'))) {
+    // create stripe button
+    var button = document.createElement('a');
+    button.setAttribute('role','button');
+    button.id = 'stripe_' + form.getAttribute('id');
+    button.classList.add('shopify-payment-button__button','shopify-payment-button__button--unbranded','shopify-payment-button__stripe','button');
+    button.type = 'submit';
+    button.innerHTML = '<span>Buy It Now</span>';
+    var currentAdditionalButtons = form.querySelector('div.shopify-payment-button');
+    insertAfter(button, currentAdditionalButtons);
+    button.removeEventListener('click', stripeCheckout);
+    button.addEventListener('click', stripeCheckout);
+    var select = form.querySelector('[name="id"]');
+    select.removeEventListener('input', triggerSoldOutCheck);  
+    select.addEventListener('input', triggerSoldOutCheck);
+    soldOutCheck(button);
+    }
+  }else{
+    form.removeEventListener('submit', stripeCheckout);  
+    form.addEventListener('submit', stripeCheckout);
+  }
+}
+  
+
+function triggerSoldOutCheck(event) {
+  var form = event.currentTarget;
+  var button = form.querySelector('.shopify-payment-button__stripe');
+  soldOutCheck(button);
+}  
+  
+function soldOutCheck(button)  {
+var addToCartButton = button.closest('form').querySelector('[type="submit"]');  
+  if(addToCartButton.disabled) {
+   button.classList.add('disabled');
+    button.removeEventListener('click', stripeCheckout);  
+  }else{
+    button.removeEventListener('click', stripeCheckout);
+    button.addEventListener('click', stripeCheckout);
+  }
+}  
+  
+  
+  
+function stripeCheckout(event) {
+  event.preventDefault();
+  if(window.jQuery && window.jQuery.mobile) {
+    $.mobile.loading( "show" );
+  }
+  
+  
+  
+  var isProductPage = false; 
+  var trigger = event.currentTarget;
+  if(trigger.tagName == 'A') {
+      var isProductPage = true; 
+  }
+  
+  if(isProductPage) {
+   var form = trigger.closest('form');  
+    
+// get variantJson
+var variantOptions = form.querySelector('[name="id"]'); 
+var variantId = variantOptions[variantOptions.selectedIndex].value;   
+var quantity = (form.querySelector('[name="quantity"]')) ? form.querySelector('[name="quantity"]').value : 1 ;  
+var a = window.location.href;  
+var productJson = httpGet('/products/' + a.split('/products/')[1] + '.json');  
+var productJson = productJson.product;
+var variantJson = productJson.variants.find(variant => variant.id == variantId);  
+    
+// set product variables
+var amount = variantJson.price.replace('.','');
+    if(variantJson.title !== 'Default Title') {    
+var name = variantJson.title;
+    }else{
+ var name = productJson.title;   
+    }
+var desc = productJson.description ? productJson.description.replace(/<(.|\n)*?>/g, '') : name;
+var images =  [];    
+// check for images on variants first    
+if(variantJson.images) {
+  variantJson.images.forEach(image =>  images.push('https:' + imgURL(image, 'grande')));
+}else{
+  productJson.images.forEach(image =>  images.push('https:' + imgURL(image.src, 'grande')));
+}
+var productObject =  {
+                    "name": name,
+                    "description": desc,
+                   "images": images, 
+                    "amount": amount,
+                    "currency": "usd",
+                    "quantity": quantity
+                    
+                };
+var productArray = [];
+productArray.push(productObject);    
+  }else{
+   var form = trigger;
+   var productArray = [];
+    // get cart
+    var cart = httpGet('/cart.js');
+    cart.items.forEach(function(item) {
+      var productObject = {};
+      productObject.name = item.title;
+      if(item.product_description !== "") {
+      productObject.description = item.product_description.replace(/<(.|\n)*?>/g, '');
+      }
+      var images =  []; 
+      images.push(imgURL(item.image, 'grande'));
+      productObject.images = images;
+      productObject.amount = item.price;
+      productObject.currency = "usd";
+      productObject.quantity = item.quantity;
+      productArray.push(productObject);  
+    });
+  }
+  
+  
+// add shipping to productArray  
+
+  var shippingObject = {
+    "name": shippingName,
+    "amount": shippingAmount,
+    "currency": "usd",
+    "quantity": 1
+  };
+  productArray.push(shippingObject);  
+  
+  
+  
+  // lets operate
+  createSession();     
+
+async function createSession() {
+    try {
+        const data = await postData('https://m56huc7k69.execute-api.us-east-1.amazonaws.com/dev/session', {
+            "payment_method_types": [
+                "card"
+            ],
+            "line_items": productArray,
+          "payment_intent_data": {
+            "application_fee_amount": split,
+                "transfer_data": {
+                  "destination": owner_Id,
+            },
+          },
+          "success_url": "{{shop.url}}/pages/" + successPageHandle,
+          "cancel_url": window.location.href,
+          "stripe_key": stripe_key
+        });
+
+      setTimeout(function() {
+        if(data) {
+        var stripe = Stripe(stripe_key);
+stripe.redirectToCheckout({
+  sessionId: data.session.id
+}).then(function (result) {
+});
+  if(window.jQuery && window.jQuery.mobile) {
+    $.mobile.loading( "hide" );
+  }       
+   }else{
+     console.log('try again');
+     createSession();       
+   }
+      },600);
+      
+      
+      
+    } catch (error) {
+       console.log('super fail');
+        console.error(error);
+    }
+};
+
+
+    
+    
+    
+    
+    
+   
+    
+async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *client
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return await response.json(); // parses JSON response into native JavaScript objects
+}
+    
+  
+  
+}  
+
+
+  
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return JSON.parse(xmlHttp.response);
+}
+  
+// alternatively, if you don't want to use a polyfil
+function imgURL(src, size) {
+    var src = src;
+    // remove any current image size then add the new image size
+    return src
+        .replace(/_(pico|icon|thumb|small|compact|medium|large|grande|original|1024x1024|2048x2048|master)+\./g, '.')
+        .replace(/\.jpg|\.png|\.gif|\.jpeg/g, function(match) {
+            return '_' + size + match;
+        });
+}
+  
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}  
+  
+</script>
