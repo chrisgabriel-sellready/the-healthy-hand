@@ -1,0 +1,444 @@
+<title>THH Black Friday Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Poppins:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Layout: a single reading column for the plan, with full-width bands for the brand kit and the calendar table. */
+:root{
+  --bg:#F9F6F1; --surface:#FFFFFF; --ink:#1F1F1C; --muted:#5A584F; --line:#E4DED3;
+  --green:#3A6B2E; --root:#22351C; --sage:#E9EEDF; --tomato:#CC3523; --sun:#F4B41A;
+  --chip:#F1EDE5; --on-green:#FFFFFF;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Poppins','Helvetica Neue',Arial,sans-serif;
+  --mono:'Courier Prime','Courier New',monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161A14; --surface:#1F241C; --ink:#EEEADF; --muted:#B4B0A3; --line:#343B2F;
+  --green:#8DBB78; --root:#0F140D; --sage:#26301F; --tomato:#F07A64; --sun:#F4B41A; --chip:#2A3125; --on-green:#10160D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#161A14; --surface:#1F241C; --ink:#EEEADF; --muted:#B4B0A3; --line:#343B2F;
+  --green:#8DBB78; --root:#0F140D; --sage:#26301F; --tomato:#F07A64; --sun:#F4B41A; --chip:#2A3125; --on-green:#10160D; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);margin:0}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.prose{max-width:68ch}
+h1,h2,h3{font-family:var(--serif);font-weight:400;text-wrap:balance;margin:0}
+h1{font-size:clamp(36px,6vw,58px);line-height:1.05}
+h2{font-size:clamp(28px,4vw,38px);line-height:1.15;margin-bottom:10px}
+h3{font-size:22px;line-height:1.25;font-weight:600}
+em{font-style:italic}
+p{margin:0 0 12px}
+a{color:var(--green)}
+.kicker{font:600 12px/1.3 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--green);margin:0 0 10px}
+.muted{color:var(--muted)}
+header.top{padding-block:44px 30px;border-bottom:1px solid var(--line)}
+header .lede{font-size:18px;max-width:62ch;margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px}
+.chip.warn{border-color:var(--tomato);color:var(--tomato)}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav.toc .wrap{display:flex;gap:18px;overflow-x:auto;padding-block:12px;font:500 13px/1 var(--sans);white-space:nowrap}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--green);text-decoration:underline}
+section{padding-block:48px;border-bottom:1px solid var(--line)}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px}
+@media (max-width:760px){.grid3,.grid2{grid-template-columns:1fr}}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.fact .num{font:600 30px/1.1 var(--serif);font-variant-numeric:tabular-nums}
+.fact .lab{font-size:14px;color:var(--muted);margin-top:6px}
+.callout{background:var(--sage);border-radius:10px;padding:18px 22px;margin-top:20px}
+.tablewrap{overflow-x:auto;margin-top:20px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font:600 11px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--chip)}
+tr:last-child td{border-bottom:0}
+td.when{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:500}
+.ch{display:inline-block;font:600 11px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-radius:4px}
+.ch.email{background:var(--sage);color:var(--green)}
+.ch.sms{background:var(--chip);color:var(--ink);border:1px solid var(--line)}
+.ch.sale{background:transparent;color:var(--tomato);border:1px solid var(--tomato)}
+tr.quiet td{color:var(--muted);font-style:italic}
+/* brand kit */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:18px}
+.sw{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.sw .c{height:70px}
+.sw .t{padding:10px 12px;font-size:13px;line-height:1.4}
+.sw .t b{display:block;font-size:14px}
+.sw code{font:400 13px var(--mono)}
+.typeset{display:grid;gap:14px;margin-top:18px}
+.spec{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;min-width:0}
+.spec .s1{font:400 40px/1.1 var(--serif)}
+.spec .s2{font:400 17px/1.6 var(--sans)}
+.spec .s3{font:400 15px/1.5 var(--mono);text-transform:uppercase}
+.spec small{display:block;color:var(--muted);font-size:13px;margin-top:6px}
+.logo-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:18px}
+.logo-tile{border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:center;width:120px;height:120px}
+.logo-tile img{width:72px}
+.lt-cream{background:#F9F6F1;border:1px solid #E4DED3}
+.lt-white{background:#FFFFFF;border:1px solid #E4DED3}
+.lt-root{background:#22351C}
+.lt-root .inner{background:#F9F6F1;border-radius:10px;padding:8px}
+.lt-root .inner img{width:56px}
+.btnspec{display:inline-block;background:#3A6B2E;color:#fff;font:600 15px/1 var(--sans);padding:15px 30px;border-radius:6px}
+.swap td:first-child{color:var(--green);font-weight:500}
+.swap td:last-child{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--tomato)}
+.swap table{min-width:520px}
+ul.clean{margin:8px 0 0;padding-left:20px}
+ul.clean li{margin-bottom:6px}
+/* emails */
+.email{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px;margin-top:18px}
+.email header{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;margin-bottom:12px}
+.email .no{font:600 13px/1 var(--mono);color:var(--muted)}
+.email .meta{font-size:13px;color:var(--muted);width:100%}
+.subj{display:grid;gap:8px;margin:14px 0}
+.subj div{border-left:3px solid var(--line);padding:2px 0 2px 12px;font-size:15px;min-width:0}
+.subj div.rec{border-left-color:var(--green)}
+.subj b{font-weight:600}
+.subj span{display:block;color:var(--muted);font-size:14px}
+.outline{margin:10px 0 0;padding-left:20px}
+.outline li{margin-bottom:8px}
+.outline li b{font-weight:600}
+.copy{background:var(--chip);border-radius:8px;padding:16px 18px;margin-top:12px;font-size:15px}
+.copy p:last-child{margin:0}
+details{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:600;color:var(--green)}
+summary:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.frame{max-width:620px;margin:14px auto 0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#F9F6F1}
+.frame iframe{display:block;width:100%;height:1400px;border:0}
+.concepts{display:grid;gap:10px;margin-top:12px}
+.concepts div{font-size:15px}
+.concepts .pick{font-weight:600}
+.tag{font:600 10px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:3px 5px;margin-left:6px;vertical-align:2px}
+/* sms */
+.phones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
+@media (max-width:760px){.phones{grid-template-columns:1fr}}
+.sms{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.sms .when{font:600 12px/1.3 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.bubble{background:var(--sage);border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
+.sms .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+button.copybtn{font:600 13px var(--sans);background:transparent;color:var(--green);border:1px solid var(--green);border-radius:6px;padding:6px 12px;cursor:pointer}
+button.copybtn:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+/* audience */
+.seg{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.seg h3{font-size:17px;font-family:var(--sans);font-weight:600}
+.seg code{font:400 12.5px var(--mono);background:var(--chip);padding:1px 5px;border-radius:3px;overflow-wrap:anywhere}
+.seg p{font-size:14.5px;margin:6px 0 0}
+ol.signoff{padding-left:22px;margin-top:16px}
+ol.signoff li{margin-bottom:12px;padding-left:4px}
+ol.signoff b{font-weight:600}
+footer.end{padding-block:36px 60px;color:var(--muted);font-size:14px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+html{scroll-behavior:smooth}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">The Healthy Hand · BFCM 2026 · for Alyssa and Shay</p>
+    <h1>Black Friday <em>drop plan</em></h1>
+    <p class="lede">Wake the list up with two warm, no-sale notes from Shay. Let the early list in the night before Thanksgiving. Then open the sale on Black Friday with the Thanksgiving plate as the hook, and close it Monday at midnight.</p>
+    <div class="chips">
+      <span class="chip">6 emails</span><span class="chip">4 texts</span><span class="chip">Tue 11/17 to Mon 11/30</span>
+      <span class="chip warn">Plan only: nothing is built or scheduled in Klaviyo</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections"><div class="wrap">
+  <a href="#why">Why</a><a href="#calendar">Calendar</a><a href="#brand">Brand kit</a><a href="#emails">Emails</a><a href="#sms">SMS</a><a href="#audience">Audience</a><a href="#measure">Measure</a><a href="#signoff">Sign-off</a>
+</div></nav>
+
+<main>
+<section id="why"><div class="wrap">
+  <p class="kicker">Why reactivate first</p>
+  <h2>The list has been quiet for five months</h2>
+  <p class="prose muted">Pulled from THH's Klaviyo account on 11/13. The newsletter list holds about 16,000 people, but it hasn't heard from us since June, and last year's BFCM went to the list cold.</p>
+  <div class="grid3">
+    <div class="fact"><div class="num">Jun 21</div><div class="lab">Last email sent (Father's Day). That's 145 days of silence, and only 3 campaigns went out in all of 2026.</div></div>
+    <div class="fact"><div class="num">$745</div><div class="lab">BFCM 2025 revenue: 4 emails to about 13.5k people, 8 orders. Every send was a sale, and click rate sat near 0.5%.</div></div>
+    <div class="fact"><div class="num">0</div><div class="lab">SMS campaigns ever sent, even though there's an "SMS Subscribers" list. That channel hasn't been used yet.</div></div>
+  </div>
+  <div class="callout prose">
+    <p><strong>What that means for this drop.</strong> If 16,000 people suddenly get mail during the busiest inbox week of the year, Gmail and Yahoo will start routing us to spam. So we warm up: Shay writes first to the people most likely to open, the list widens in waves, and only people who are engaging get the sale emails.</p>
+    <p style="margin:0">It also answers Alyssa's brief: reactivate the list, a message from Shay, the benefits of a detox, and the Thanksgiving-plate angle.</p>
+  </div>
+</div></section>
+
+<section id="calendar"><div class="wrap">
+  <p class="kicker">The drop at a glance</p>
+  <h2>Calendar</h2>
+  <p class="prose muted">All times Eastern. Sale: early list Wed 11/25 6pm, everyone Fri 11/27 6am, ends Mon 11/30 11:59pm.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>When</th><th>Channel</th><th>Message</th><th>Who gets it</th><th>Job</th></tr></thead>
+    <tbody>
+      <tr><td class="when">Tue 11/17 · 10am</td><td><span class="ch email">Email 1</span></td><td>A note from Shay (wave 1)</td><td>Engaged in the last 180 days, plus anyone who bought in the last 365</td><td>Reactivate, build the early list</td></tr>
+      <tr><td class="when">Wed 11/18 · 10am</td><td><span class="ch email">Email 1</span></td><td>A note from Shay (wave 2)</td><td>Engaged 181 to 365 days ago</td><td>Reactivate</td></tr>
+      <tr><td class="when">Thu 11/19 · 10am</td><td><span class="ch email">Email 1</span></td><td>A note from Shay (wave 3)</td><td>Engaged 1 to 2 years ago. Send only if waves 1 and 2 stay under the guardrails</td><td>Reactivate</td></tr>
+      <tr><td class="when">Thu 11/19 · 12pm</td><td><span class="ch sms">SMS 1</span></td><td>Early-list heads-up</td><td>SMS subscribers</td><td>First text ever: set expectations</td></tr>
+      <tr><td class="when">Fri 11/20 · 10am</td><td><span class="ch email">Email 2</span></td><td>Detox, honestly</td><td>Opened or clicked Email 1, plus engaged 180 days</td><td>Educate, build the early list</td></tr>
+      <tr><td class="when">Wed 11/25 · 6pm</td><td><span class="ch email">Email 3</span> <span class="ch sms">SMS 2</span> <span class="ch sale">Sale</span></td><td>You're in early</td><td>Early list (clicked the early link), VIP Customers list, SMS subscribers</td><td>Early access, first revenue</td></tr>
+      <tr class="quiet"><td class="when">Thu 11/26</td><td>None</td><td>Thanksgiving. No sends.</td><td>Everyone</td><td>Let them eat</td></tr>
+      <tr><td class="when">Fri 11/27 · 7am</td><td><span class="ch email">Email 4</span> <span class="ch sale">Sale</span></td><td>The plate report (Black Friday launch)</td><td>Engaged 365 days, plus anyone who opened Email 1 or 2. Excludes recent buyers</td><td>Main revenue send</td></tr>
+      <tr><td class="when">Fri 11/27 · 11am</td><td><span class="ch sms">SMS 3</span></td><td>Seconds on the mac &amp; cheese? (MMS with the receipt)</td><td>SMS subscribers, minus buyers</td><td>Revenue</td></tr>
+      <tr><td class="when">Sun 11/29 · 10am</td><td><span class="ch email">Email 5</span></td><td>The leftovers are gone</td><td>Same as Email 4, minus buyers</td><td>Bundles, raise order value</td></tr>
+      <tr><td class="when">Mon 11/30 · 10am</td><td><span class="ch email">Email 6</span></td><td>Last call, from Shay</td><td>Same, minus buyers</td><td>Close</td></tr>
+      <tr><td class="when">Mon 11/30 · 7pm</td><td><span class="ch sms">SMS 4</span></td><td>Ends tonight</td><td>SMS subscribers, minus buyers</td><td>Close</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section id="brand"><div class="wrap">
+  <p class="kicker">Built first, as Alyssa asked</p>
+  <h2>THH brand kit</h2>
+  <p class="prose muted">Built from THH's own logo, packaging and past emails, with the palette cut down to one accent. Every email, text and graphic in this drop follows it. Once you approve it, it can go into Klaviyo's brand library so new templates start on-brand.</p>
+
+  <h3 style="margin-top:28px">Logo</h3>
+  <div class="logo-row">
+    <div class="logo-tile lt-cream"><img src="img/logo.png" alt="The Healthy Hand logo on cream"></div>
+    <div class="logo-tile lt-white"><img src="img/logo.png" alt="The Healthy Hand logo on white"></div>
+    <div class="logo-tile lt-root"><div class="inner"><img src="img/logo.png" alt="The Healthy Hand logo in a cream tile on dark green"></div></div>
+  </div>
+  <p class="prose muted" style="margin-top:10px">Use it on cream or white at 56 to 72px wide in email. On dark green, put it in a cream tile, because the green "HAND" disappears on dark backgrounds. We only have this full-color version, so ask the designer for a one-color white logo.</p>
+
+  <h3 style="margin-top:28px">Color</h3>
+  <div class="swatches">
+    <div class="sw"><div class="c" style="background:#F9F6F1;border-bottom:1px solid #E4DED3"></div><div class="t"><b>Cream</b><code>#F9F6F1</code><br>Page background</div></div>
+    <div class="sw"><div class="c" style="background:#1F1F1C"></div><div class="t"><b>Ink</b><code>#1F1F1C</code><br>All text</div></div>
+    <div class="sw"><div class="c" style="background:#3A6B2E"></div><div class="t"><b>Hand Green</b><code>#3A6B2E</code><br>Buttons, links, labels</div></div>
+    <div class="sw"><div class="c" style="background:#22351C"></div><div class="t"><b>Root</b><code>#22351C</code><br>Top bar, dark bands, footer</div></div>
+    <div class="sw"><div class="c" style="background:#E9EEDF"></div><div class="t"><b>Sage</b><code>#E9EEDF</code><br>Soft sections, info boxes</div></div>
+    <div class="sw"><div class="c" style="background:#CC3523"></div><div class="t"><b>Tomato</b><code>#CC3523</code><br>Offers only: the % and deadline</div></div>
+    <div class="sw"><div class="c" style="background:#F4B41A"></div><div class="t"><b>Sun</b><code>#F4B41A</code><br>Tiny highlights only</div></div>
+  </div>
+  <p class="prose muted" style="margin-top:10px">The greens, Tomato and Sun come straight from the logo. Retire the old lime <code>#8DC640</code> buttons, the mixed red and lime CTAs, and Arial Black. Buttons are always green.</p>
+
+  <h3 style="margin-top:28px">Type</h3>
+  <div class="typeset">
+    <div class="spec"><div class="s1">Detox, <em>honestly.</em></div><small>Headlines: Fraunces (Georgia as the email fallback), 32 to 50px. Put one italic word in each headline for warmth.</small></div>
+    <div class="spec"><div class="s2">One cup at night, two capsules in the morning. A small ritual makes a healthier week easier to keep.</div><small>Body: Poppins, already loaded in THH's Klaviyo. 16 to 18px, line height 1.6, left-aligned. No more centered text at 250% line height.</small></div>
+    <div class="spec"><div class="s3">Balance due: 1 good reset</div><small>Utility: Courier Prime, only for borrowed formats like the receipt.</small></div>
+  </div>
+
+  <div class="grid2">
+    <div class="spec">
+      <h3>Voice</h3>
+      <p style="margin-top:8px"><strong>Warm, plain-spoken, rooted.</strong> We're a friend who knows herbs, not a pharmacy or a hype account.</p>
+      <ul class="clean">
+        <li>Shay writes in first person and signs off "Shay."</li>
+        <li>Name the ingredient and the ritual: "soursop and ginger, steeped 5 minutes," not "natural wellness."</li>
+        <li>No more than one exclamation mark per email and one emoji per subject. None in buttons.</li>
+        <li>Urgency only with a real date and time, stated once.</li>
+        <li>Sender name every time: <strong>Shay from The Healthy Hand</strong>.</li>
+      </ul>
+    </div>
+    <div class="spec">
+      <h3>Buttons and layout</h3>
+      <p style="margin:12px 0"><span class="btnspec">Shop the sale</span></p>
+      <ul class="clean">
+        <li>Green, 6px radius, 2 to 4 words, verb first.</li>
+        <li>Header: Root bar (free shipping or the offer), the logo, then Detox · Bundles · Capsules · Gummies.</li>
+        <li>Headlines, offers and deadlines are always live text, never baked into images.</li>
+        <li>Footer: Root background, logo tile, the FDA disclaimer, unsubscribe and address.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px">Say this, not that</h3>
+  <p class="prose muted">Supplements can make claims about how the body works, but not about disease or guaranteed weight loss. Every message in this drop follows this table.</p>
+  <div class="tablewrap swap"><table>
+    <thead><tr><th>Say</th><th>Not</th></tr></thead>
+    <tbody>
+      <tr><td>Supports regularity · helps you feel less bloated</td><td>Flush belly fat fast · burn fat</td></tr>
+      <tr><td>Supports healthy digestion</td><td>Cleanse your liver · eliminate parasites and toxins</td></tr>
+      <tr><td>A reset helps you feel like yourself again</td><td>Detox is necessary after a big meal</td></tr>
+      <tr><td>Ginger, a classic for a settled stomach</td><td>Lowers blood pressure or blood sugar · fights cancer</td></tr>
+      <tr><td>Customer weight stories + "Individual results vary"</td><td>"Lost 8 lbs in 2 weeks!" on its own</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section id="emails"><div class="wrap">
+  <p class="kicker">Six emails</p>
+  <h2>Emails</h2>
+  <p class="prose muted">Each email has its own job and layout, so the drop doesn't look like one email sent six times. Emails 1, 2 and 4 carry Alyssa's three themes and have mockups for design direction (open "See the mockup"). Emails 3, 5 and 6 are short briefs.</p>
+
+  <article class="email" id="e1">
+    <header><span class="no">01</span><h3>A note from Shay</h3><span class="ch email">Reactivation</span><span class="meta">Tue 11/17, sent in waves through Thu 11/19 · Editorial letter · No sale</span></header>
+    <div class="subj">
+      <div class="rec"><b>It's been a while, so I'm writing</b> <span>No sale in this one. Just me, and a heads-up about Black Friday.</span></div>
+      <div><b>A note from my kitchen</b> <span>I haven't written since June. Here's why I'm writing now.</span></div>
+    </div>
+    <p class="prose"><strong>Idea:</strong> an honest admission. Shay owns the silence, reminds people who she is (her family's herbal staples, her daughter and the elderberry gummies), and offers the one thing that costs nothing: a spot on the early list. One button, plus a friendly "unsubscribe here, no hard feelings" line. It sounds human, and it clears out people who will never buy, which also helps deliverability.</p>
+    <ol class="outline">
+      <li><b>Small logo, no nav.</b> It should feel like a letter, not a campaign.</li>
+      <li><b>"It's been a <em>while.</em>"</b> above a photo of Shay in her kitchen with a mug of tea. <span class="muted">We need this photo.</span></li>
+      <li><b>The letter:</b> who she is, no sale today, and early access on Wed 11/25 at 6pm ET.</li>
+      <li><b>Button:</b> "Put me on the early list." The click is what adds someone to the early list.</li>
+      <li><b>Date box:</b> early list Wed 11/25 at 6pm; everyone else Fri 11/27 at 6am.</li>
+      <li><b>Soft exit:</b> unsubscribe line, then Shay's signature.</li>
+    </ol>
+    <details><summary>See the mockup</summary><div class="frame"><iframe src="01-note-from-shay.html" title="Email 1 mockup: A note from Shay" loading="lazy"></iframe></div></details>
+  </article>
+
+  <article class="email" id="e2">
+    <header><span class="no">02</span><h3>Detox, honestly</h3><span class="ch email">Education</span><span class="meta">Fri 11/20 · Big-type hero, benefit list, honest admission, how-to steps · No sale</span></header>
+    <div class="subj">
+      <div class="rec"><b>Detox, honestly</b> <span>What a reset can do, what it can't, and how I do mine after Thanksgiving.</span></div>
+      <div><b>What "detox" actually means here</b> <span>No miracle claims. Just fiber, ginger, and a routine you'll keep.</span></div>
+    </div>
+    <p class="prose"><strong>Idea:</strong> the benefits of detoxing, told with a level of honesty no competitor uses. A dark "What it <em>can't</em> do" band earns trust and keeps us inside the claim rules. It ends by teasing the sale dates, so the education pays off the following Friday.</p>
+    <ol class="outline">
+      <li><b>Sage hero:</b> "Detox, <em>honestly.</em>"</li>
+      <li><b>What a reset can do:</b> Feel lighter (fiber supports regularity) · Feel settled (ginger) · Feel on track (a daily ritual).</li>
+      <li><b>What it can't do:</b> it won't undo a holiday overnight or replace water, sleep or your doctor. "I'd rather you trust me."</li>
+      <li><b>What's in my cup:</b> the tea pouch, with soursop leaf, ginger root and cinnamon explained.</li>
+      <li><b>My week after Thanksgiving:</b> 1. water before coffee on Friday · 2. one cup every night · 3. two capsules with breakfast.</li>
+      <li><b>Black Friday is a week away:</b> two date tiles, then "Join the early list."</li>
+    </ol>
+    <details><summary>See the mockup</summary><div class="frame"><iframe src="02-detox-honestly.html" title="Email 2 mockup: Detox, honestly" loading="lazy"></iframe></div></details>
+  </article>
+
+  <article class="email" id="e3">
+    <header><span class="no">03</span><h3>You're in early</h3><span class="ch email">Early access</span><span class="ch sale">Sale</span><span class="meta">Wed 11/25, 6pm · Short letter plus an offer ticket</span></header>
+    <div class="subj">
+      <div class="rec"><b>You're in early</b> <span>40% off everything, no code, a day and a half before everyone else.</span></div>
+      <div><b>The door's open (just for you)</b> <span>Like I promised. Black Friday starts now for the early list.</span></div>
+    </div>
+    <div class="copy">
+      <p><strong>You're in.</strong></p>
+      <p>Like I promised, the early list shops first. 40% off everything is live for you now, a day and a half before the sale opens to everyone on Friday morning. No code needed: prices drop at checkout.</p>
+      <p>Stocking up for the week after Thanksgiving? The All In Reset Bundle is where I'd start. — Shay</p>
+      <p>[Offer ticket: 40% off everything · Ends Mon 11/30, 11:59pm ET] &nbsp;[Button: Shop early]</p>
+    </div>
+  </article>
+
+  <article class="email" id="e4">
+    <header><span class="no">04</span><h3>The plate report</h3><span class="ch email">Black Friday launch</span><span class="ch sale">Sale</span><span class="meta">Fri 11/27, 7am · Receipt format, offer ticket, three product rows</span></header>
+    <div class="subj">
+      <div class="rec"><b>Your Thanksgiving plate, itemized</b> <span>Mac and cheese x2. Pie, technically twice. Friday's for the reset: 40% off, no code.</span></div>
+      <div><b>We saw that second plate</b> <span>No judgment. Just a reset waiting for you, 40% off through Monday.</span></div>
+      <div><b>The plate report</b> <span>Yesterday, itemized. Today, everything's 40% off.</span></div>
+    </div>
+    <p class="prose"><strong>Concepts considered for the launch:</strong></p>
+    <div class="concepts">
+      <div class="pick">The plate report <span class="tag">Recommended</span> <span class="muted" style="font-weight:400">Thanksgiving dinner as a printed receipt (two corner pieces of mac &amp; cheese, "just a sliver" more pie, a 4:40pm couch nap) with a total of "Balance due: 1 good reset." It's funny and specific, it's Alyssa's "how bad they eat" angle without shaming anyone, and it turns into the offer.</span></div>
+      <div>Reset, not regret <span class="muted">A contrarian line: "Eat the second plate. We'll handle Friday." Strong, but it plays better as an SMS line than a whole email.</span></div>
+      <div>Shay's leftovers <span class="muted">Shay's own post-holiday routine as a founder note. We already used her voice in emails 1 and 2, so this is the weaker choice.</span></div>
+    </div>
+    <ol class="outline" style="margin-top:14px">
+      <li><b>Root bar:</b> Black Friday · 40% off everything · No code needed.</li>
+      <li><b>"The plate <em>report.</em>"</b> then the receipt as live text, so it works with images off and can be copied for the SMS image.</li>
+      <li><b>Shay's aside:</b> "I went back for the yams twice. Nobody's judging anybody here."</li>
+      <li><b>Friday's for the reset:</b> two short lines on feeling heavy after the meal, and how fiber, warm tea and water help you feel like yourself again.</li>
+      <li><b>Offer ticket:</b> 40% off everything, no code, ends Mon 11/30 at 11:59pm ET, then "Shop the sale."</li>
+      <li><b>Your reset, three ways:</b> the nightly cup (tea) · the morning two (capsules) · the full reset (All In Reset Bundle). Each gets its own link.</li>
+      <li><b>Closing band:</b> "Leftovers keep. <em>This price doesn't.</em>"</li>
+    </ol>
+    <details><summary>See the mockup</summary><div class="frame"><iframe src="04-the-plate-report.html" title="Email 4 mockup: The plate report" loading="lazy"></iframe></div></details>
+  </article>
+
+  <article class="email" id="e5">
+    <header><span class="no">05</span><h3>The leftovers are gone</h3><span class="ch email">Bundles</span><span class="ch sale">Sale</span><span class="meta">Sun 11/29, 10am · Big-type hero, 3 bundle cards, one real review</span></header>
+    <div class="subj">
+      <div class="rec"><b>The leftovers are gone. The sale isn't.</b> <span>40% off everything through Monday night. Three bundles worth a look.</span></div>
+      <div><b>Last of the leftovers</b> <span>The bundles are the best value in the shop, and they're 40% off until Monday.</span></div>
+    </div>
+    <div class="copy">
+      <p><strong>Last of the leftovers.</strong> The fridge is almost empty. The sale isn't, until Monday at 11:59pm ET.</p>
+      <p>Bundle cards: <strong>All In Reset Bundle</strong> (seven staples, kids' elderberry gummies included) · <strong>Jump Start Detox Bundle</strong> (Total System and Total Belly Detox, sea moss, black seed oil) · <strong>Belly Detox Capsules 3-Pack</strong> (three months of the morning two). Each card links to its own product.</p>
+      <p>[One real 5-star review from the site, with first name and product] &nbsp;[Button: Shop bundles]</p>
+    </div>
+  </article>
+
+  <article class="email" id="e6">
+    <header><span class="no">06</span><h3>Last call, from Shay</h3><span class="ch email">Close</span><span class="ch sale">Sale</span><span class="meta">Mon 11/30, 10am · Live countdown at top, short note, offer ticket. Optional 8pm resend to people who didn't open.</span></header>
+    <div class="subj">
+      <div class="rec"><b>Last call, from me</b> <span>40% off ends tonight at 11:59pm ET. Then prices go back.</span></div>
+      <div><b>Tonight at 11:59, it's over</b> <span>Last email about the sale, I promise.</span></div>
+    </div>
+    <div class="copy">
+      <p>[Live countdown timer to Mon 11/30, 11:59pm ET]</p>
+      <p><strong>Last call.</strong> This is my last email about the sale, I promise. 40% off everything ends tonight at 11:59pm ET. If something's been sitting in your cart since Thursday, now's the time.</p>
+      <p>Thank you for being here this year. — Shay &nbsp;[Button: Shop the sale]</p>
+    </div>
+  </article>
+</div></section>
+
+<section id="sms"><div class="wrap">
+  <p class="kicker">Four texts</p>
+  <h2>SMS</h2>
+  <p class="prose muted">These are THH's first SMS campaigns, so they're few and personal, and every one starts with the brand name and ends with the opt-out. Each fits in one 160-character SMS (counted with a ~17-character Klaviyo short link). Sends stay between 8am and 9pm in the recipient's time zone.</p>
+  <div class="phones">
+    <div class="sms"><div class="when">SMS 1 · Thu 11/19 · 12pm</div><div class="bubble" id="sms1">The Healthy Hand: It's Shay. My text list shops Black Friday first: Wed 11/25 at 6pm ET, before anyone else. I'll text you the link. Reply STOP to opt out</div><div class="foot"><span>154 characters · 1 segment</span><button class="copybtn" data-copy="sms1">Copy</button></div></div>
+    <div class="sms"><div class="when">SMS 2 · Wed 11/25 · 6pm</div><div class="bubble" id="sms2">The Healthy Hand: You're in early. 40% off everything, no code needed, a day and a half before everyone else: {link} Reply STOP to opt out</div><div class="foot"><span>~149 characters · 1 segment</span><button class="copybtn" data-copy="sms2">Copy</button></div></div>
+    <div class="sms"><div class="when">SMS 3 · Fri 11/27 · 11am · MMS with the receipt image</div><div class="bubble" id="sms3">The Healthy Hand: Seconds on the mac &amp; cheese? Same. Friday's for the reset: 40% off everything, no code, thru Mon. {link} Reply STOP to opt out</div><div class="foot"><span>~158 characters · 1 segment</span><button class="copybtn" data-copy="sms3">Copy</button></div></div>
+    <div class="sms"><div class="when">SMS 4 · Mon 11/30 · 7pm</div><div class="bubble" id="sms4">The Healthy Hand: Last call from Shay. 40% off everything ends tonight at 11:59pm ET, then prices go back. {link} Reply STOP to opt out</div><div class="foot"><span>~146 characters · 1 segment</span><button class="copybtn" data-copy="sms4">Copy</button></div></div>
+  </div>
+</div></section>
+
+<section id="audience"><div class="wrap">
+  <p class="kicker">Who gets what</p>
+  <h2>Audience and guardrails</h2>
+  <p class="prose muted">THH's Klaviyo has only suppression segments right now (bounces, can't receive, no email). These are the segments to create. The three existing suppression segments stay excluded from every send.</p>
+  <div class="grid2">
+    <div class="seg"><h3>BFCM26 · Wave 1 · Engaged 180d</h3><p>Opened or clicked an email in the last 180 days, <em>or</em> placed an order in the last 365 days. Can receive email.</p></div>
+    <div class="seg"><h3>BFCM26 · Wave 2 · Engaged 181–365d</h3><p>Opened or clicked in the last 365 days, and zero times in the last 180.</p></div>
+    <div class="seg"><h3>BFCM26 · Wave 3 · Engaged 1–2 yrs</h3><p>Opened or clicked in the last 730 days, and zero times in the last 365. Email 1 only, and only if waves 1 and 2 stay inside the guardrails.</p></div>
+    <div class="seg"><h3>Do not mail · Never engaged</h3><p>No opens or clicks in 2 years. Leave them out of BFCM, then run a sunset email in January.</p></div>
+    <div class="seg"><h3>BFCM26 · Early list</h3><p>Clicked an email link containing <code>early=bfcm26</code> since 11/17, <em>or</em> in the "VIP Customers List," <em>or</em> subscribed to SMS.</p></div>
+    <div class="seg"><h3>BFCM26 · Bought</h3><p>Placed an order since Wed 11/25 at 6pm ET. Excluded from emails 5 and 6 and SMS 3 and 4.</p></div>
+  </div>
+  <div class="callout prose">
+    <p><strong>Guardrails.</strong> After each wave of Email 1, check the spam complaint rate (keep it under 0.08%) and the bounce rate (under 1%). If either goes over, stop widening the list and send the sale only to waves already mailed.</p>
+    <p style="margin:0"><strong>Settings.</strong> Sender "Shay from The Healthy Hand" from info@thehealthyhand.com, with a reply inbox someone actually reads. Turn on UTM tracking (it was off for every send last year).</p>
+  </div>
+</div></section>
+
+<section id="measure"><div class="wrap">
+  <p class="kicker">How we'll know it worked</p>
+  <h2>Measure</h2>
+  <div class="grid3">
+    <div class="fact"><div class="num">Reactivation</div><div class="lab">Share of waves 2 and 3 who open or click Email 1. Early-list size by Wed 11/25.</div></div>
+    <div class="fact"><div class="num">Revenue</div><div class="lab">Total vs. last year's $745. Revenue per recipient and placed-order rate per send.</div></div>
+    <div class="fact"><div class="num">List health</div><div class="lab">Unsubscribes under 0.3% per send, spam under 0.08%. Clicks well above last year's 0.5%.</div></div>
+  </div>
+  <p class="prose" style="margin-top:18px"><strong>A/B test:</strong> Email 4 subject lines, "Your Thanksgiving plate, itemized" vs. "We saw that second plate." Send each to 20% of the audience, pick the winner by click rate after 2 hours, and send it to the other 60%.</p>
+</div></section>
+
+<section id="signoff"><div class="wrap">
+  <p class="kicker">Before anything gets built</p>
+  <h2>Needs sign-off</h2>
+  <ol class="signoff prose">
+    <li><b>The offer.</b> The plan assumes 40% off everything, no code needed, Wed 11/25 6pm (early) to Mon 11/30 11:59pm ET. Confirm the percentage and whether bundles get it too, since they're already marked down.</li>
+    <li><b>How early access works.</b> Either schedule the Shopify automatic discount for Wed 6pm without announcing it publicly, or give the early list a Shopify discount link that applies 40% when they click.</li>
+    <li><b>Shay reads Email 1.</b> It's in her voice and mentions her daughter and the herbs she grew up with. She should change anything that isn't quite her.</li>
+    <li><b>A photo of Shay.</b> Her in the kitchen with a mug of tea, natural light. Email 1 is built around it.</li>
+    <li><b>The site and packaging claims.</b> The emails stay within the claim rules, but they link to product pages and show packaging that say "flush belly fat fast," "eliminate parasites," and that the tea lowers blood pressure and "prevents cancer." Those are the claims that get supplement brands FTC letters. Worth a review before traffic goes there.</li>
+    <li><b>Small facts to check:</b> tea steep time (we wrote 5 minutes), capsule directions (2 daily), the $100 free-shipping threshold, and shipping times over the holiday.</li>
+    <li><b>Approve the brand kit.</b> Once it's approved, it can be saved to Klaviyo's brand library, and the emails can be built as drag-and-drop templates.</li>
+  </ol>
+</div></section>
+</main>
+
+<footer class="end"><div class="wrap">
+  Prepared 11/13/2026 from THH's Klaviyo account (campaign data Nov 2025 to Jun 2026), the thehealthyhand.com product catalog, and the October brand audit. Product images belong to The Healthy Hand.
+</div></footer>
+
+<script>
+document.querySelectorAll('.frame iframe').forEach(function(f){
+  function fit(){try{var h=f.contentDocument.documentElement.scrollHeight;if(h>200)f.style.height=h+'px';}catch(e){}}
+  f.addEventListener('load',function(){fit();setTimeout(fit,800);});
+});
+document.querySelectorAll('details').forEach(function(d){
+  d.addEventListener('toggle',function(){var f=d.querySelector('iframe');if(f&&d.open){try{var h=f.contentDocument.documentElement.scrollHeight;if(h>200)f.style.height=h+'px';}catch(e){}}});
+});
+document.querySelectorAll('.copybtn').forEach(function(b){
+  b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy),t=el.textContent;
+    function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected';}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){b.textContent='Copied';},sel);}else{sel();}
+    setTimeout(function(){b.textContent='Copy';},1800);
+  });
+});
+</script>
